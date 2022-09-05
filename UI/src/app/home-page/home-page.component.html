@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="grid">
+        <div class="col-12 md:col-6 lg:col-3 sm:flex-nowrap">
+            <div class="filter-hbox">
+                <h3 class="filter-htext">Filter</h3>
+            </div>
+            <div class="filter-box">
+                <p class="filter-htext">Program Spec Status</p>
+                <div class="field-checkbox" *ngFor="let status of statuses">
+                    <p-checkbox name="status" [value]="status" [(ngModel)]="selectedStatus"></p-checkbox>
+                    <label class="filter-text">{{ status }}</label>
+                </div>
+            </div>
+            <div class="filter-fbox">
+                {{ selectedStatus }}
+            </div>
+        </div>
+        <div class="col-12 md:col-6 lg:col-9 py-5">
+            <p-orderList [value]="programSpecs" [listStyle]="{'max-height':'30rem'}" header="List of Program Spec" filterBy="name" filterPlaceholder="Search" [dragdrop]="false" controlsPosition="right">
+                <ng-template let-programSpec pTemplate="item">
+                    <div class="product-item">
+                        <div class="image-container">
+                                <img src="" [alt]="programSpec.programName" class="product-image" />
+                        </div>
+                        <div class="product-list-detail">
+                            <h5 class="mb-2">Program : {{programSpec.programName}}</h5>
+                            <!-- <i class="pi pi-tag product-category-icon"></i> -->
+                            <span class="product-category">Project : {{programSpec.projectName}}</span>
+                        </div>
+                        <div class="product-list-action">
+                            <h6 class="mb-2">${{programSpec.programId}}</h6>
+                            <span [class]="'product-badge status-' + programSpec.systemWorkName.toLowerCase()">{{programSpec.systemWorkId}}</span>
+                            <span>{{ programSpec.systemWorkDesigner }}</span>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-orderList>
+        </div>
+    </div>
+</div>
