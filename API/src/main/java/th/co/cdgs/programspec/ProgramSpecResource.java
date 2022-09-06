@@ -16,7 +16,7 @@ import org.acme.mongodb.panache.repository.Person;
 import org.bson.types.ObjectId;
 
 
-@Path("/programspec")
+@Path("/api/programspec")
 @Consumes("application/json")
 @Produces("application/json")
 public class ProgramSpecResource {

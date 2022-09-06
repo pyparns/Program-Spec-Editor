@@ -15,58 +15,24 @@ export class NavbarComponent implements OnInit {
     ngOnInit() {
         this.items = [
             {
-                label:'File',
+                label:'Home',
                 icon:'pi pi-fw pi-file',
-                items:[
-                    {
-                        label:'New',
-                        icon:'pi pi-fw pi-plus',
-                        items:[
-                        {
-                            label:'Bookmark',
-                            icon:'pi pi-fw pi-bookmark'
-                        },
-                        {
-                            label:'Video',
-                            icon:'pi pi-fw pi-video'
-                        },
-
-                        ]
-                    },
-                    {
-                        label:'Delete',
-                        icon:'pi pi-fw pi-trash'
-                    },
-                    {
-                        separator:true
-                    },
-                    {
-                        label:'Export',
-                        icon:'pi pi-fw pi-external-link'
-                    }
-                ]
+                routerLink: "/home"
             },
             {
-                label:'Edit',
+                label:'Add',
                 icon:'pi pi-fw pi-pencil',
                 items:[
                     {
-                        label:'Left',
-                        icon:'pi pi-fw pi-align-left'
+                        label:'Blank form',
+                        icon:'pi pi-fw pi-align-left',
+                        routerLink: "/addprogram"
                     },
                     {
-                        label:'Right',
-                        icon:'pi pi-fw pi-align-right'
+                        label:'Import spec',
+                        icon:'pi pi-fw pi-align-right',
+                        routerLink: "/importspec"
                     },
-                    {
-                        label:'Center',
-                        icon:'pi pi-fw pi-align-center'
-                    },
-                    {
-                        label:'Justify',
-                        icon:'pi pi-fw pi-align-justify'
-                    },
-
                 ]
             },
             {
@@ -74,35 +40,16 @@ export class NavbarComponent implements OnInit {
                 icon:'pi pi-fw pi-user',
                 items:[
                     {
-                        label:'New',
+                        label:'Login',
                         icon:'pi pi-fw pi-user-plus',
+                        routerLink: "/login"
 
                     },
                     {
-                        label:'Delete',
-                        icon:'pi pi-fw pi-user-minus',
-
+                        label:'Register',
+                        icon:'pi pi-fw pi-user-plus',
+                        routerLink: "/register"
                     },
-                    {
-                        label:'Search',
-                        icon:'pi pi-fw pi-users',
-                        items:[
-                        {
-                            label:'Filter',
-                            icon:'pi pi-fw pi-filter',
-                            items:[
-                                {
-                                    label:'Print',
-                                    icon:'pi pi-fw pi-print'
-                                }
-                            ]
-                        },
-                        {
-                            icon:'pi pi-fw pi-bars',
-                            label:'List'
-                        }
-                        ]
-                    }
                 ]
             },
             {
@@ -135,10 +82,6 @@ export class NavbarComponent implements OnInit {
                         ]
                     }
                 ]
-            },
-            {
-                label:'Quit',
-                icon:'pi pi-fw pi-power-off'
             }
         ];
     }

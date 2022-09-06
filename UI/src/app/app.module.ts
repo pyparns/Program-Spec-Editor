@@ -16,6 +16,10 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ButtonModule } from 'primeng/button';
+import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
+import { AddProgramPageComponent } from './add-program-page/add-program-page.component';
+import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.component';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,10 @@ import { ButtonModule } from 'primeng/button';
     FooterComponent,
     LoginPageComponent,
     RegisterPageComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ProgramSpecPageComponent,
+    AddProgramPageComponent,
+    ImportSpecPageComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +43,8 @@ import { ButtonModule } from 'primeng/button';
     FormsModule,
     OrderListModule,
     ButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    InputTextModule
   ],
   providers: [],
   bootstrap: [AppComponent]

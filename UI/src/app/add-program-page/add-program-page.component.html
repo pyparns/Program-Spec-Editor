@@ -1,0 +1,39 @@
+<app-header [pageTitle]="'Add Program'"></app-header>
+<div class="container">
+    <div class="grid center">
+        <div class="col-6 col-offset-3">
+            <input class="inputForm" type="text" pInputText [(ngModel)]="projectName" placeholder="Input project name">
+        </div>
+    </div>
+    <div class="grid center">
+        <div class="col-3 col-offset-3">
+            <input class="inputForm" type="text" pInputText [(ngModel)]="programId" placeholder="Input program id">
+        </div>
+        <div class="col-3">
+            <input class="inputForm" type="text" pInputText [(ngModel)]="programName" placeholder="Input program name">
+        </div>
+    </div>
+    <div class="grid center">
+        <div class="col-3 col-offset-3">
+            <input class="inputForm" type="text" pInputText [(ngModel)]="systemWorkId" placeholder="Input system work id">
+        </div>
+        <div class="col-3">
+            <input class="inputForm" type="text" pInputText [(ngModel)]="systemWorkName" placeholder="Input system work name">
+        </div>
+    </div>
+    <div class="grid center">
+        <div class="col-6 col-offset-3">
+            <input class="inputForm" type="text" pInputText [(ngModel)]="systemWorkDesigner" placeholder="Input system work designer">
+        </div>
+    </div>
+    <div class="grid center">
+        <div class="col-6 col-offset-3">
+            <input class="inputForm" type="text" pInputText [(ngModel)]="projectName" placeholder="Input ">
+        </div>
+    </div>
+    <div class="grid btn">
+        <div class="col-6 col-offset-3">
+            <p-button label="ADD PROGRAM" (click)="onAddBtn()"></p-button>
+        </div>
+    </div>
+</div>

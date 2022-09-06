@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
 export class AppComponent {
   title = 'ProgramSpec';
 
-  pageTitle: string = 'Error';
+  // pageTitle: string = 'Error';
 }

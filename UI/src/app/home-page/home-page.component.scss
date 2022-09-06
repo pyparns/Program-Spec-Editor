@@ -29,7 +29,6 @@
     font-family: cursive;
 }
 
-
 .product-item {
     display: flex;
     align-items: center;
@@ -61,6 +60,10 @@
         vertical-align: middle;
         line-height: 1;
     }
+}
+
+div[class="p-orderlist-controls"] {
+    display: none !important;
 }
 
 @media screen and (max-width: 576px) {
