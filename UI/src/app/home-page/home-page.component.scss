@@ -2,26 +2,25 @@
     background-color: #F6F6F6;
     text-align: center;
     justify-content: center;
-    height: 720px;
+    height: 680px;
 }
 .filter-hbox {
     background-color: #AAA;
-    margin-top: -8px;
-    padding: 1px;
+    padding: 10px;
+    margin-top: -5px;
+    height: 50px;
 }
 .filter-box {
     background-color: #F0F0F0;
     height: 580px;
-    margin-top: -8px;
 }
 .filter-fbox {
     background-color: #D7D7D7;
-    margin-top: -8px;
-    height: 67px;
+    height: 50px;
 }
 
 .filter-htext {
-    font-size: 20px;
+    font-size: 18px;
     font-family: cursive;
 }
 .filter-text {
@@ -62,7 +61,7 @@
     }
 }
 
-div[class="p-orderlist-controls"] {
+.p-orderlist-controls {
     display: none !important;
 }
 

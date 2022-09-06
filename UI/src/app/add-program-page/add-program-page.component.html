@@ -1,7 +1,7 @@
 <app-header [pageTitle]="'Add Program'"></app-header>
 <div class="container">
     <div class="grid center">
-        <div class="col-6 col-offset-3">
+        <div class="col-6 col-offset-3 mt-3">
             <input class="inputForm" type="text" pInputText [(ngModel)]="projectName" placeholder="Input project name">
         </div>
     </div>
@@ -31,9 +31,9 @@
             <input class="inputForm" type="text" pInputText [(ngModel)]="projectName" placeholder="Input ">
         </div>
     </div>
-    <div class="grid btn">
+    <div class="grid mt-3 btn">
         <div class="col-6 col-offset-3">
-            <p-button label="ADD PROGRAM" (click)="onAddBtn()"></p-button>
+            <p-button label="ADD" (click)="onAddBtn()"></p-button>
         </div>
     </div>
 </div>

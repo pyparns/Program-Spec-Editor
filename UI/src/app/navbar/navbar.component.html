@@ -1,8 +1,8 @@
-<p-menubar [model]="items" [style]="{'background-color': 'black'}">
+<p-menubar [model]="items">
     <ng-template pTemplate="start">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP7PK7JqyhGeJZSJrFnDWuViSRgQ3tPhgc5g&usqp=CAU" height="60" width="80" class="mr-2" >
+        <h2 class="title ml-4">Spec Editor</h2>
     </ng-template>
     <ng-template pTemplate="end">
-        <span><i class="pi pi-user"></i></span>
+        <button pButton pRipple type="button" icon="pi pi-user" class="p-button-rounded p-button-secondary p-button-outlined mr-4"></button>
     </ng-template>
 </p-menubar>

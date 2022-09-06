@@ -8,8 +8,11 @@ import { ProgramSpec } from '../model/programspec.model';
 export class ProgramSpecService {
 
   constructor(private http: HttpClient) { }
-
-  getProgramSpec() {
+  
+  getProgramSpec(id: string) {
+    return this.http.get<ProgramSpec>("/api/programspec/" + id);
+  }
+  getProgramSpecs() {
     return this.http.get<ProgramSpec[]>("/api/programspec");
   }
 }

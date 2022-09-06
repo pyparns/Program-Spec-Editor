@@ -7,9 +7,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./register-page.component.scss']
 })
 export class RegisterPageComponent implements OnInit {
+  firstName: string = '';
+  lastName: string = '';
   username: string = '';
   password: string = '';
   email: string = '';
+  
+  blockSpace: RegExp = /[^\s]/;
 
   constructor(private router: Router) { }
 

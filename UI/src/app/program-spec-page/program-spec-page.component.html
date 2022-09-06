@@ -1,2 +1,45 @@
 <app-header [pageTitle]="'Program Spec'"></app-header>
-<p>program-spec-page works!</p>
+<div class="container">
+    <div class="grid">
+        <div class="col-12 md:col-4 lg:col-3 sm:flex-nowrap">
+            <div class="filter-hbox">
+                <label class="filter-htext">Edit Program Spec</label>
+            </div>
+            <div class="filter-box px-5 py-4">
+                <div class="grid mt-4">
+                    <label for="projectName">Project name :</label>
+                    <label>&nbsp;{{ programSpec.projectName }}</label>
+                </div>
+                <div class="grid mt-4">
+                    <label for="programId">Program id :</label>
+                    <label>&nbsp;{{ programSpec.programId }}</label>
+                </div>
+                <div class="grid mt-4">
+                    <label for="programName">Program name :</label>
+                    <label>&nbsp;{{ programSpec.programName }}</label>
+                </div>
+                <div class="grid mt-4">
+                    <label for="systemWorkId">System work id :</label>
+                    <label>&nbsp;{{ programSpec.systemWorkId }}</label>
+                </div>
+                <div class="grid mt-4">
+                    <label for="systemWorkName">System work name :</label>
+                    <label>&nbsp;{{ programSpec.systemWorkName }}</label>
+                </div>
+                <div class="grid mt-4">
+                    <label for="systemWorkDesigner">System work designer :</label>
+                    <label>&nbsp;{{ programSpec.systemWorkDesigner }}</label>
+                </div>
+                <div class="grid mt-4">
+                    <label for="status">Status :</label>
+                    <label>&nbsp;{{ programSpec.status }}</label>
+                </div>
+            </div>
+            <div class="filter-fbox">
+                
+            </div>
+        </div>
+        <div class="col-12 md:col-8 lg:col-9 py-5">
+        </div>
+    </div>
+</div>

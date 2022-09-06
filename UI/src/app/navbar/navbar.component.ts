@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
         this.items = [
             {
                 label:'Home',
-                icon:'pi pi-fw pi-file',
+                icon:'pi pi-fw pi-home',
                 routerLink: "/home"
             },
             {
@@ -25,12 +25,12 @@ export class NavbarComponent implements OnInit {
                 items:[
                     {
                         label:'Blank form',
-                        icon:'pi pi-fw pi-align-left',
+                        icon:'pi pi-fw pi-align-center',
                         routerLink: "/addprogram"
                     },
                     {
                         label:'Import spec',
-                        icon:'pi pi-fw pi-align-right',
+                        icon:'pi pi-fw pi-upload',
                         routerLink: "/importspec"
                     },
                 ]
@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
                 items:[
                     {
                         label:'Login',
-                        icon:'pi pi-fw pi-user-plus',
+                        icon:'pi pi-fw pi-sign-in',
                         routerLink: "/login"
 
                     },

@@ -13,6 +13,7 @@ export class HomePageComponent implements OnInit {
   statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success']
 
   selectedStatus: string[] = [];
+  filteredProgramSpecs: ProgramSpec[] = [];
   programSpecs: ProgramSpec[] = [];
   subscribeProgramSpec!: Subscription;
 
@@ -23,28 +24,9 @@ export class HomePageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.programSpecs = [{
-    //   projectName: "PPP",
-    //   programId: "1",
-    //   programName: "NN",
-    //   systemWorkId: "2",
-    //   systemWorkName: "SS",
-    //   systemWorkDesigner: "PETER",
-    //   images: []
-    // },
-    // {
-    //   projectName: "Owen",
-    //   programId: "2",
-    //   programName: "newO",
-    //   systemWorkId: "3",
-    //   systemWorkName: "SWN",
-    //   systemWorkDesigner: "Taweesak",
-    //   images: []
-    // }]
-
-    this.programSpecService.getProgramSpec().subscribe(response => {
-      console.log(response);
+    this.subscribeProgramSpec = this.programSpecService.getProgramSpecs().subscribe(response => {
       this.programSpecs = response;
+      this.filteredProgramSpecs = response;
     })
   }
 
@@ -52,8 +34,15 @@ export class HomePageComponent implements OnInit {
     this.subscribeProgramSpec.unsubscribe();
   }
 
+  filterSpec(): void {
+    if (this.selectedStatus.length > 0)
+      this.filteredProgramSpecs = this.programSpecs.filter(spec => this.selectedStatus.indexOf(spec.status) >= 0);
+    else
+      this.filteredProgramSpecs = this.programSpecs;
+  }
+
   onClickSpec(): void {
-    this.router.navigate(['']);
+    this.router.navigate(['programspec']);
   }
 
 }

@@ -1,14 +1,13 @@
 <app-header [pageTitle]="'Home'"></app-header>
 <div class="container">
     <div class="grid">
-        <div class="col-12 md:col-6 lg:col-3 sm:flex-nowrap">
+        <div class="col-12 md:col-3 lg:col-2 sm:flex-nowrap">
             <div class="filter-hbox">
-                <h3 class="filter-htext">Filter</h3>
+                <label class="filter-htext">Filter</label>
             </div>
-            <div class="filter-box">
-                <p class="filter-htext">Program Spec Status</p>
-                <div class="field-checkbox" *ngFor="let status of statuses">
-                    <p-checkbox name="status" [value]="status" [(ngModel)]="selectedStatus"></p-checkbox>
+            <div class="filter-box py-5">
+                <div class="field-checkbox ml-5" *ngFor="let status of statuses">
+                    <p-checkbox name="status" [value]="status" [(ngModel)]="selectedStatus" (onChange)="filterSpec()"></p-checkbox>
                     <label class="filter-text">{{ status }}</label>
                 </div>
             </div>
@@ -16,17 +15,17 @@
                 {{ selectedStatus }}
             </div>
         </div>
-        <div class="col-12 md:col-6 lg:col-9 py-5">
-            <p-orderList [value]="programSpecs" [listStyle]="{'max-height':'30rem'}" header="List of Program Spec" filterBy="name" filterPlaceholder="Search" [dragdrop]="true" controlsPosition="right">
+        <div class="col-12 md:col-9 lg:col-10 py-5">
+            <p-orderList [value]="filteredProgramSpecs" [listStyle]="{'max-height':'30rem'}" header="List of Program Spec" filterBy="name" filterPlaceholder="Search" [dragdrop]="true" controlsPosition="right" >
                 <ng-template let-programSpec pTemplate="item">
                     <div class="product-item">
                         <div class="image-container">
                                 <img src="" [alt]="programSpec.programName" class="product-image" />
                         </div>
                         <div class="product-list-detail">
-                            <h5 class="mb-2">Program : {{programSpec.programName}}</h5>
+                            <h5 class="mb-2">Program : {{ programSpec.programName }}</h5>
                             <!-- <i class="pi pi-tag product-category-icon"></i> -->
-                            <span class="product-category">Project : {{programSpec.projectName}}</span>
+                            <span class="product-category">Project : {{ programSpec.projectName }}</span>
                         </div>
                         <div class="product-list-action">
                             <h6 class="mb-2">${{programSpec.programId}}</h6>

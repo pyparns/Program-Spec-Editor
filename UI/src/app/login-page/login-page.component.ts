@@ -10,6 +10,8 @@ export class LoginPageComponent implements OnInit {
   username: string = '';
   password: string = '';
 
+  blockSpace: RegExp = /[^\s]/;
+
   constructor(private router: Router) { }
 
   ngOnInit(): void {

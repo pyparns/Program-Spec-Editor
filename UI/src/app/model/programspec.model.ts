@@ -7,5 +7,6 @@ export interface ProgramSpec {
     systemWorkId: string;
     systemWorkName: string;
     systemWorkDesigner: string;
+    status: string;
     images: Image[];
 }

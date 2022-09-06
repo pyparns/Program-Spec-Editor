@@ -1,2 +1,16 @@
-<app-header [pageTitle]="'Import Spec'"></app-header>
-<p>import-spec-page works!</p>
+<app-header [pageTitle]="'Import Program Spec'"></app-header>
+<div class="container py-5">
+    <div class="grid mt-5">
+        <div class="col-8 col-offset-2">
+            <p-fileUpload name="demo[]" url="https://file.io" (onUpload)="onUpload($event)" (onError)="onError()"
+                    [multiple]="true" accept=".pdf" [maxFileSize]="1000000">
+                    <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                            <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                        </ul>
+                    </ng-template>
+            </p-fileUpload>
+            <label class="desc ml-2">Choose PDF file and upload.</label>
+        </div>
+    </div>
+</div>
