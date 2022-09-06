@@ -28,6 +28,12 @@ public class ProgramSpecResource {
         return programSpecRepository.listAll();
     }
     
+    @GET
+    @Path("/{id}")
+    public ProgramSpec getByid(String id) {
+    	return programSpecRepository.findById(new ObjectId(id));
+    }
+    
     @POST
     public Response create(ProgramSpec programSpec) {
         programSpecRepository.persist(programSpec);

@@ -25,6 +25,8 @@ public class ProgramSpec {
 	private String systemWorkName;
 	@BsonProperty("system_work_designer")
 	private String systemWorkDesigner;
+	@BsonProperty("status")
+	private String status;
 	
 	private List<Image> images;
 	
@@ -75,5 +77,11 @@ public class ProgramSpec {
 	}
 	public void setImages(List<Image> images) {
 		this.images = images;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }
