@@ -10,7 +10,9 @@ export class ImportSpecPageComponent implements OnInit {
   
   uploadedFiles: any[] = [];
 
-  constructor(private messageService: MessageService) { }
+  constructor(
+    private messageService: MessageService,
+  ) { }
 
   ngOnInit(): void {
   }

@@ -20,7 +20,7 @@
                 <ng-template let-programSpec pTemplate="item">
                     <div class="product-item" (click)="detailSpec(programSpec.id)">
                         <div class="image-container">
-                                <img src="" [alt]="programSpec.programName" class="product-image" />
+                                <img [src]="'http://localhost:8080/src/main/resources/assets/images/' + programSpec.images[0].imageName" [alt]="programSpec.images[0].imageName" class="product-image" />
                         </div>
                         <div class="product-list-detail">
                             <h5 class="mb-2">Program : {{ programSpec.programName }}</h5>

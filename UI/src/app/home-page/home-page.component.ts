@@ -25,6 +25,7 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeProgramSpec = this.programSpecService.getProgramSpecs().subscribe(response => {
+      console.log(response)
       this.programSpecs = response;
       this.filteredProgramSpecs = response;
     })
