@@ -6,7 +6,7 @@ import io.quarkus.mongodb.panache.PanacheMongoRepository;
 
 @ApplicationScoped
 public class ProgramSpecRepository implements PanacheMongoRepository<ProgramSpec> {
-	public ProgramSpec findByProjectName(String projectName) {
-        return find("projectName", projectName).firstResult();
+	public ProgramSpec findByProgramId(String programId) {
+        return find("programId", programId).firstResult();
     }
 }

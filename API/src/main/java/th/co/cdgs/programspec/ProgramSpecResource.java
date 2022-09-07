@@ -44,6 +44,9 @@ public class ProgramSpecResource {
     @Path("/{id}")
     public void update(String id, ProgramSpec programSpec) {
     	programSpec.setId(new ObjectId(id));
+    	if (programSpec.getProjectName() == null) {
+    		programSpec.setProjectName("CDGS");
+    	}
         programSpecRepository.update(programSpec);
     }
     
