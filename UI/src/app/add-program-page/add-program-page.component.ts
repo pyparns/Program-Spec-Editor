@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
+import { ProgramSpecService } from '../service/program-spec.service';
 
 @Component({
   selector: 'app-add-program-page',
@@ -7,20 +11,33 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-program-page.component.scss']
 })
 export class AddProgramPageComponent implements OnInit {
-  projectName!: string;
-  programId!: string;
-  programName!: string;
-  systemWorkId!: string;
-  systemWorkName!: string;
-  systemWorkDesigner!: string;
-  specStatus!: string;
+  statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success']
 
-  constructor(private router: Router) { }
+  programForm = new FormGroup({
+    projectName: new FormControl(''),
+    programId: new FormControl(''),
+    programName: new FormControl(''),
+    systemWorkId: new FormControl(''),
+    systemWorkName: new FormControl(''),
+    systemWorkDesigner: new FormControl(''),
+    status: new FormControl('')
+  });
+
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private messageService: MessageService,
+    private programSpecService: ProgramSpecService,
+  ) { }
 
   ngOnInit(): void {
   }
 
   onAddBtn(): void {
-    this.router.navigate(['home']);
+    this.programSpecService.createProgramSpec(this.programForm.value).subscribe(
+      () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''}),
+      () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'}),
+      () => this.router.navigate(['home'])
+    )
   }
 }

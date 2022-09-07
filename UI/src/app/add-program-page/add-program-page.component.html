@@ -1,39 +1,41 @@
 <app-header [pageTitle]="'Add Program'"></app-header>
 <div class="container">
-    <div class="grid center">
-        <div class="col-6 col-offset-3 mt-3">
-            <input class="inputForm" type="text" pInputText [(ngModel)]="projectName" placeholder="Input project name">
+    <form [formGroup]="programForm" (submit)="onAddBtn()">
+        <div class="grid">
+            <div class="col-6 col-offset-3 mt-5">
+                <input class="inputForm" type="text" pInputText formControlName="projectName" placeholder="Input project name">
+            </div>
         </div>
-    </div>
-    <div class="grid center">
-        <div class="col-3 col-offset-3">
-            <input class="inputForm" type="text" pInputText [(ngModel)]="programId" placeholder="Input program id">
+        <div class="grid">
+            <div class="col-3 col-offset-3 mt-3">
+                <input class="inputForm" type="text" pInputText pKeyFilter="int" formControlName="programId" placeholder="Input program id">
+            </div>
+            <div class="col-3 mt-3">
+                <input class="inputForm" type="text" pInputText formControlName="programName" placeholder="Input program name">
+            </div>
         </div>
-        <div class="col-3">
-            <input class="inputForm" type="text" pInputText [(ngModel)]="programName" placeholder="Input program name">
+        <div class="grid">
+            <div class="col-3 col-offset-3 mt-3">
+                <input class="inputForm" type="text" pInputText pKeyFilter="int" formControlName="systemWorkId" placeholder="Input system work id">
+            </div>
+            <div class="col-3 mt-3">
+                <input class="inputForm" type="text" pInputText formControlName="systemWorkName" placeholder="Input system work name">
+            </div>
         </div>
-    </div>
-    <div class="grid center">
-        <div class="col-3 col-offset-3">
-            <input class="inputForm" type="text" pInputText [(ngModel)]="systemWorkId" placeholder="Input system work id">
+        <div class="grid">
+            <div class="col-6 col-offset-3 mt-3">
+                <input class="inputForm" type="text" pInputText formControlName="systemWorkDesigner" placeholder="Input system work designer">
+            </div>
         </div>
-        <div class="col-3">
-            <input class="inputForm" type="text" pInputText [(ngModel)]="systemWorkName" placeholder="Input system work name">
+        <div class="grid">
+            <div class="col-6 col-offset-3 mt-3">
+                <p-dropdown [options]="statuses" formControlName="status" placeholder="Select a status"></p-dropdown>
+            </div>
         </div>
-    </div>
-    <div class="grid center">
-        <div class="col-6 col-offset-3">
-            <input class="inputForm" type="text" pInputText [(ngModel)]="systemWorkDesigner" placeholder="Input system work designer">
+        <div class="grid btn">
+            <div class="col-6 col-offset-3 mt-3">
+                <p-button label="ADD" type="submit"></p-button>
+            </div>
         </div>
-    </div>
-    <div class="grid center">
-        <div class="col-6 col-offset-3">
-            <input class="inputForm" type="text" pInputText [(ngModel)]="projectName" placeholder="Input ">
-        </div>
-    </div>
-    <div class="grid mt-3 btn">
-        <div class="col-6 col-offset-3">
-            <p-button label="ADD" (click)="onAddBtn()"></p-button>
-        </div>
-    </div>
+    </form>
 </div>

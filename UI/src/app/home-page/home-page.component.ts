@@ -10,7 +10,7 @@ import { ProgramSpecService } from '../service/program-spec.service';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
-  statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success']
+  statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
 
   selectedStatus: string[] = [];
   filteredProgramSpecs: ProgramSpec[] = [];
@@ -41,8 +41,7 @@ export class HomePageComponent implements OnInit {
       this.filteredProgramSpecs = this.programSpecs;
   }
 
-  onClickSpec(): void {
-    this.router.navigate(['programspec']);
+  detailSpec(id: string): void {
+    this.router.navigate(['programspec', { id: id }]);
   }
-
 }

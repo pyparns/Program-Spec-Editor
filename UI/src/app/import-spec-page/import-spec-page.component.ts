@@ -22,7 +22,7 @@ export class ImportSpecPageComponent implements OnInit {
     }
     console.log("success")
 
-    this.messageService.add({key: 'tl', severity: 'info', summary: 'File Uploaded', detail: ''});
+    this.messageService.add({key: 'tl', severity: 'success', summary: 'File Uploaded', detail: ''});
   }
 
   onError(): void {

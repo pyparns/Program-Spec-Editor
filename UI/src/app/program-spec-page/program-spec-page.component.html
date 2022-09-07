@@ -1,45 +1,86 @@
-<app-header [pageTitle]="'Program Spec'"></app-header>
+<app-header [pageTitle]="title"></app-header>
 <div class="container">
-    <div class="grid">
-        <div class="col-12 md:col-4 lg:col-3 sm:flex-nowrap">
-            <div class="filter-hbox">
-                <label class="filter-htext">Edit Program Spec</label>
+    <form [formGroup]="programForm">
+        <div class="grid">
+            <div class="col-12 md:col-4 lg:col-3 sm:flex-nowrap">
+                <div class="filter-hbox">
+                    <label class="filter-htext">About Program</label>
+                </div>
+                <div class="filter-box px-5 py-4">
+                    <div class="grid mt-4">
+                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseProjectName">
+                            <input id="float-input-invalid" type="text" pInputText formControlName="projectName" class="ng-dirty p-inputtext-sm"> 
+                            <label for="float-input-invalid">Project name</label>
+                        </span>
+                        <ng-template #elseProjectName>
+                            <label for="projectName">Project name : {{ programForm.value.projectName }}</label>
+                        </ng-template>
+                    </div>
+                    <div class="grid mt-4">
+                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseProgramId">
+                            <input id="float-input-invalid" type="text" pInputText pKeyFilter="int" formControlName="programId" class="ng-dirty p-inputtext-sm"> 
+                            <label for="float-input-invalid">Program id</label>
+                        </span>
+                        <ng-template #elseProgramId>
+                            <label for="programId">Program id : {{ programForm.value.programId }}</label>
+                        </ng-template>
+                    </div>
+                    <div class="grid mt-4">
+                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseProgramName">
+                            <input id="float-input-invalid" type="text" pInputText formControlName="programName" class="ng-dirty p-inputtext-sm"> 
+                            <label for="float-input-invalid">Program name</label>
+                        </span>
+                        <ng-template #elseProgramName>
+                            <label for="programName">Program name : {{ programForm.value.programName }}</label>s
+                        </ng-template>
+                    </div>
+                    <div class="grid mt-4">
+                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseSystemWorkId">
+                            <input id="float-input-invalid" type="text" pInputText pKeyFilter="int" formControlName="systemWorkId" class="ng-dirty p-inputtext-sm"> 
+                            <label for="float-input-invalid">System work id</label>
+                        </span>
+                        <ng-template #elseSystemWorkId>
+                            <label for="systemWorkId">System work id : {{ programForm.value.systemWorkId }}</label>
+                        </ng-template>
+                    </div>
+                    <div class="grid mt-4">
+                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseSystemWorkName">
+                            <input id="float-input-invalid" type="text" pInputText formControlName="systemWorkName" class="ng-dirty p-inputtext-sm"> 
+                            <label for="float-input-invalid">System work name</label>
+                        </span>
+                        <ng-template #elseSystemWorkName>
+                            <label for="systemWorkName">System work name : {{ programForm.value.systemWorkName }}</label>
+                        </ng-template>
+                    </div>
+                    <div class="grid mt-4">
+                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseSystemWorkDesigner">
+                            <input id="float-input-invalid" type="text" pInputText formControlName="systemWorkDesigner" class="ng-dirty p-inputtext-sm"> 
+                            <label for="float-input-invalid">System work designer</label>
+                        </span>
+                        <ng-template #elseSystemWorkDesigner>
+                            <label for="systemWorkDesigner">System work designer : {{ programForm.value.systemWorkDesigner }}</label>
+                        </ng-template>
+                    </div>
+                    <div class="grid mt-4">
+                        <p-dropdown *ngIf="isEdit; else elseStatus" [options]="statuses" formControlName="status" class="p-inputtext-sm" placeholder="Select a status"></p-dropdown>
+                        <ng-template #elseStatus>
+                            <label for="status">Status : {{ programForm.value.status }}</label>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="filter-fbox p-1"  *ngIf="isEdit; else elseBlock">
+                    <button pButton pRipple type="button" icon="pi pi-save" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onSave(id)"></button>
+                </div>
+                <ng-template #elseBlock>
+                    <div class="filter-fbox p-1">
+                        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="isEdit = true"></button>
+                        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onDelete(id)"></button>
+                        <button pButton pRipple type="button" icon="pi pi-print" class="p-button-rounded p-button-secondary p-button-text mx-4"></button>  
+                    </div>
+                </ng-template>
             </div>
-            <div class="filter-box px-5 py-4">
-                <div class="grid mt-4">
-                    <label for="projectName">Project name :</label>
-                    <label>&nbsp;{{ programSpec.projectName }}</label>
-                </div>
-                <div class="grid mt-4">
-                    <label for="programId">Program id :</label>
-                    <label>&nbsp;{{ programSpec.programId }}</label>
-                </div>
-                <div class="grid mt-4">
-                    <label for="programName">Program name :</label>
-                    <label>&nbsp;{{ programSpec.programName }}</label>
-                </div>
-                <div class="grid mt-4">
-                    <label for="systemWorkId">System work id :</label>
-                    <label>&nbsp;{{ programSpec.systemWorkId }}</label>
-                </div>
-                <div class="grid mt-4">
-                    <label for="systemWorkName">System work name :</label>
-                    <label>&nbsp;{{ programSpec.systemWorkName }}</label>
-                </div>
-                <div class="grid mt-4">
-                    <label for="systemWorkDesigner">System work designer :</label>
-                    <label>&nbsp;{{ programSpec.systemWorkDesigner }}</label>
-                </div>
-                <div class="grid mt-4">
-                    <label for="status">Status :</label>
-                    <label>&nbsp;{{ programSpec.status }}</label>
-                </div>
-            </div>
-            <div class="filter-fbox">
-                
+            <div class="col-12 md:col-8 lg:col-9 py-5">
             </div>
         </div>
-        <div class="col-12 md:col-8 lg:col-9 py-5">
-        </div>
-    </div>
+    </form>
 </div>

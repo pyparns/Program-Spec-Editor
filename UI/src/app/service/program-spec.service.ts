@@ -9,10 +9,19 @@ export class ProgramSpecService {
 
   constructor(private http: HttpClient) { }
   
-  getProgramSpec(id: string) {
+  getProgramSpec(id: string | null) {
     return this.http.get<ProgramSpec>("/api/programspec/" + id);
   }
   getProgramSpecs() {
     return this.http.get<ProgramSpec[]>("/api/programspec");
+  }
+  createProgramSpec(programSpec: any) {
+    return this.http.post("/api/programspec", programSpec);
+  }
+  updateProgramSpec(id: string | null, programSpec: any) {
+    return this.http.put("/api/programspec/" + id, programSpec);
+  }
+  deleteProgramSpec(id: string | null) {
+    return this.http.delete("/api/programspec/" + id);
   }
 }

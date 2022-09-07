@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { MenubarModule } from 'primeng/menubar';
 import { MessageModule } from 'primeng/message';
 import { DropdownModule } from 'primeng/dropdown';
@@ -45,22 +46,24 @@ import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.
     ImportSpecPageComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    MenubarModule,
-    CheckboxModule,
     FormsModule,
-    OrderListModule,
-    ButtonModule,
-    HttpClientModule,
-    InputTextModule,
-    PasswordModule,
-    KeyFilterModule,
-    FileUploadModule,
-    MessageModule,
-    MessagesModule,
     ToastModule,
+    ButtonModule,
+    DialogModule,
+    BrowserModule,
+    MessageModule,
+    MenubarModule,
+    MessagesModule,
     DropdownModule,
+    PasswordModule,
+    CheckboxModule,
+    OrderListModule,
+    InputTextModule,
+    KeyFilterModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FileUploadModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule
   ],
   providers: [],

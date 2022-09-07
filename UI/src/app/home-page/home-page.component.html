@@ -18,7 +18,7 @@
         <div class="col-12 md:col-9 lg:col-10 py-5">
             <p-orderList [value]="filteredProgramSpecs" [listStyle]="{'max-height':'30rem'}" header="List of Program Spec" filterBy="name" filterPlaceholder="Search" [dragdrop]="true" controlsPosition="right" >
                 <ng-template let-programSpec pTemplate="item">
-                    <div class="product-item">
+                    <div class="product-item" (click)="detailSpec(programSpec.id)">
                         <div class="image-container">
                                 <img src="" [alt]="programSpec.programName" class="product-image" />
                         </div>
