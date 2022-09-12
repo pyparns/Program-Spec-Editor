@@ -5,7 +5,7 @@ import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ProgramSpecService } from '../service/program-spec.service';
 import { jsPDF } from "jspdf";
-("import './THSarabunNew-normal'")
+import './../../THSarabunNew-normal'
 
 @Component({
   selector: 'app-program-spec-page',
