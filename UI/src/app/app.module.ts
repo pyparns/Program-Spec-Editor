@@ -13,6 +13,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DataViewModule } from 'primeng/dataview';
 import { OrderListModule } from 'primeng/orderlist';
 import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
@@ -30,22 +31,23 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AddProgramPageComponent } from './add-program-page/add-program-page.component';
 import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.component';
 import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
+
 import { SafePipe } from './pipe/safe.pipe';
 
 @NgModule({
   declarations: [
+    SafePipe,
     AppComponent,
-    HomePageComponent,
     NavbarComponent,
     HeaderComponent,
     FooterComponent,
+    HomePageComponent,
     LoginPageComponent,
-    RegisterPageComponent,
     PageNotFoundComponent,
-    ProgramSpecPageComponent,
+    RegisterPageComponent,
     AddProgramPageComponent,
     ImportSpecPageComponent,
-    SafePipe
+    ProgramSpecPageComponent,
   ],
   imports: [
     FormsModule,
@@ -59,6 +61,7 @@ import { SafePipe } from './pipe/safe.pipe';
     DropdownModule,
     PasswordModule,
     CheckboxModule,
+    DataViewModule,
     OrderListModule,
     InputTextModule,
     KeyFilterModule,
