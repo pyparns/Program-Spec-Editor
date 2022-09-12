@@ -3,8 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { ProgramSpec } from '../model/programspec.model';
 import { ProgramSpecService } from '../service/program-spec.service';
+import { jsPDF } from "jspdf";
+("import './THSarabunNew-normal'")
 
 @Component({
   selector: 'app-program-spec-page',
@@ -28,6 +29,12 @@ export class ProgramSpecPageComponent implements OnInit {
   id!: string | null;
   subscribeProgramSpec!: Subscription;
   isEdit: boolean = false;
+
+  doc: jsPDF = new jsPDF({
+    unit: "pt",
+    format: "a4"
+  });
+  pdfDat!: string;
   
   constructor(
     private router: Router,
@@ -44,6 +51,12 @@ export class ProgramSpecPageComponent implements OnInit {
       this.title = response.programName;
       this.programForm.patchValue(response);
     })
+    this.doc.setProperties({ title: 'test' });
+    this.doc.setFont("THSarabunNew");
+    this.doc.text("Hello, World!", 30, 30);
+    this.doc.text("สวัสดี", 50, 50);
+    this.doc.addImage("/assets/image1.png", "PNG", 110, 700, 384, 100);
+    this.pdfDat = this.doc.output('datauristring');
   }
 
   ngOnDestroy(): void {
@@ -65,5 +78,8 @@ export class ProgramSpecPageComponent implements OnInit {
       () => this.router.navigate(['home'])
     )
   }
-
+  
+  onPrint(): void {
+    this.doc.save("a4.pdf");
+  }
 }
