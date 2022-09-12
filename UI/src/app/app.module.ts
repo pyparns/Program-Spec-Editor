@@ -30,6 +30,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AddProgramPageComponent } from './add-program-page/add-program-page.component';
 import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.component';
 import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
+import { SafePipe } from './pipe/safe.pipe';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.
     PageNotFoundComponent,
     ProgramSpecPageComponent,
     AddProgramPageComponent,
-    ImportSpecPageComponent
+    ImportSpecPageComponent,
+    SafePipe
   ],
   imports: [
     FormsModule,
