@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ProgramSpecService } from '../service/program-spec.service';
 import { jsPDF } from "jspdf";
+import 'jspdf-autotable';
 import './../../THSarabunNew-normal'
 
 @Component({
@@ -30,10 +31,7 @@ export class ProgramSpecPageComponent implements OnInit {
   subscribeProgramSpec!: Subscription;
   isEdit: boolean = false;
 
-  doc: jsPDF = new jsPDF({
-    unit: "pt",
-    format: "a4"
-  });
+  doc: jsPDF = new jsPDF("p", "pt", "a4");
   pdfDat!: string;
   
   constructor(
@@ -44,17 +42,33 @@ export class ProgramSpecPageComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
+    let columns = ["ID", "Name", "Country"];
+    let rows = [
+        [1, "Shaw", "Tanzania"],
+        [2, "Nelson", "Kazakhstan"],
+        [3, "Garcia", "Madagascar"],
+    ];
+
     this.activatedRoute.paramMap.subscribe(params => { 
       this.id = params.get('id');
     });
     this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
       this.title = response.programName;
       this.programForm.patchValue(response);
+
+      this.doc.setProperties({ title: response.programName });
+      this.doc.setFont("THSarabunNew", "bold");
+      console.log(this.lenText(this.doc, response.programName));
+      this.doc.text(response.programName, this.lenText(this.doc, response.programName), 40);
+      
+      this.doc.addImage("/assets/image1.png", "PNG", 47, 80, 500, 250);
+      (this.doc as any).autoTable({columns: columns, body: rows, startY: 400});
+      (this.doc as any).autoTable({columns: columns, body: rows, startY: 540});
+      
+      this.doc.addPage("a4");
+      this.doc.text(response.programName, this.lenText(this.doc, response.programName), 40);
+      this.pdfDat = this.doc.output('datauristring');
     })
-    this.doc.setProperties({ title: 'program-spec' });
-    this.doc.setFont("THSarabunNew");
-    this.doc.addImage("/assets/image1.png", "PNG", 10, 10, 500, 250);
-    this.pdfDat = this.doc.output('datauristring');
   }
 
   ngOnDestroy(): void {
@@ -76,9 +90,8 @@ export class ProgramSpecPageComponent implements OnInit {
       () => this.router.navigate(['home'])
     )
   }
-  
-  onPrint(): void {
-    this.doc.save("a4.pdf");
-  }
 
+  lenText(doc: jsPDF, text: string): any {
+    return (doc.internal.pageSize.getWidth() - doc.getTextWidth(text))/2
+  }
 }

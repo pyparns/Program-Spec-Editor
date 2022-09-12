@@ -64,7 +64,7 @@ export class HomePageComponent implements OnInit {
   }
 
   detailSpec(id: string): void {
-    this.router.navigate(['programspec', { id: id }]);
+    this.router.navigate(['programspec/' + id ]);
   }
   
   // getImage(): void {
