@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SelectItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ProgramSpec } from '../model/programspec.model';
 import { ProgramSpecService } from '../service/program-spec.service';
@@ -15,8 +16,16 @@ export class HomePageComponent implements OnInit {
   selectedStatus: string[] = [];
   filteredProgramSpecs: ProgramSpec[] = [];
   programSpecs: ProgramSpec[] = [];
-  subscribeProgramSpec!: Subscription;
 
+  sortOrder!: number;
+  sortField!: string;
+  
+  // base64Data: any;
+  // retrieveResonse: any;
+  // retrievedImage: any;
+
+  subscribeProgramSpec!: Subscription;
+  
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute,
@@ -25,7 +34,6 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeProgramSpec = this.programSpecService.getProgramSpecs().subscribe(response => {
-      console.log(response)
       this.programSpecs = response;
       this.filteredProgramSpecs = response;
     })
@@ -34,6 +42,19 @@ export class HomePageComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscribeProgramSpec.unsubscribe();
   }
+
+  onSortChange(event: any) {
+    let value = event.value;
+
+    if (value.indexOf('!') === 0) {
+        this.sortOrder = -1;
+        this.sortField = value.substring(1, value.length);
+    }
+    else {
+        this.sortOrder = 1;
+        this.sortField = value;
+    }
+}
 
   filterSpec(): void {
     if (this.selectedStatus.length > 0)
@@ -45,4 +66,14 @@ export class HomePageComponent implements OnInit {
   detailSpec(id: string): void {
     this.router.navigate(['programspec', { id: id }]);
   }
+  
+  // getImage(): void {
+  //   this.subscribeProgramSpec = this.programSpecService.getImage('image1.png').subscribe(
+  //     res => {
+  //       this.retrieveResonse = res;
+  //       this.base64Data = this.retrieveResonse.picByte;
+  //       this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
+  //     }
+  //   );
+  // }
 }
