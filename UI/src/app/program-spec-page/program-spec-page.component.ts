@@ -51,11 +51,9 @@ export class ProgramSpecPageComponent implements OnInit {
       this.title = response.programName;
       this.programForm.patchValue(response);
     })
-    this.doc.setProperties({ title: 'test' });
+    this.doc.setProperties({ title: 'program-spec' });
     this.doc.setFont("THSarabunNew");
-    this.doc.text("Hello, World!", 30, 30);
-    this.doc.text("สวัสดี", 50, 50);
-    this.doc.addImage("/assets/image1.png", "PNG", 110, 700, 384, 100);
+    this.doc.addImage("/assets/image1.png", "PNG", 10, 10, 500, 250);
     this.pdfDat = this.doc.output('datauristring');
   }
 
@@ -82,4 +80,5 @@ export class ProgramSpecPageComponent implements OnInit {
   onPrint(): void {
     this.doc.save("a4.pdf");
   }
+
 }
