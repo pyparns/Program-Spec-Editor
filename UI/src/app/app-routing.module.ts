@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
-  { path: 'programspec', component: ProgramSpecPageComponent },
+  { path: 'programspec/:id', component: ProgramSpecPageComponent },
   { path: 'addprogram', component: AddProgramPageComponent },
   { path: 'importspec', component: ImportSpecPageComponent },
   { path: '**', component: PageNotFoundComponent }
