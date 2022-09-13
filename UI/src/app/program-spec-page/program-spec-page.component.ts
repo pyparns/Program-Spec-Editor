@@ -23,7 +23,8 @@ export class ProgramSpecPageComponent implements OnInit {
     systemWorkId: new FormControl(''),
     systemWorkName: new FormControl(''),
     systemWorkDesigner: new FormControl(''),
-    status: new FormControl('')
+    status: new FormControl(''),
+    images: new FormControl()
   });
 
   title: string = "";
@@ -42,31 +43,31 @@ export class ProgramSpecPageComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    let columns = ["ID", "Name", "Country"];
-    let rows = [
-        [1, "Shaw", "Tanzania"],
-        [2, "Nelson", "Kazakhstan"],
-        [3, "Garcia", "Madagascar"],
-    ];
-
     this.activatedRoute.paramMap.subscribe(params => { 
       this.id = params.get('id');
     });
+
     this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
       this.title = response.programName;
       this.programForm.patchValue(response);
 
       this.doc.setProperties({ title: response.programName });
       this.doc.setFont("THSarabunNew", "bold");
-      console.log(this.lenText(this.doc, response.programName));
       this.doc.text(response.programName, this.lenText(this.doc, response.programName), 40);
       
-      this.doc.addImage("/assets/image1.png", "PNG", 47, 80, 500, 250);
-      (this.doc as any).autoTable({columns: columns, body: rows, startY: 400});
-      (this.doc as any).autoTable({columns: columns, body: rows, startY: 540});
-      
-      this.doc.addPage("a4");
-      this.doc.text(response.programName, this.lenText(this.doc, response.programName), 40);
+      response.images.forEach((item, index) => {
+        if (index != 0) this.doc.addPage("a4");
+
+        this.doc.addImage("/assets/image1.png", "PNG", 47, 80, 500, 250);
+        
+        const components:any = [];
+        const actions:any = [];
+        item.components.forEach(com => components.push([com.label, com.attribute, com.action]));
+        item.actions.forEach(act => actions.push([act.action, act.description]));
+        
+        (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, startY: 400});
+        (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, startY: 540});
+      });
       this.pdfDat = this.doc.output('datauristring');
     })
   }
