@@ -12,7 +12,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.acme.mongodb.panache.repository.Person;
 import org.bson.types.ObjectId;
 
 
@@ -44,16 +43,13 @@ public class ProgramSpecResource {
     @Path("/{id}")
     public void update(String id, ProgramSpec programSpec) {
     	programSpec.setId(new ObjectId(id));
-    	if (programSpec.getProjectName() == null) {
-    		programSpec.setProjectName("CDGS");
-    	}
         programSpecRepository.update(programSpec);
     }
     
     @DELETE
     @Path("/{id}")
     public void delete(String id) {
-        ProgramSpec person = programSpecRepository.findById(new ObjectId(id));
-        programSpecRepository.delete(person);
+        ProgramSpec spec = programSpecRepository.findById(new ObjectId(id));
+        programSpecRepository.delete(spec);
     }
 }

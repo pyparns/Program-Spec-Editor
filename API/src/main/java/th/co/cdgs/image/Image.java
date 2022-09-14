@@ -14,6 +14,9 @@ public class Image {
 	@BsonProperty("image_name")
 	private String imageName;
 	
+	@BsonProperty("image_description")
+	private String imageDescription;
+	
 	private List<Component> components;
 	
 	private List<Action> actions;
@@ -32,6 +35,14 @@ public class Image {
 
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
+	}
+	
+	public String getImageDescription() {
+		return imageDescription;
+	}
+
+	public void setImageDescription(String imageDescription) {
+		this.imageDescription = imageDescription;
 	}
 
 	public List<Component> getComponents() {
