@@ -25,6 +25,6 @@ export class ProgramSpecService {
     return this.http.delete("/api/programspec/" + id);
   }
   getImage(imageName: string) {
-    return this.http.get('/assets/images/' + imageName);
+    return this.http.get('/api/image/' + imageName);
   }
 }
