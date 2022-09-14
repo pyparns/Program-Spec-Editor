@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { ProgramSpecService } from '../service/program-spec.service';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
-import '../../THSarabunNew-normal'
+import '../../THSarabunNew-normal';
 
 @Component({
   selector: 'app-program-spec-page',
