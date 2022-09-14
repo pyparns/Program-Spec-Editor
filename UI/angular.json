@@ -35,7 +35,13 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "lodash"
+              "jspdf",
+              "jspdf-autotable",
+              "rgbcolor",
+              "core-js",
+              "raf",
+              "xlsx",
+              "@babel/runtime-corejs3"
             ]
           },
           "configurations": {
