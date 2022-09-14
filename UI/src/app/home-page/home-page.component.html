@@ -40,6 +40,7 @@
                                 <div class="product-list-action">
                                     <span class="product-price">ID: {{programSpec.programId}}</span>
                                     <p-button icon="pi pi-eye" label="View" (click)="detailSpec(programSpec.id)"></p-button>
+                                    <p-tag [value]="programSpec.status" severity="warning"></p-tag>
                                 </div>
                             </div>
                         </div>
@@ -52,6 +53,7 @@
                                         <i class="pi pi-tag product-category-icon"></i>
                                         <span class="product-category">{{programSpec.projectName}}</span>
                                     </div>
+                                    <p-tag [value]="programSpec.status" severity="warning" [rounded]="true"></p-tag>
                                 </div>
                                 <div class="product-grid-item-content">
                                     <img [src]="'assets/image1.png'" [alt]="programSpec.programName" />
@@ -60,7 +62,7 @@
                                 </div>
                                 <div class="product-grid-item-bottom">
                                     <span class="product-price">ID: {{programSpec.programId}}</span>
-                                    <p-button icon="pi pi-eye" (click)="detailSpec(programSpec.id)"></p-button>
+                                    <p-button icon="pi pi-eye" label="View" (click)="detailSpec(programSpec.id)"></p-button>
                                 </div>
                             </div>
                         </div>
