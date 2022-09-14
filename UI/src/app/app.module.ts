@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -50,6 +51,7 @@ import { SafePipe } from './pipe/safe.pipe';
     ProgramSpecPageComponent,
   ],
   imports: [
+    TagModule,
     FormsModule,
     ToastModule,
     ButtonModule,
