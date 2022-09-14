@@ -1,2 +1,14 @@
 <app-header [pageTitle]="'404 Page Not Found'"></app-header>
-<p>Please check url is correct.</p>
+<div class="container">
+    <div class="grid">
+        <div class="col-7 p-5">
+            <img src="https://thumbs.dreamstime.com/b/error-page-not-found-vector-illustration-background-flat-cartoon-character-graphic-design-landing-page-error-page-not-found-vector-141347621.jpg" />
+        </div>
+        <div class="col-3 p-5">
+            <h4>Please check url and try again</h4>
+            <p-button label="Back" [routerLink]="'/home'"></p-button>
+        </div>
+        <!-- <div class="col-2 p-5">
+        </div> -->
+    </div>
+</div>
