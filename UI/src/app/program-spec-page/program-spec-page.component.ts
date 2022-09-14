@@ -46,6 +46,9 @@ export class ProgramSpecPageComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => { 
       this.id = params.get('id');
     });
+    this.programSpecService.getImage("image1.png").subscribe(response => {
+      console.log(response);
+    });
 
     this.initPdf();
   }
@@ -89,16 +92,16 @@ export class ProgramSpecPageComponent implements OnInit {
 
         if (index != 0) this.doc.addPage("a4");
 
-        this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250);
+        this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250)
 
         this.doc.setFont("THSarabunNew", "normal");
         this.doc.text("UI : " + item.imageDescription, x, y += 290);
-        
+
         const components:any = [];
         const actions:any = [];
         item.components.forEach(com => components.push([com.label, com.attribute, com.action]));
         item.actions.forEach(act => actions.push([act.action, act.description]));
-        
+
         (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 20});
         (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
       });
