@@ -34,6 +34,8 @@ import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.com
 import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
 
 import { SafePipe } from './pipe/safe.pipe';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,10 @@ import { SafePipe } from './pipe/safe.pipe';
     HttpClientModule,
     FileUploadModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
