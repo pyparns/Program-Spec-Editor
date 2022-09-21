@@ -10,12 +10,16 @@ import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.com
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'account', children: [
+    { path: 'login', component: LoginPageComponent },
+    { path: 'register', component: RegisterPageComponent },
+  ] },
   { path: 'home', component: HomePageComponent },
-  { path: 'login', component: LoginPageComponent },
-  { path: 'register', component: RegisterPageComponent },
   { path: 'programspec/:id', component: ProgramSpecPageComponent },
-  { path: 'addprogram', component: AddProgramPageComponent },
-  { path: 'importspec', component: ImportSpecPageComponent },
+  { path: 'create/spec', children: [
+    { path: 'blankform', component: AddProgramPageComponent },
+    { path: 'import', component: ImportSpecPageComponent },
+  ] },
   { path: '**', component: PageNotFoundComponent }
 ];
 
