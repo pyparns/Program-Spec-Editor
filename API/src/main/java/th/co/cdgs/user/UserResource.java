@@ -63,8 +63,6 @@ public class UserResource {
 	public User authentication(LoginForm loginForm) {
 		System.out.println(loginForm.getUsername() + " : " + loginForm.getPassword());
 		User user = userRepository.find("username", loginForm.getUsername()).firstResult();
-		System.out.println(user.getPassword());
-		if (loginForm.getPassword() != user.getPassword()) user = null;
 		return user;
 	}
 	
@@ -79,15 +77,17 @@ public class UserResource {
 	
 	@PUT
     @Path("/{id}")
-    public void update(String id, User user) {
+    public User update(String id, User user) {
     	user.setId(new ObjectId(id));
         userRepository.update(user);
+        return user;
     }
 	
 	@DELETE
     @Path("/{id}")
-    public void delete(String id) {
+    public Response delete(String id) {
         User user = userRepository.findById(new ObjectId(id));
         userRepository.delete(user);
+        return Response.status(201).build();
     }
 }
