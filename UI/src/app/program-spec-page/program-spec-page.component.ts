@@ -32,6 +32,7 @@ export class ProgramSpecPageComponent implements OnInit {
   subscribeProgramSpec!: Subscription;
   isEdit: boolean = false;
   isAddPage: boolean = false;
+  isVersion: boolean = false;
 
   doc: jsPDF = new jsPDF("p", "pt", "a4");
   pdfDat!: string;
