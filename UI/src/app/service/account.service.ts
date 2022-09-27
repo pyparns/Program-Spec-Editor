@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { User } from '../model/user.model';
 import * as bcrypt from 'bcryptjs';
-import { act } from '@ngrx/effects';
 
 @Injectable({
   providedIn: 'root'
@@ -26,29 +25,24 @@ export class AccountService {
   }
 
   login(username: string, password: string) {
-    for (let i=0; i<5; i++) {
-      let salt = bcrypt.genSaltSync(10);
-      let hash = bcrypt.hashSync(password!, salt);
-      console.log(salt+ " : " +hash)
-      let a = hash.slice(0, 29);
-      console.log(bcrypt.hashSync(password!, a));
-    }
-
     return this.http.post<User>('/api/user/authentication', { username, password })
-      .pipe(map(user => {
-        console.log(user);
+    .pipe(map(user => {
+      let a = user.password?.slice(0, 29);
+      if (bcrypt.hashSync(password!, a) === user.password) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
         return user;
-      }));
+      }
+      return null;
+    }));
   }
 
   logout() {
     // remove user from local storage and set current user to null
     localStorage.removeItem('user');
     this.userSubject.next(new User());
-    this.router.navigate(['/account/login']);
+    this.router.navigate(['/']);
   }
 
   register(user: User): any {
@@ -57,5 +51,16 @@ export class AccountService {
 
     user.password = hash;
     return this.http.post('/api/user/register', user);
+  }
+
+  editProfile(user: User): any {
+    return this.http.put('/api/user/' + user.id, user)
+      .pipe(map(user => {
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userSubject.next(user);
+        return user;
+      }
+    ));
   }
 }
