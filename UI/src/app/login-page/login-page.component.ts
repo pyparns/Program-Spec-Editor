@@ -27,6 +27,7 @@ export class LoginPageComponent implements OnInit {
     private messageService: MessageService
   ) {
     if (this.accountService.userValue) {
+      this.messageService.add({key: 'tl', severity: 'info', summary: 'Already logged in', detail: ''});
       this.router.navigate(['/']);
   }
   }
