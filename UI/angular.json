@@ -41,6 +41,7 @@
               "core-js",
               "raf",
               "xlsx",
+              "bcryptjs",
               "@babel/runtime-corejs3"
             ]
           },

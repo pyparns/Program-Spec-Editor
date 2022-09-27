@@ -12,6 +12,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+
 import org.bson.types.ObjectId;
 
 @Path("/api/user")
@@ -20,6 +24,22 @@ import org.bson.types.ObjectId;
 public class UserResource {
 	@Inject
     UserRepository userRepository;
+	
+	public String generateToken(String username, String password) {
+		try {
+			String secret = "spec@editor";
+		    Algorithm algorithm = Algorithm.HMAC512(secret);
+		    String token = JWT.create()
+		        .withIssuer("auth0")
+		        .withClaim("username", username)
+		        .withClaim("password", password)
+		        .sign(algorithm);
+		    return token;
+		} catch (JWTCreationException exception){
+		    //Invalid Signing configuration / Couldn't convert Claims.
+			return null;
+		}
+	}
 	
 	@GET
 	public List<User> getUsers() {
@@ -40,13 +60,19 @@ public class UserResource {
 	
 	@POST
 	@Path("/authentication")
-	public Response authentication() {
-		return Response.status(201).build();
+	public User authentication(LoginForm loginForm) {
+		System.out.println(loginForm.getUsername() + " : " + loginForm.getPassword());
+		User user = userRepository.find("username", loginForm.getUsername()).firstResult();
+		System.out.println(user.getPassword());
+		if (loginForm.getPassword() != user.getPassword()) user = null;
+		return user;
 	}
 	
 	@POST
 	@Path("/register")
     public Response create(User user) {
+		String token = generateToken(user.getUsername(), user.getPassword());
+		user.setToken(token);
         userRepository.persist(user);
         return Response.status(201).build();
     }

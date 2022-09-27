@@ -1,61 +1,31 @@
 <app-header [pageTitle]="'Register'"></app-header>
 <div class="container py-5">
-    <div class="grid mt-4 center">
-        <div class="col-3 col-offset-3">
-            <input class="inputForm" type="text" [(ngModel)]="firstName" pInputText [pKeyFilter]="'alpha'" placeholder="Firstname">
+    <form [formGroup]="userForm" (submit)="onRegis()">
+        <div class="grid mt-4 center">
+            <div class="col-3 col-offset-3">
+                <input class="inputForm" type="text" formControlName="firstName" pInputText [pKeyFilter]="'alpha'" placeholder="Firstname">
+            </div>
+            <div class="col-3">
+                <input class="inputForm" type="text" formControlName="lastName" pInputText [pKeyFilter]="'alpha'" placeholder="Lastname">
+            </div>
         </div>
-        <div class="col-3">
-            <input class="inputForm" type="text" [(ngModel)]="lastName" pInputText [pKeyFilter]="'alpha'" placeholder="Lastname">
+        <div class="grid mt-4 center">
+            <div class="col-3 col-offset-3">
+                <input class="inputForm" type="text" formControlName="username" pInputText [pKeyFilter]="blockSpace" placeholder="Username">
+            </div>
+            <div class="col-3">
+                <p-password formControlName="password" [toggleMask]="true" placeholder="Password" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-password>
+            </div>
         </div>
-    </div>
-    <div class="grid mt-4 center">
-        <div class="col-3 col-offset-3">
-            <input class="inputForm" type="text" [(ngModel)]="username" pInputText [pKeyFilter]="blockSpace" placeholder="Username">
+        <div class="grid mt-4 center">
+            <div class="col-6 col-offset-3">
+                <input class="inputForm" type="email" formControlName="email" pInputText placeholder="Email">
+            </div>
         </div>
-        <div class="col-3">
-            <p-password [(ngModel)]="password" [toggleMask]="true" placeholder="Password" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"></p-password>
+        <div class="grid mt-4 btn">
+            <div class="col-6 col-offset-3">
+                <p-button label="SIGN UP" type="submit"></p-button>
+            </div>
         </div>
-    </div>
-    <div class="grid mt-4 center">
-        <div class="col-6 col-offset-3">
-            <input class="inputForm" type="email" [(ngModel)]="email" pInputText placeholder="Email">
-        </div>
-    </div>
-    <div class="grid mt-4 btn">
-        <div class="col-6 col-offset-3">
-            <p-button label="SIGN UP" (click)="regis()"></p-button>
-        </div>
-    </div>
+    </form>
 </div>
-<!-- <div class="container">
-    <div class="grid mt-5">
-        <div class="col-12 md:col-4 md:col-offset-4">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                <input class="inputForm" type="text" [(ngModel)]="username" pInputText [pKeyFilter]="blockSpace" placeholder="Username">         
-            </div>
-        </div>
-    </div>
-    <div class="grid mt-5">
-        <div class="col-12 md:col-4 md:col-offset-4">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
-                <input class="inputForm" type="password" [(ngModel)]="password" pInputText placeholder="Password">
-                <p-password [(ngModel)]="password" [toggleMask]="true" placeholder="Password"></p-password>
-            </div>
-        </div>
-    </div>
-    <div class="grid mt-5">
-        <div class="col-12 md:col-4 md:col-offset-4">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
-                <input class="inputForm" type="email" [(ngModel)]="email" pInputText placeholder="Email">
-            </div>
-        </div>
-    </div>
-    <div class="grid mt-5">
-        <div class="col-12 md:col-4 md:col-offset-4">
-            <p-button label="REGISTER" (click)="regis()"></p-button>
-        </div>
-    </div>
-</div> -->

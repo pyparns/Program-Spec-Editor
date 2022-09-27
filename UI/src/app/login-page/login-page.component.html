@@ -1,30 +1,32 @@
 <app-header [pageTitle]="'Login'"></app-header>
 <div class="container">
-    <div class="grid">
-        <div class="col-12 md:col-4 md:col-offset-4 mt-5">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                <input class="inputForm" type="text" [(ngModel)]="username" pInputText [pKeyFilter]="blockSpace" placeholder="Username">         
+    <form [formGroup]="loginForm" (submit)="login()">
+        <div class="grid">
+            <div class="col-12 md:col-4 md:col-offset-4 mt-5">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+                    <input class="inputForm" type="text" formControlName="username" pInputText [pKeyFilter]="blockSpace" placeholder="Username">         
+                </div>
             </div>
         </div>
-    </div>
-    <div class="grid">
-        <div class="col-12 md:col-4 md:col-offset-4 mt-4">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
-                <input class="inputForm" type="password" [(ngModel)]="password" pInputText placeholder="Password">         
+        <div class="grid">
+            <div class="col-12 md:col-4 md:col-offset-4 mt-4">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
+                    <input class="inputForm" type="password" formControlName="password" pInputText placeholder="Password">         
+                </div>
             </div>
         </div>
-    </div>
-    <div class="grid">
-        <div class="col-12 md:col-4 md:col-offset-4 mt-3">
-            <p-button label="GET STARTED" (click)="login()"></p-button>
+        <div class="grid">
+            <div class="col-12 md:col-4 md:col-offset-4 mt-3">
+                <p-button label="GET STARTED" type="submit"></p-button>
+            </div>
         </div>
-    </div>
-    <div class="grid">
-        <div class="col-12 md:col-4 md:col-offset-4">
-            <p-button label="Create Account" styleClass="p-button-link" class="mr-3" (click)="toRegis()"></p-button>
-            <p-button label="Forgot Password?" styleClass="p-button-link" class="ml-3" (click)="toRecovPass()"></p-button>
+        <div class="grid">
+            <div class="col-12 md:col-4 md:col-offset-4">
+                <p-button label="Create Account" styleClass="p-button-link" class="mr-3" (click)="toRegis()"></p-button>
+                <p-button label="Forgot Password?" styleClass="p-button-link" class="ml-3" (click)="toRecovPass()"></p-button>
+            </div>
         </div>
-    </div>
+    </form>
 </div>

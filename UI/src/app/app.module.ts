@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,7 +26,6 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { AppRoutingModule } from './app-routing.module';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
@@ -34,7 +35,9 @@ import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.com
 import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
 
 import { SafePipe } from './pipe/safe.pipe';
-import { StoreModule } from '@ngrx/store';
+import { UserEffects } from './state/user'
+import { AccountService } from './service/account.service';
+import { AppRoutingModule } from './app-routing.module';
 import { reducers, metaReducers } from './reducers';
 
 @NgModule({
@@ -76,9 +79,10 @@ import { reducers, metaReducers } from './reducers';
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers, {
       metaReducers
-    })
+    }),
+    EffectsModule.forRoot([UserEffects])
   ],
-  providers: [],
+  providers: [AccountService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

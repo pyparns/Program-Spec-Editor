@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { first } from 'rxjs';
+import { AccountService } from '../service/account.service';
 
 @Component({
   selector: 'app-login-page',
@@ -10,20 +14,59 @@ export class LoginPageComponent implements OnInit {
   username: string = '';
   password: string = '';
 
-  blockSpace: RegExp = /[^\s]/;
+  loginForm!: FormGroup;
 
-  constructor(private router: Router) { }
+  blockSpace: RegExp = /[^\s]/;
+  loading = false;
+  loggedin = false;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private accountService: AccountService,
+    private messageService: MessageService
+  ) {
+    if (this.accountService.userValue) {
+      this.router.navigate(['/']);
+  }
+  }
 
   ngOnInit(): void {
+    this.loginForm = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
+    });
+  }
+
+  get f() {
+    return this.loginForm.controls;
   }
 
   login(): void {
-    console.log(this.username + " : " + this.password)
-    this.router.navigate(['home'])
+    this.loggedin = true;
+
+    // Check login form is invalid.
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this.loading = true;
+
+    this.accountService.login(this.f['username'].value, this.f['password'].value)
+      .pipe(first())
+      .subscribe(
+        () => {
+          this.messageService.add({key: 'tl', severity: 'success', summary: 'Login successful', detail: ''});
+          this.router.navigate(["/"]);
+        },
+        () => {
+          this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to login', detail: 'please try again'})
+          this.loading = false;
+        });
   }
 
   toRegis(): void {
-    this.router.navigate(['register'])
+    this.router.navigate(['../register'], { relativeTo: this.route });
   }
 
   toRecovPass(): void {

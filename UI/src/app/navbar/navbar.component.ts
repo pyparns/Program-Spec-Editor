@@ -26,12 +26,12 @@ export class NavbarComponent implements OnInit {
                     {
                         label:'Blank form',
                         icon:'pi pi-fw pi-align-center',
-                        routerLink: "/addprogram"
+                        routerLink: "/create/spec/blankform"
                     },
                     {
                         label:'Import spec',
                         icon:'pi pi-fw pi-upload',
-                        routerLink: "/importspec"
+                        routerLink: "/create/spec/import"
                     },
                 ]
             },
@@ -42,13 +42,13 @@ export class NavbarComponent implements OnInit {
                     {
                         label:'Login',
                         icon:'pi pi-fw pi-sign-in',
-                        routerLink: "/login"
+                        routerLink: "/account/login"
 
                     },
                     {
                         label:'Register',
                         icon:'pi pi-fw pi-user-plus',
-                        routerLink: "/register"
+                        routerLink: "/account/register"
                     },
                 ]
             },
