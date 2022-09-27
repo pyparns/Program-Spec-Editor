@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
+import { MenuItem, MessageService } from 'primeng/api';
+import { AccountService } from '../service/account.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,12 +9,20 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+    username: string = '';
 
-  constructor() { }
+    constructor(
+        private router: Router,
+        private accountService: AccountService,
+        private messageService: MessageService
+    ) { }
 
-  items!: MenuItem[];
+    items!: MenuItem[];
+    accItems!: MenuItem[];
 
     ngOnInit() {
+        if (this.accountService.userValue) this.username = this.accountService.userValue.username!;
+
         this.items = [
             {
                 label:'Home',
@@ -51,39 +61,19 @@ export class NavbarComponent implements OnInit {
                         routerLink: "/account/register"
                     },
                 ]
-            },
-            {
-                label:'Events',
-                icon:'pi pi-fw pi-calendar',
-                items:[
-                    {
-                        label:'Edit',
-                        icon:'pi pi-fw pi-pencil',
-                        items:[
-                        {
-                            label:'Save',
-                            icon:'pi pi-fw pi-calendar-plus'
-                        },
-                        {
-                            label:'Delete',
-                            icon:'pi pi-fw pi-calendar-minus'
-                        },
-
-                        ]
-                    },
-                    {
-                        label:'Archieve',
-                        icon:'pi pi-fw pi-calendar-times',
-                        items:[
-                        {
-                            label:'Remove',
-                            icon:'pi pi-fw pi-calendar-minus'
-                        }
-                        ]
-                    }
-                ]
             }
+        ];
+        
+        this.accItems = [
+            {label: 'Edit Profile', routerLink: "/account/edit"},
+            {separator: true},
+            {label: 'Logout', command: () => {
+                this.accountService.logout();
+            }}
         ];
     }
 
+    toProfile(): any {
+        this.router.navigate(['/account/profile']);
+    }
 }

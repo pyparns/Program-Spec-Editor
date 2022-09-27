@@ -1,0 +1,23 @@
+<app-header [pageTitle]="'Profile'"></app-header>
+<div class="container py-5">
+    <form [formGroup]="userForm" (submit)="onSave()">
+        <div class="grid mt-4 center">
+            <div class="col-3 col-offset-3">
+                <input class="inputForm" type="text" formControlName="firstName" pInputText [pKeyFilter]="'alpha'" placeholder="Firstname">
+            </div>
+            <div class="col-3">
+                <input class="inputForm" type="text" formControlName="lastName" pInputText [pKeyFilter]="'alpha'" placeholder="Lastname">
+            </div>
+        </div>
+        <div class="grid mt-4 center">
+            <div class="col-6 col-offset-3">
+                <input class="inputForm" type="email" formControlName="email" pInputText placeholder="Email">
+            </div>
+        </div>
+        <div class="grid mt-4 btn">
+            <div class="col-6 col-offset-3">
+                <p-button label="SAVE" type="submit"></p-button>
+            </div>
+        </div>
+    </form>
+</div>

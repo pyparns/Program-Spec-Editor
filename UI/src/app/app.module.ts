@@ -21,6 +21,7 @@ import { OrderListModule } from 'primeng/orderlist';
 import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { FileUploadModule } from 'primeng/fileupload';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -28,6 +29,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AddProgramPageComponent } from './add-program-page/add-program-page.component';
@@ -39,6 +41,7 @@ import { UserEffects } from './state/user'
 import { AccountService } from './service/account.service';
 import { AppRoutingModule } from './app-routing.module';
 import { reducers, metaReducers } from './reducers';
+import { ProgramSpecVersionComponent } from './program-spec-version/program-spec-version.component';
 
 @NgModule({
   declarations: [
@@ -49,11 +52,13 @@ import { reducers, metaReducers } from './reducers';
     FooterComponent,
     HomePageComponent,
     LoginPageComponent,
+    ProfilePageComponent,
     PageNotFoundComponent,
     RegisterPageComponent,
     AddProgramPageComponent,
     ImportSpecPageComponent,
     ProgramSpecPageComponent,
+    ProgramSpecVersionComponent,
   ],
   imports: [
     TagModule,
@@ -75,6 +80,7 @@ import { reducers, metaReducers } from './reducers';
     AppRoutingModule,
     HttpClientModule,
     FileUploadModule,
+    SplitButtonModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers, {

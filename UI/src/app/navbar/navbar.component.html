@@ -2,7 +2,8 @@
     <ng-template pTemplate="start">
         <h2 class="title ml-4 mr-3">Spec Editor</h2>
     </ng-template>
-    <ng-template pTemplate="end">
-        <button pButton pRipple type="button" icon="pi pi-user" class="p-button-rounded p-button-secondary p-button-outlined mx-4"></button>
+    <ng-template pTemplate="end" *ngIf="username">
+        <p-splitButton icon="pi pi-user" [label]="username" (onClick)="toProfile()" [model]="accItems"></p-splitButton>
+        <!-- <button pButton pRipple type="button" icon="pi pi-user" class="p-button-rounded p-button-secondary p-button-outlined mx-4"></button> -->
     </ng-template>
 </p-menubar>
