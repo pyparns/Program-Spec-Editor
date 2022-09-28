@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TagModule } from 'primeng/tag';
+import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -24,6 +25,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { SplitButtonModule } from 'primeng/splitbutton';
 
 import { AppComponent } from './app.component';
+import { TimelineModule } from 'primeng/timeline';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -62,6 +64,7 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
   ],
   imports: [
     TagModule,
+    CardModule,
     FormsModule,
     ToastModule,
     ButtonModule,
@@ -69,6 +72,7 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     BrowserModule,
     MessageModule,
     MenubarModule,
+    TimelineModule,
     MessagesModule,
     DropdownModule,
     PasswordModule,
