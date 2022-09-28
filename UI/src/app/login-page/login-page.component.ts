@@ -57,8 +57,8 @@ export class LoginPageComponent implements OnInit {
       .pipe(first())
       .subscribe(
         () => {
+          this.router.navigate(["/"]).then(() => window.location.reload());
           this.messageService.add({key: 'tl', severity: 'success', summary: 'Login successful', detail: ''});
-          this.router.navigate(["/"]);
         },
         () => {
           this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to login', detail: 'please try again'})

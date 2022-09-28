@@ -69,6 +69,7 @@ export class NavbarComponent implements OnInit {
             {separator: true},
             {label: 'Logout', command: () => {
                 this.accountService.logout();
+                this.messageService.add({key: 'tl', severity: 'success', summary: 'Logout successful', detail: ''});
             }}
         ];
     }
