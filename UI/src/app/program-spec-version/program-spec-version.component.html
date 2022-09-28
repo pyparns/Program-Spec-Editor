@@ -1,1 +1,9 @@
-<p>program-spec-version works!</p>
+<div class="container p-5">
+    <p-timeline [value]="date" align="left">
+        <ng-template pTemplate="content" let-event>
+            <p-card [header]="event.name" [subheader]="event.date" [style]="{width: '90%'}">
+                <label>Version : {{ event.version }}</label>
+            </p-card>
+        </ng-template>
+    </p-timeline>
+</div>
