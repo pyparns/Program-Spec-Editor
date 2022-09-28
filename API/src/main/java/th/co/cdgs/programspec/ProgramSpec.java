@@ -12,6 +12,7 @@ public class ProgramSpec {
 	
 	private ObjectId id;
 	private List<Program> programs;
+	private String lartest;
 	
 	public ObjectId getId() {
 		return id;
@@ -24,5 +25,11 @@ public class ProgramSpec {
 	}
 	public void setPrograms(List<Program> programs) {
 		this.programs = programs;
+	}
+	public String getLartest() {
+		return lartest;
+	}
+	public void setLartest(String lartest) {
+		this.lartest = lartest;
 	}
 }
