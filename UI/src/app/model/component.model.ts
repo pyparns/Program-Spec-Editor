@@ -1,5 +1,5 @@
-export interface Component {
-    label: string;
-    attribute: string;
-    action: string;
+export class Component {
+    label?: string;
+    attribute?: string;
+    action?: string;
 }

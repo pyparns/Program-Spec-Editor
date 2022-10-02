@@ -36,7 +36,6 @@ public class UserResource {
 		        .sign(algorithm);
 		    return token;
 		} catch (JWTCreationException exception){
-		    //Invalid Signing configuration / Couldn't convert Claims.
 			return null;
 		}
 	}
@@ -61,7 +60,6 @@ public class UserResource {
 	@POST
 	@Path("/authentication")
 	public User authentication(LoginForm loginForm) {
-		System.out.println(loginForm.getUsername() + " : " + loginForm.getPassword());
 		User user = userRepository.find("username", loginForm.getUsername()).firstResult();
 		return user;
 	}

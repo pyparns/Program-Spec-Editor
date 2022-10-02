@@ -17,7 +17,7 @@ export class LoginPageComponent implements OnInit {
   loginForm!: FormGroup;
 
   blockSpace: RegExp = /[^\s]/;
-  loading = false;
+  isLoading = false;
   loggedin = false;
 
   constructor(
@@ -46,23 +46,23 @@ export class LoginPageComponent implements OnInit {
   login(): void {
     this.loggedin = true;
 
-    // Check login form is invalid.
+    // Check login form is valid.
     if (this.loginForm.invalid) {
       return;
     }
 
-    this.loading = true;
+    this.isLoading = true;
 
     this.accountService.login(this.f['username'].value, this.f['password'].value)
       .pipe(first())
       .subscribe(
         () => {
-          this.router.navigate(["/"]).then(() => window.location.reload());
           this.messageService.add({key: 'tl', severity: 'success', summary: 'Login successful', detail: ''});
+          this.router.navigate(["/"]).then(() => window.location.reload());
         },
         () => {
           this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to login', detail: 'please try again'})
-          this.loading = false;
+          this.isLoading = false;
         });
   }
 

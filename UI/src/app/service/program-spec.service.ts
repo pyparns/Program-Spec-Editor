@@ -1,5 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { resultMemoize } from '@ngrx/store';
+import { Program } from '../model/program.model';
 import { ProgramSpec } from '../model/programspec.model';
 
 @Injectable({

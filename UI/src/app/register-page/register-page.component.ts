@@ -13,8 +13,8 @@ import { AccountService } from '../service/account.service';
 export class RegisterPageComponent implements OnInit {
   userForm!: FormGroup;
   
-  loading: boolean = false;
-  submitted: boolean = false;
+  isLoading: boolean = false;
+  isSubmitted: boolean = false;
   blockSpace: RegExp = /[^\s]/;
 
   constructor(
@@ -45,14 +45,14 @@ export class RegisterPageComponent implements OnInit {
   }
   
   onRegis(): void {
-    this.submitted = true;
+    this.isSubmitted = true;
 
-    // check user form is invalid
+    // check user form is valid
     if (this.userForm.invalid) {
       return;
     }
 
-    this.loading = true;
+    this.isLoading = true;
     this.accountService.register(this.userForm.value)
       .pipe(first())
       .subscribe(
@@ -62,7 +62,7 @@ export class RegisterPageComponent implements OnInit {
         },
         () => {
           this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to register', detail: 'please try again'})
-          this.loading = false;
+          this.isLoading = false;
         });
 
   }

@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/api';
 export class ImportSpecPageComponent implements OnInit {
   
   uploadedFiles: any[] = [];
+  isUploaded: boolean = false;
 
   constructor(
     private messageService: MessageService,
@@ -18,6 +19,8 @@ export class ImportSpecPageComponent implements OnInit {
   }
 
   onUpload(event: { files: any; }): void {
+    this.isUploaded = true;
+    
     console.log("onUpload")
     for (let file of event.files) {
         this.uploadedFiles.push(file);

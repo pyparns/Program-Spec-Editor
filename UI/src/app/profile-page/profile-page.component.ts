@@ -21,8 +21,9 @@ export class ProfilePageComponent implements OnInit {
     token: new FormControl('')
   });
 
-  loading: boolean = false;
-  submitted: boolean = false;
+  isLoading: boolean = false;
+  isSubmitted: boolean = false;
+  mode: string = "profile";
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +34,8 @@ export class ProfilePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.userForm.patchValue(this.accountService.userValue);
+
+    this.mode = this.route.snapshot.url[0].path;
   }
 
   get f() {
@@ -40,14 +43,14 @@ export class ProfilePageComponent implements OnInit {
   }
 
   onSave(): any {
-    this.submitted = true;
+    this.isSubmitted = true;
 
     // check user form is invalid
     if (this.userForm.invalid) {
       return;
     }
 
-    this.loading = true;
+    this.isLoading = true;
 
     this.accountService.editProfile(this.userForm.value).subscribe(
       () => {
@@ -56,7 +59,7 @@ export class ProfilePageComponent implements OnInit {
       },
       () => {
         this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to edit', detail: 'please try again'})
-        this.loading = false;
+        this.isLoading = false;
       });;
   }
 

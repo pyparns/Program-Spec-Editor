@@ -24,8 +24,10 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SplitButtonModule } from 'primeng/splitbutton';
 
+import { PanelModule } from 'primeng/panel';
 import { AppComponent } from './app.component';
 import { TimelineModule } from 'primeng/timeline';
+import { SkeletonModule } from 'primeng/skeleton';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -65,6 +67,7 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
   imports: [
     TagModule,
     CardModule,
+    PanelModule,
     FormsModule,
     ToastModule,
     ButtonModule,
@@ -72,6 +75,7 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     BrowserModule,
     MessageModule,
     MenubarModule,
+    SkeletonModule,
     TimelineModule,
     MessagesModule,
     DropdownModule,

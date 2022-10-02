@@ -1,4 +1,4 @@
-export interface Action {
-    action: string;
-    description: string;
+export class Action {
+    action?: string;
+    description?: string;
 }

@@ -1,12 +1,7 @@
-import { Image } from "./image.model";
+import { Program } from "./program.model";
 
-export interface ProgramSpec {
-    projectName: string;
-    programId: string;
-    programName: string;
-    systemWorkId: string;
-    systemWorkName: string;
-    systemWorkDesigner: string;
-    status: string;
-    images: Image[];
+export class ProgramSpec {
+    id?: string;
+    lartest?: string;
+    programs?: Program[];
 }

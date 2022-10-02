@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="col-12 md:col-9 lg:col-10 pb-5">
-            <div class="card">
+            <div class="card" *ngIf="!isLoading; else loading">
                 <p-dataView #dv [value]="filteredProgramSpecs" [paginator]="true" [rows]="6" filterBy="programName"
                     [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
                     <ng-template pTemplate="header">
@@ -69,6 +69,9 @@
                     </ng-template>
                 </p-dataView>
             </div>
+            <ng-template #loading>
+                <p-skeleton height="2rem" styleClass="mt-5"></p-skeleton>
+            </ng-template>
         </div>
     </div>
 </div>

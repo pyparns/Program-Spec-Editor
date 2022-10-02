@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SelectItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { ProgramSpec } from '../model/programspec.model';
+import { Program } from '../model/program.model';
 import { ProgramSpecService } from '../service/program-spec.service';
 
 @Component({
@@ -14,15 +13,12 @@ export class HomePageComponent implements OnInit {
   statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
 
   selectedStatus: string[] = [];
-  filteredProgramSpecs: ProgramSpec[] = [];
-  programSpecs: ProgramSpec[] = [];
+  filteredProgramSpecs: Program[] = [];
+  programSpecs: Program[] = [];
 
   sortOrder!: number;
   sortField!: string;
-  
-  // base64Data: any;
-  // retrieveResonse: any;
-  // retrievedImage: any;
+  isLoading: boolean = true;
 
   subscribeProgramSpec!: Subscription;
   
@@ -34,31 +30,24 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeProgramSpec = this.programSpecService.getProgramSpecs().subscribe(response => {
-      this.programSpecs = response;
-      this.filteredProgramSpecs = response;
-    })
+      var list: Program[] = [];
+      response.forEach(item => {
+        list.push(item.programs?.filter(spec => spec.version === item.lartest)[0]!);
+      })
+      console.log(list);
+      this.programSpecs = list;
+      this.filteredProgramSpecs = list;
+      this.isLoading = false;
+    });
   }
 
   ngOnDestroy(): void {
     this.subscribeProgramSpec.unsubscribe();
   }
 
-  onSortChange(event: any) {
-    let value = event.value;
-
-    if (value.indexOf('!') === 0) {
-        this.sortOrder = -1;
-        this.sortField = value.substring(1, value.length);
-    }
-    else {
-        this.sortOrder = 1;
-        this.sortField = value;
-    }
-}
-
   filterSpec(): void {
     if (this.selectedStatus.length > 0)
-      this.filteredProgramSpecs = this.programSpecs.filter(spec => this.selectedStatus.indexOf(spec.status) >= 0);
+      this.filteredProgramSpecs = this.programSpecs.filter(spec => this.selectedStatus.indexOf(spec.status!) >= 0);
     else
       this.filteredProgramSpecs = this.programSpecs;
   }

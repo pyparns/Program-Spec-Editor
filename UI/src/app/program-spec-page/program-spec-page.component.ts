@@ -32,7 +32,7 @@ export class ProgramSpecPageComponent implements OnInit {
   subscribeProgramSpec!: Subscription;
   isEdit: boolean = false;
   isAddPage: boolean = false;
-  isVersion: boolean = true;
+  isVersion: boolean = false;
 
   doc: jsPDF = new jsPDF("p", "pt", "a4");
   pdfDat!: string;
@@ -53,7 +53,7 @@ export class ProgramSpecPageComponent implements OnInit {
       console.log(response);
     });
 
-    this.initPdf();
+    // this.initPdf();
   }
 
   ngOnDestroy(): void {
@@ -80,37 +80,37 @@ export class ProgramSpecPageComponent implements OnInit {
     return (doc.internal.pageSize.getWidth() - doc.getTextWidth(text))/2
   }
 
-  initPdf(): any {
-    this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
-      this.title = response.programName;
-      this.programForm.patchValue(response);
+  // initPdf(): any {
+  //   this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
+  //     this.title = response.programName!;
+  //     this.programForm.patchValue(response);
 
-      this.doc.setProperties({ title: response.programName });
-      this.doc.setFont("THSarabunNew", "bold");
-      this.doc.text(response.programName, this.lenText(this.doc, response.programName), 40);
+  //     this.doc.setProperties({ title: response.programName });
+  //     this.doc.setFont("THSarabunNew", "bold");
+  //     this.doc.text(response.programName!, this.lenText(this.doc, response.programName!), 40);
 
-      if (response.images)
-        response.images.forEach((item, index) => {
-          let x = 47;
-          let y = 80;
+  //     if (response.images)
+  //       response.images.forEach((item, index) => {
+  //         let x = 47;
+  //         let y = 80;
 
-          if (index != 0) this.doc.addPage("a4");
+  //         if (index != 0) this.doc.addPage("a4");
 
-          this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250)
+  //         this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250)
 
-          this.doc.setFont("THSarabunNew", "normal");
-          this.doc.text("Component : " + item.imageDescription, x, y += 290);
+  //         this.doc.setFont("THSarabunNew", "normal");
+  //         this.doc.text("Component : " + item.imageDescription, x, y += 290);
 
-          const components:any = [];
-          const actions:any = [];
-          item.components.forEach(com => components.push([com.label, com.attribute, com.action]));
-          item.actions.forEach(act => actions.push([act.action, act.description]));
+  //         const components:any = [];
+  //         const actions:any = [];
+  //         item.components!.forEach(com => components.push([com.label, com.attribute, com.action]));
+  //         item.actions!.forEach(act => actions.push([act.action, act.description]));
 
-          (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 20});
-          (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
-        });
+  //         (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 20});
+  //         (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
+  //       });
 
-      this.pdfDat = this.doc.output('datauristring');
-    })
-  }
+  //     this.pdfDat = this.doc.output('datauristring');
+  //   })
+  // }
 }

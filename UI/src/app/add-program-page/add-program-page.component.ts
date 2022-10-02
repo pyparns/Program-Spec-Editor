@@ -11,7 +11,7 @@ import { ProgramSpecService } from '../service/program-spec.service';
   styleUrls: ['./add-program-page.component.scss']
 })
 export class AddProgramPageComponent implements OnInit {
-  statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success']
+  statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
 
   programForm = new FormGroup({
     projectName: new FormControl(''),
@@ -22,6 +22,8 @@ export class AddProgramPageComponent implements OnInit {
     systemWorkDesigner: new FormControl(''),
     status: new FormControl('')
   });
+
+  isSubmitted: boolean = false;
 
   constructor(
     private router: Router,
@@ -34,10 +36,22 @@ export class AddProgramPageComponent implements OnInit {
   }
 
   onAddBtn(): void {
+    this.isSubmitted = true;
+
+    // Check program form is valid.
+    if (this.programForm.invalid) {
+      return;
+    }
+
     this.programSpecService.createProgramSpec(this.programForm.value).subscribe(
-      () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''}),
-      () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'}),
-      () => this.router.navigate(['home'])
+      () => {
+        this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
+        this.router.navigate(['home']);
+      }, () => {
+        this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'});
+      }, () => {
+        this.isSubmitted = false;
+      }
     )
   }
 }

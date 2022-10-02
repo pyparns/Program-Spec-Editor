@@ -1,23 +1,58 @@
 <app-header [pageTitle]="'Profile'"></app-header>
 <div class="container py-5">
-    <form [formGroup]="userForm" (submit)="onSave()">
-        <div class="grid mt-4 center">
-            <div class="col-3 col-offset-3">
-                <input class="inputForm" type="text" formControlName="firstName" pInputText [pKeyFilter]="'alpha'" placeholder="Firstname">
+    <form [formGroup]="userForm" (submit)="onSave()" *ngIf="mode === 'edit'; else editMode">
+        <div class="grid mt-4">
+            <div class="col-4 col-offset-2">
+                <span class="p-float-label">
+                    <input id="float-input-invalid" type="text" pInputText formControlName="firstName" class="inputForm" [pKeyFilter]="'alpha'"> 
+                    <label for="float-input-invalid">Firstname</label>
+                </span>
             </div>
-            <div class="col-3">
-                <input class="inputForm" type="text" formControlName="lastName" pInputText [pKeyFilter]="'alpha'" placeholder="Lastname">
+            <div class="col-4">
+                <span class="p-float-label">
+                    <input id="float-input-invalid" type="text" pInputText formControlName="lastName" class="inputForm" [pKeyFilter]="'alpha'"> 
+                    <label for="float-input-invalid">Lastname</label>
+                </span>
             </div>
         </div>
-        <div class="grid mt-4 center">
-            <div class="col-6 col-offset-3">
-                <input class="inputForm" type="email" formControlName="email" pInputText placeholder="Email">
+        <div class="grid mt-4">
+            <div class="col-8 col-offset-2">
+                <span class="p-float-label">
+                    <input id="float-input-invalid" type="email" pInputText formControlName="email" class="inputForm"> 
+                    <label for="float-input-invalid">Email</label>
+                </span>
             </div>
         </div>
-        <div class="grid mt-4 btn">
+        <div class="grid mt-4">
             <div class="col-6 col-offset-3">
                 <p-button label="SAVE" type="submit"></p-button>
             </div>
         </div>
     </form>
+    <ng-template #editMode>
+        <div class="grid mt-4">
+            <div class="col-4 col-offset-2">
+                <p-panel header="Username">
+                    <label>{{ userForm.value.username }}</label>
+                </p-panel>
+            </div>
+            <div class="col-4">
+                <p-panel header="Email">
+                    <label>{{ userForm.value.email }}</label>
+                </p-panel>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-4 col-offset-2">
+                <p-panel header="Firstname">
+                    <label>{{ userForm.value.firstName }}</label>
+                </p-panel>
+            </div>
+            <div class="col-4">
+                <p-panel header="Lastname">
+                    <label>{{ userForm.value.lastName }}</label>
+                </p-panel>
+            </div>
+        </div>
+    </ng-template>
 </div>
