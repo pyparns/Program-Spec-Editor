@@ -11,5 +11,5 @@ export class Program {
     status?: string;
     images?: Image[];
     version?: string;
-    date?: string;
+    date?: Date;
 }

@@ -3,6 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { Program } from '../model/program.model';
+import { ProgramSpec } from '../model/programspec.model';
+import { AccountService } from '../service/account.service';
 import { ProgramSpecService } from '../service/program-spec.service';
 
 @Component({
@@ -30,9 +33,14 @@ export class AddProgramPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private messageService: MessageService,
     private programSpecService: ProgramSpecService,
+    private accountService: AccountService,
   ) { }
 
   ngOnInit(): void {
+  }
+
+  getCurrentDate(): Date {
+    return new Date();
   }
 
   onAddBtn(): void {
@@ -42,8 +50,17 @@ export class AddProgramPageComponent implements OnInit {
     if (this.programForm.invalid) {
       return;
     }
+    
+    var ps: ProgramSpec = new ProgramSpec;
 
-    this.programSpecService.createProgramSpec(this.programForm.value).subscribe(
+    var program: Program = this.programForm.value as Program;
+    program.date = this.getCurrentDate();
+    program.version = "1";
+    ps.accId = this.accountService.userValue.id;
+    ps.lartest = "1";
+    ps.programs = [program];
+
+    this.programSpecService.createProgramSpec(ps).subscribe(
       () => {
         this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
         this.router.navigate(['home']);

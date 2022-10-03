@@ -1,5 +1,6 @@
 package th.co.cdgs.program;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
@@ -24,7 +25,7 @@ public class Program {
 	@BsonProperty("version")
 	private String version;
 	@BsonProperty("date")
-	private String date;
+	private LocalDateTime date;
 	@BsonProperty("images")
 	private List<Image> images;
 	
@@ -82,10 +83,10 @@ public class Program {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	public String getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
-	public void setDate(String date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 }
