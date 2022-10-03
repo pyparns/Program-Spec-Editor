@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Program } from '../model/program.model';
+import { ProgramSpec } from '../model/programspec.model';
 import { ProgramSpecService } from '../service/program-spec.service';
 
 @Component({
@@ -13,8 +14,8 @@ export class HomePageComponent implements OnInit {
   statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
 
   selectedStatus: string[] = [];
-  filteredProgramSpecs: Program[] = [];
-  programSpecs: Program[] = [];
+  filteredProgramSpecs: ProgramSpec[] = [];
+  programSpecs: ProgramSpec[] = [];
 
   sortOrder!: number;
   sortField!: string;
@@ -30,13 +31,11 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeProgramSpec = this.programSpecService.getProgramSpecs().subscribe(response => {
-      var list: Program[] = [];
-      response.forEach(item => {
-        list.push(item.programs?.filter(spec => spec.version === item.lartest)[0]!);
+      this.programSpecs = response;
+      this.programSpecs.forEach((item, index) => {
+        this.programSpecs[index].programs = [item.programs?.filter(spec => spec.version === item.lartest)[0]!];
       })
-      console.log(list);
-      this.programSpecs = list;
-      this.filteredProgramSpecs = list;
+      this.filteredProgramSpecs = this.programSpecs;
       this.isLoading = false;
     });
   }
@@ -47,7 +46,7 @@ export class HomePageComponent implements OnInit {
 
   filterSpec(): void {
     if (this.selectedStatus.length > 0)
-      this.filteredProgramSpecs = this.programSpecs.filter(spec => this.selectedStatus.indexOf(spec.status!) >= 0);
+      this.filteredProgramSpecs = this.programSpecs.filter(spec => this.selectedStatus.indexOf(spec.programs![0].status!) >= 0);
     else
       this.filteredProgramSpecs = this.programSpecs;
   }

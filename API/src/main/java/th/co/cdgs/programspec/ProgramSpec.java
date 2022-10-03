@@ -2,6 +2,7 @@ package th.co.cdgs.programspec;
 
 import java.util.List;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 import io.quarkus.mongodb.panache.common.MongoEntity;
@@ -13,6 +14,8 @@ public class ProgramSpec {
 	private ObjectId id;
 	private List<Program> programs;
 	private String lartest;
+	@BsonProperty("acc_id")
+	private String accId;
 	
 	public ObjectId getId() {
 		return id;
@@ -31,5 +34,11 @@ public class ProgramSpec {
 	}
 	public void setLartest(String lartest) {
 		this.lartest = lartest;
+	}
+	public String getAccId() {
+		return accId;
+	}
+	public void setAccId(String accId) {
+		this.accId = accId;
 	}
 }

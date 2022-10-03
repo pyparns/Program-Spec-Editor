@@ -7,6 +7,7 @@ import { ProgramSpecService } from '../service/program-spec.service';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
 import '../../THSarabunNew-normal';
+import { ProgramSpec } from '../model/programspec.model';
 
 @Component({
   selector: 'app-program-spec-page',
@@ -14,8 +15,9 @@ import '../../THSarabunNew-normal';
   styleUrls: ['./program-spec-page.component.scss']
 })
 export class ProgramSpecPageComponent implements OnInit {
-  statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success']
+  statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
 
+  programSpec: ProgramSpec = new ProgramSpec();
   programForm = new FormGroup({
     projectName: new FormControl(''),
     programId: new FormControl(''),
@@ -27,12 +29,12 @@ export class ProgramSpecPageComponent implements OnInit {
     images: new FormControl()
   });
 
-  title: string = "";
   id!: string | null;
-  subscribeProgramSpec!: Subscription;
   isEdit: boolean = false;
+  canEdit: boolean = false;
+  isVersion: boolean = true;
   isAddPage: boolean = false;
-  isVersion: boolean = false;
+  subscribeProgramSpec!: Subscription;
 
   doc: jsPDF = new jsPDF("p", "pt", "a4");
   pdfDat!: string;
@@ -48,12 +50,15 @@ export class ProgramSpecPageComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => { 
       this.id = params.get('id');
     });
-
-    this.programSpecService.getImage("image1.png").subscribe(response => {
-      console.log(response);
+    this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
+      this.programSpec = response;
     });
 
-    // this.initPdf();
+    // this.programSpecService.getImage("image1.png").subscribe(response => {
+    //   console.log(response);
+    // });
+
+    this.initPdf();
   }
 
   ngOnDestroy(): void {
@@ -76,41 +81,42 @@ export class ProgramSpecPageComponent implements OnInit {
     )
   }
 
+  onSelectVersion(version: string): void {
+    this.isVersion = false;
+    if (version == this.programSpec.lartest) this.canEdit = true;
+    this.programForm.patchValue(this.programSpec.programs?.filter(spec => spec.version === version)[0]!);
+  }
+
   lenText(doc: jsPDF, text: string): any {
     return (doc.internal.pageSize.getWidth() - doc.getTextWidth(text))/2
   }
 
-  // initPdf(): any {
-  //   this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
-  //     this.title = response.programName!;
-  //     this.programForm.patchValue(response);
+  initPdf(): any {
+      // this.doc.setProperties({ title: this.programForm.value.programName! });
+      this.doc.setFont("THSarabunNew", "bold");
+      this.doc.text(this.programForm.value.programName!, this.lenText(this.doc, this.programForm.value.programName!), 40);
 
-  //     this.doc.setProperties({ title: response.programName });
-  //     this.doc.setFont("THSarabunNew", "bold");
-  //     this.doc.text(response.programName!, this.lenText(this.doc, response.programName!), 40);
+      if (this.programForm.value.images)
+      this.programForm.value.images.forEach((item: any, index: number) => {
+          let x = 47;
+          let y = 80;
 
-  //     if (response.images)
-  //       response.images.forEach((item, index) => {
-  //         let x = 47;
-  //         let y = 80;
+          if (index != 0) this.doc.addPage("a4");
 
-  //         if (index != 0) this.doc.addPage("a4");
+          this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250)
 
-  //         this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250)
+          this.doc.setFont("THSarabunNew", "normal");
+          this.doc.text("Component : " + item.imageDescription, x, y += 290);
 
-  //         this.doc.setFont("THSarabunNew", "normal");
-  //         this.doc.text("Component : " + item.imageDescription, x, y += 290);
+          const components:any = [];
+          const actions:any = [];
+          item.components!.forEach((com: any) => components.push([com.label, com.attribute, com.action]));
+          item.actions!.forEach((act: any) => actions.push([act.action, act.description]));
 
-  //         const components:any = [];
-  //         const actions:any = [];
-  //         item.components!.forEach(com => components.push([com.label, com.attribute, com.action]));
-  //         item.actions!.forEach(act => actions.push([act.action, act.description]));
+          (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 20});
+          (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
+        });
 
-  //         (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 20});
-  //         (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
-  //       });
-
-  //     this.pdfDat = this.doc.output('datauristring');
-  //   })
-  // }
+      this.pdfDat = this.doc.output('datauristring');
+  }
 }

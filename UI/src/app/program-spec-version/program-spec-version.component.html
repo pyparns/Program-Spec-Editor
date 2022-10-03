@@ -1,7 +1,7 @@
 <div class="container p-5">
-    <p-timeline [value]="date" align="left">
+    <p-timeline [value]="programSpec.programs!" align="left">
         <ng-template pTemplate="content" let-event>
-            <p-card [header]="event.name" [subheader]="event.date" [style]="{width: '90%'}">
+            <p-card [header]="event.programName" (click)="onSelect(event.version)" [subheader]="event.date" [style]="{width: '90%'}">
                 <label>Version : {{ event.version }}</label>
             </p-card>
         </ng-template>

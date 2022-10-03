@@ -8,11 +8,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { MenubarModule } from 'primeng/menubar';
 import { MessageModule } from 'primeng/message';
+import { TimelineModule } from 'primeng/timeline';
+import { SkeletonModule } from 'primeng/skeleton';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessagesModule } from 'primeng/messages';
 import { PasswordModule } from 'primeng/password';
@@ -24,10 +27,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SplitButtonModule } from 'primeng/splitbutton';
 
-import { PanelModule } from 'primeng/panel';
 import { AppComponent } from './app.component';
-import { TimelineModule } from 'primeng/timeline';
-import { SkeletonModule } from 'primeng/skeleton';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';

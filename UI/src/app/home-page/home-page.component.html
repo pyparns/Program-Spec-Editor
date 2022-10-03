@@ -31,16 +31,16 @@
                     <ng-template let-programSpec pTemplate="listItem">
                         <div class="col-12">
                             <div class="product-list-item">
-                                <img [src]="'assets/image1.png'" [alt]="programSpec.programName"/>
+                                <img [src]="'assets/image1.png'" [alt]="programSpec.programs[0].programName"/>
                                 <div class="product-list-detail">
-                                    <div class="product-name">{{programSpec.programName}}</div>
-                                    <div class="product-description">{{programSpec.systemWorkName}}</div>
-                                    <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{programSpec.projectName}}</span>
+                                    <div class="product-name">{{programSpec.programs[0].programName}}</div>
+                                    <div class="product-description">{{programSpec.programs[0].systemWorkName}}</div>
+                                    <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{programSpec.programs[0].projectName}}</span>
                                 </div>
                                 <div class="product-list-action">
-                                    <span class="product-price">ID: {{programSpec.programId}}</span>
+                                    <span class="product-price">ID: {{programSpec.programs[0].programId}}</span>
                                     <p-button icon="pi pi-eye" label="View" (click)="detailSpec(programSpec.id)"></p-button>
-                                    <p-tag [value]="programSpec.status" severity="success"></p-tag>
+                                    <p-tag [value]="programSpec.programs[0].status" severity="success"></p-tag>
                                 </div>
                             </div>
                         </div>
@@ -51,17 +51,17 @@
                                 <div class="product-grid-item-top">
                                     <div>
                                         <i class="pi pi-tag product-category-icon"></i>
-                                        <span class="product-category">{{programSpec.projectName}}</span>
+                                        <span class="product-category">{{programSpec.programs[0].projectName}}</span>
                                     </div>
-                                    <p-tag [value]="programSpec.status" severity="success"></p-tag>
+                                    <p-tag [value]="programSpec.programs[0].status" severity="success"></p-tag>
                                 </div>
                                 <div class="product-grid-item-content">
-                                    <img [src]="'assets/image1.png'" [alt]="programSpec.programName" />
-                                    <div class="product-name">{{programSpec.programName}}</div>
-                                    <div class="product-description">{{programSpec.systemWorkName}}</div>
+                                    <img [src]="'assets/image1.png'" [alt]="programSpec.programs[0].programName" />
+                                    <div class="product-name">{{programSpec.programs[0].programName}}</div>
+                                    <div class="product-description">{{programSpec.programs[0].systemWorkName}}</div>
                                 </div>
                                 <div class="product-grid-item-bottom">
-                                    <span class="product-price">ID: {{programSpec.programId}}</span>
+                                    <span class="product-price">ID: {{programSpec.programs[0].programId}}</span>
                                     <p-button icon="pi pi-eye" label="View" (click)="detailSpec(programSpec.id)"></p-button>
                                 </div>
                             </div>
@@ -69,8 +69,10 @@
                     </ng-template>
                 </p-dataView>
             </div>
-            <ng-template #loading>
-                <p-skeleton height="2rem" styleClass="mt-5"></p-skeleton>
+            <ng-template #loading class="grid">
+                <div class="col-8 col-offset-2">
+                    <p-skeleton height="2rem" styleClass="mt-5" width="100%"></p-skeleton>
+                </div>
             </ng-template>
         </div>
     </div>

@@ -4,4 +4,5 @@ export class ProgramSpec {
     id?: string;
     lartest?: string;
     programs?: Program[];
+    accId?: string;
 }
