@@ -13,7 +13,7 @@ public class ProgramSpec {
 	
 	private ObjectId id;
 	private List<Program> programs;
-	private String lartest;
+	private String latest;
 	@BsonProperty("acc_id")
 	private String accId;
 	
@@ -29,11 +29,11 @@ public class ProgramSpec {
 	public void setPrograms(List<Program> programs) {
 		this.programs = programs;
 	}
-	public String getLartest() {
-		return lartest;
+	public String getLatest() {
+		return latest;
 	}
-	public void setLartest(String lartest) {
-		this.lartest = lartest;
+	public void setLatest(String latest) {
+		this.latest = latest;
 	}
 	public String getAccId() {
 		return accId;

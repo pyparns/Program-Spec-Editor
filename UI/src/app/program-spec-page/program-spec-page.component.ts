@@ -83,7 +83,7 @@ export class ProgramSpecPageComponent implements OnInit {
 
   onSelectVersion(version: string): void {
     this.isVersion = false;
-    if (version == this.programSpec.lartest) this.canEdit = true;
+    if (version == this.programSpec.latest) this.canEdit = true;
     this.programForm.patchValue(this.programSpec.programs?.filter(spec => spec.version === version)[0]!);
   }
 

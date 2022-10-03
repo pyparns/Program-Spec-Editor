@@ -62,7 +62,7 @@ export class AddProgramPageComponent implements OnInit {
     program.date = this.getCurrentDate();
     program.version = "1";
     ps.accId = this.accountService.userValue.id;
-    ps.lartest = "1";
+    ps.latest = "1";
     ps.programs = [program];
 
     this.programSpecService.createProgramSpec(ps).subscribe(
