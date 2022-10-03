@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { AccountService } from '../service/account.service';
 
 @Component({
   selector: 'app-import-spec-page',
@@ -12,8 +14,15 @@ export class ImportSpecPageComponent implements OnInit {
   isUploaded: boolean = false;
 
   constructor(
+    private router: Router,
     private messageService: MessageService,
-  ) { }
+    private accountService: AccountService,
+  ) {
+    if (!this.accountService.userValue) {
+      this.messageService.add({key: 'tl', severity: 'warn', summary: 'Not logged in', detail: 'please login and try again'});
+      this.router.navigate(['/']);
+    }
+  }
 
   ngOnInit(): void {
   }
