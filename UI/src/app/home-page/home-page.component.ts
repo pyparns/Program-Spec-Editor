@@ -52,6 +52,18 @@ export class HomePageComponent implements OnInit {
       this.filteredProgramSpecs = this.programSpecs;
   }
 
+  onSearch(event: any): void {
+    let word = event.target.value.toLowerCase();
+    const result: ProgramSpec[] = [];
+
+    this.programSpecs.forEach(spec => {
+      if (spec.programs![0].programName?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].projectName?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].systemWorkDesigner?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].programId?.toLowerCase().indexOf(word) !== -1)
+        result.push(spec);
+    });
+    this.programSpecs = result;
+    this.filteredProgramSpecs = result;
+  }
+
   detailSpec(id: string): void {
     this.router.navigate(['programspec/' + id ]);
   }
@@ -64,5 +76,9 @@ export class HomePageComponent implements OnInit {
   //       this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
   //     }
   //   );
+  // }
+
+  // timeAdder(date: Date, time: number): any {
+  //   return new Date(date.getFullYear(), date.getMonth(), date.getDay(), date.getHours(), date.getMinutes(), date.getSeconds() + time)
   // }
 }
