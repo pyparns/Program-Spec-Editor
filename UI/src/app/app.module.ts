@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { BrowserModule } from '@angular/platform-browser';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -85,6 +86,7 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     OrderListModule,
     InputTextModule,
     KeyFilterModule,
+    PdfViewerModule,
     AppRoutingModule,
     HttpClientModule,
     FileUploadModule,

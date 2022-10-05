@@ -27,6 +27,7 @@
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",
     "mdb-angular-ui-kit": "^2.3.0",
+    "ng2-pdf-viewer": "^9.1.2",
     "primeflex": "^3.2.1",
     "primeicons": "^5.0.0",
     "primeng": "^14.0.2",

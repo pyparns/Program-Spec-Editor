@@ -92,13 +92,23 @@
                 <ng-template *ngIf="isAddPage; else elseBody">
                     
                 </ng-template>
-                <ng-template #elseBody>
-                    <iframe
+                <ng-template #elseBody class="p-5">
+                    <!-- <iframe
                         [src]="pdfDat | safe"
                         scrolling="auto"
                         height="100%"
                         width="100%"
-                    ></iframe>
+                    ></iframe> -->
+                    <pdf-viewer [src]="pdfDat"
+                        [render-text]="false"
+                        [original-size]="true"
+                        [stick-to-page]="true"
+                        [show-all]="true"
+                        [autoresize]="true"
+                        [show-borders]="true"
+                        [zoom-scale]="'page-height'"
+                        style="width: 100%; height: 100%"
+                    ></pdf-viewer>
                 </ng-template>
             </div>
         </div>
