@@ -30,7 +30,7 @@ export class AccountService {
       let a = user.password?.slice(0, 29);
       if (bcrypt.hashSync(password!, a) === user.password) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('user', JSON.stringify(user.token));
         this.userSubject.next(user);
         return user;
       }
