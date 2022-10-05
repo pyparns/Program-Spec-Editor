@@ -2,9 +2,16 @@
 <div class="container">
     <form [formGroup]="programForm">
         <div class="grid" *ngIf="!isVersion; else version">
-            <div class="col-12 md:col-4 lg:col-3 sm:flex-nowrap">
+            <div class="col-12 md:col-4 lg:col-3">
                 <div class="filter-hbox">
-                    <label class="filter-htext">About Program</label>
+                    <div class="grid">
+                        <div class="col-2 pt-3">
+                            <i class="pi pi-angle-left" style="font-size: 1.5rem" (click)="toVersion()"></i>
+                        </div>
+                        <div class="col-8 pt-3">
+                            <label class="filter-htext">About Program</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="filter-box px-5 py-4">
                     <div class="grid mt-4">
@@ -98,7 +105,7 @@
         <ng-template #version>
             <div class="grid">
                 <div class="col-12">
-                    <app-program-spec-version [id]="id" (version)="onSelectVersion($event)"></app-program-spec-version>
+                    <app-program-spec-version [programSpec]="programSpec" (version)="onSelectVersion($event)"></app-program-spec-version>
                 </div>
             </div>
         </ng-template>

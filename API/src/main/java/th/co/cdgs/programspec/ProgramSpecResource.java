@@ -14,6 +14,8 @@ import javax.ws.rs.core.Response;
 
 import org.bson.types.ObjectId;
 
+import th.co.cdgs.program.Program;
+
 
 @Path("/api/programspec")
 @Consumes("application/json")
@@ -41,9 +43,11 @@ public class ProgramSpecResource {
     
     @PUT
     @Path("/{id}")
-    public void update(String id, ProgramSpec programSpec) {
-    	programSpec.setId(new ObjectId(id));
-        programSpecRepository.update(programSpec);
+    public void update(String id, Program program) {
+    	ProgramSpec spec = programSpecRepository.findById(new ObjectId(id));
+    	spec.setLatest(spec.getLatest() + 1);
+    	spec.getPrograms().add(program);
+        programSpecRepository.update(spec);
     }
     
     @DELETE

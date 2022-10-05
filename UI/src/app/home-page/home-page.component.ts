@@ -33,7 +33,7 @@ export class HomePageComponent implements OnInit {
     this.subscribeProgramSpec = this.programSpecService.getProgramSpecs().subscribe(response => {
       this.programSpecs = response;
       this.programSpecs.forEach((item, index) => {
-        this.programSpecs[index].programs = [item.programs?.filter(spec => spec.version === item.latest)[0]!];
+        this.programSpecs[index].programs = [item.programs?.filter(spec => Number(spec.version) === item.latest)[0]!];
       })
       this.filteredProgramSpecs = this.programSpecs;
       this.isLoading = false;
@@ -46,8 +46,6 @@ export class HomePageComponent implements OnInit {
 
   filterSpec(): void {
     if (this.selectedStatus.length > 0) {
-      console.log(this.programSpecs);
-      console.log(this.filteredProgramSpecs);
       this.filteredProgramSpecs = this.programSpecs.filter(spec => this.selectedStatus.indexOf(spec.programs![0].status!) >= 0);
     }
     else

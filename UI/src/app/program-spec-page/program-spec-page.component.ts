@@ -8,6 +8,7 @@ import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
 import '../../THSarabunNew-normal';
 import { ProgramSpec } from '../model/programspec.model';
+import { Program } from '../model/program.model';
 
 @Component({
   selector: 'app-program-spec-page',
@@ -26,7 +27,8 @@ export class ProgramSpecPageComponent implements OnInit {
     systemWorkName: new FormControl(''),
     systemWorkDesigner: new FormControl(''),
     status: new FormControl(''),
-    images: new FormControl()
+    images: new FormControl(),
+    version: new FormControl(''),
   });
 
   id!: string | null;
@@ -57,8 +59,6 @@ export class ProgramSpecPageComponent implements OnInit {
     // this.programSpecService.getImage("image1.png").subscribe(response => {
     //   console.log(response);
     // });
-
-    this.initPdf();
   }
 
   ngOnDestroy(): void {
@@ -66,7 +66,7 @@ export class ProgramSpecPageComponent implements OnInit {
   }
 
   onSave(id: string | null): void {
-    this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, this.programForm.value).subscribe(
+    this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, this.programForm.value as Program).subscribe(
       () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program updated', detail: ''}),
       () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to update', detail: 'please wait and try again'}),
       () => this.isEdit = false
@@ -83,8 +83,16 @@ export class ProgramSpecPageComponent implements OnInit {
 
   onSelectVersion(version: string): void {
     this.isVersion = false;
-    if (version == this.programSpec.latest) this.canEdit = true;
+    if (Number(version) == this.programSpec.latest) this.canEdit = true;
     this.programForm.patchValue(this.programSpec.programs?.filter(spec => spec.version === version)[0]!);
+    this.initPdf();
+  }
+
+  toVersion(): void {
+    this.isVersion = true;
+    this.canEdit = false;
+    this.isEdit = false;
+    this.isAddPage = false;
   }
 
   lenText(doc: jsPDF, text: string): any {
@@ -92,31 +100,32 @@ export class ProgramSpecPageComponent implements OnInit {
   }
 
   initPdf(): any {
-      // this.doc.setProperties({ title: this.programForm.value.programName! });
-      this.doc.setFont("THSarabunNew", "bold");
-      this.doc.text(this.programForm.value.programName!, this.lenText(this.doc, this.programForm.value.programName!), 40);
+    console.log(this.programForm.value.programName!);
+    this.doc.setProperties({ title: this.programForm.value.programName! });
+    this.doc.setFont("THSarabunNew", "bold");
+    this.doc.text(this.programForm.value.programName!, this.lenText(this.doc, this.programForm.value.programName!), 40);
 
-      if (this.programForm.value.images)
-      this.programForm.value.images.forEach((item: any, index: number) => {
-          let x = 47;
-          let y = 80;
+    if (this.programForm.value.images)
+    this.programForm.value.images.forEach((item: any, index: number) => {
+      let x = 47;
+      let y = 80;
 
-          if (index != 0) this.doc.addPage("a4");
+      if (index != 0) this.doc.addPage("a4");
 
-          this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250)
+      this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250)
 
-          this.doc.setFont("THSarabunNew", "normal");
-          this.doc.text("Component : " + item.imageDescription, x, y += 290);
+      this.doc.setFont("THSarabunNew", "normal");
+      this.doc.text("Component : " + item.imageDescription, x, y += 290);
 
-          const components:any = [];
-          const actions:any = [];
-          item.components!.forEach((com: any) => components.push([com.label, com.attribute, com.action]));
-          item.actions!.forEach((act: any) => actions.push([act.action, act.description]));
+      const components:any = [];
+      const actions:any = [];
+      item.components!.forEach((com: any) => components.push([com.label, com.attribute, com.action]));
+      item.actions!.forEach((act: any) => actions.push([act.action, act.description]));
 
-          (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 20});
-          (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
-        });
+      (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 20});
+      (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
+    });
 
-      this.pdfDat = this.doc.output('datauristring');
+    this.pdfDat = this.doc.output('datauristring');
   }
 }

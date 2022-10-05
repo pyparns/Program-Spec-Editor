@@ -44,10 +44,6 @@ export class AddProgramPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getCurrentDate(): Date {
-    return new Date();
-  }
-
   onAddBtn(): void {
     this.isSubmitted = true;
 
@@ -55,17 +51,8 @@ export class AddProgramPageComponent implements OnInit {
     if (this.programForm.invalid) {
       return;
     }
-    
-    var ps: ProgramSpec = new ProgramSpec;
 
-    var program: Program = this.programForm.value as Program;
-    program.date = this.getCurrentDate();
-    program.version = "1";
-    ps.accId = this.accountService.userValue.id;
-    ps.latest = "1";
-    ps.programs = [program];
-
-    this.programSpecService.createProgramSpec(ps).subscribe(
+    this.programSpecService.createProgramSpec(this.programForm.value as Program).subscribe(
       () => {
         this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
         this.router.navigate(['home']);

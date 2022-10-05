@@ -30,7 +30,7 @@
                     </ng-template>
                     <ng-template let-programSpec pTemplate="listItem">
                         <div class="col-12">
-                            <div class="product-list-item">
+                            <div class="product-list-item px-5">
                                 <img [src]="'assets/image1.png'" [alt]="programSpec.programs[0].programName"/>
                                 <div class="product-list-detail">
                                     <div class="product-name">{{programSpec.programs[0].programName}}</div>
@@ -38,9 +38,9 @@
                                     <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{programSpec.programs[0].projectName}}</span>
                                 </div>
                                 <div class="product-list-action">
+                                    <p-tag class="product-price" [value]="programSpec.programs[0].status" severity="success"></p-tag>
                                     <span class="product-price">ID: {{programSpec.programs[0].programId}}</span>
                                     <p-button icon="pi pi-eye" label="View" (click)="detailSpec(programSpec.id)"></p-button>
-                                    <p-tag [value]="programSpec.programs[0].status" severity="success"></p-tag>
                                 </div>
                             </div>
                         </div>
