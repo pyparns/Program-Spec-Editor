@@ -1,4 +1,4 @@
-package th.co.cdgs.image;
+package th.co.cdgs.ui;
 
 import java.util.List;
 
@@ -8,27 +8,14 @@ import org.bson.types.ObjectId;
 import th.co.cdgs.action.Action;
 import th.co.cdgs.component.Component;
 
-public class Image {
-	private ObjectId id;
-
+public class Ui {
 	@BsonProperty("image_name")
 	private String imageName;
-	
 	@BsonProperty("image_description")
 	private String imageDescription;
-	
 	private List<Component> components;
-	
 	private List<Action> actions;
-
-	public ObjectId getId() {
-		return id;
-	}
-
-	public void setId(ObjectId id) {
-		this.id = id;
-	}
-
+	
 	public String getImageName() {
 		return imageName;
 	}

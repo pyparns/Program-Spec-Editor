@@ -1,11 +1,10 @@
 package th.co.cdgs.program;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
-import th.co.cdgs.image.Image;
+import th.co.cdgs.sheet.Sheet;
 
 public class Program {
 	@BsonProperty("project_name")
@@ -23,11 +22,11 @@ public class Program {
 	@BsonProperty("status")
 	private String status;
 	@BsonProperty("version")
-	private String version;
+	private Integer version;
 	@BsonProperty("date")
 	private LocalDateTime date;
-	@BsonProperty("images")
-	private List<Image> images;
+	@BsonProperty("sheet")
+	private Sheet sheet;
 	
 	public String getProjectName() {
 		return projectName;
@@ -65,11 +64,11 @@ public class Program {
 	public void setSystemWorkDesigner(String systemWorkDesigner) {
 		this.systemWorkDesigner = systemWorkDesigner;
 	}
-	public List<Image> getImages() {
-		return images;
+	public Sheet getSheet() {
+		return sheet;
 	}
-	public void setImages(List<Image> images) {
-		this.images = images;
+	public void setSheet(Sheet sheet) {
+		this.sheet = sheet;
 	}
 	public String getStatus() {
 		return status;
@@ -77,10 +76,10 @@ public class Program {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getVersion() {
+	public Integer getVersion() {
 		return version;
 	}
-	public void setVersion(String version) {
+	public void setVersion(Integer version) {
 		this.version = version;
 	}
 	public LocalDateTime getDate() {

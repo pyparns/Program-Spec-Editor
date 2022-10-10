@@ -1,4 +1,4 @@
-package th.co.cdgs.image;
+package th.co.cdgs.ui;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -21,7 +21,7 @@ import org.jboss.resteasy.reactive.multipart.FileUpload;
 @Path("/api/image")
 @Consumes("application/json")
 @Produces("application/json")
-public class ImageResource {
+public class UiResource {
 	
 	@GET
     @Produces(MediaType.MULTIPART_FORM_DATA)
