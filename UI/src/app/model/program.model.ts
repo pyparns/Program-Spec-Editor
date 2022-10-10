@@ -10,6 +10,6 @@ export class Program {
     systemWorkDesigner?: string;
     status?: string;
     images?: Image[];
-    version?: string;
+    version?: number;
     date?: Date;
 }
