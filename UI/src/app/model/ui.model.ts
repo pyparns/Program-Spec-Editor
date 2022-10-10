@@ -1,7 +1,7 @@
 import { Action } from "./action.model";
 import { Component } from "./component.model";
 
-export class Image {
+export class Ui {
     imageName?: string;
     imageDescription?: string;
     components?: Component[];

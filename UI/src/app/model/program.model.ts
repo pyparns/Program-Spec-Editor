@@ -1,4 +1,4 @@
-import { Image } from "./image.model";
+import { Sheet } from "./sheet.model";
 
 export class Program {
     id?: string;
@@ -9,7 +9,7 @@ export class Program {
     systemWorkName?: string;
     systemWorkDesigner?: string;
     status?: string;
-    images?: Image[];
+    sheet?: Sheet;
     version?: number;
     date?: Date;
 }
