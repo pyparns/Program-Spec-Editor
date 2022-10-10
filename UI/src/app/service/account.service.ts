@@ -9,19 +9,19 @@ import * as bcrypt from 'bcryptjs';
   providedIn: 'root'
 })
 export class AccountService {
-  private userSubject: BehaviorSubject<User>;
-  private user: Observable<User>;
+  private userSubject: BehaviorSubject<User | null>;
+  private user: Observable<User | null>;
 
   constructor(
     private router: Router,
     private http: HttpClient
   ) {
-    this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')!));
+    this.userSubject = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem('user')!));
     this.user = this.userSubject.asObservable();
   }
 
-  public get userValue(): User {
-    return this.userSubject.value;
+  public get userValue(): any {
+    return this.userSubject;
   }
 
   login(username: string, password: string) {
@@ -30,7 +30,7 @@ export class AccountService {
       let a = user.password?.slice(0, 29);
       if (bcrypt.hashSync(password!, a) === user.password) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('user', JSON.stringify(user.token));
+        localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
         return user;
       }
@@ -41,7 +41,7 @@ export class AccountService {
   logout(): any {
     // remove user from local storage and set current user to null
     localStorage.removeItem('user');
-    this.userSubject.next(new User());
+    this.userSubject.next(null);
     this.router.navigate(['/']);
   }
 

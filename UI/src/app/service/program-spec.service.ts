@@ -24,7 +24,7 @@ export class ProgramSpecService {
   createProgramSpec(program: Program) {
     var programSpec: ProgramSpec = new ProgramSpec;
     program.date = new Date();
-    program.version = "1";
+    program.version = 1;
     programSpec.latest = 1;
     programSpec.programs = [program];
     programSpec.accId = this.accountService.userValue.id;
@@ -33,7 +33,7 @@ export class ProgramSpecService {
   }
   updateProgramSpec(id: string | null, program: Program) {
     program.date = new Date();
-    program.version = (Number(program.version) + 1).toString();
+    program.version = program.version! + 1;
     return this.http.put("/api/programspec/" + id, program);
   }
   deleteProgramSpec(id: string | null) {
