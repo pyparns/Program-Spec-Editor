@@ -10,6 +10,7 @@ import { AccountService } from '../service/account.service';
 })
 export class NavbarComponent implements OnInit {
     username: string = '';
+    isLoggedIn: boolean = false;
 
     constructor(
         private router: Router,
@@ -22,10 +23,15 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit() {
         this.accountService.userValue.subscribe((item: any) => {
-            if (item)
+            if (item) {
                 this.username = item.username;
+                this.isLoggedIn = true;
+            }
+            else {
+                this.username = '';
+                this.isLoggedIn = false;
+            }
         });
-        // if (this.accountService.userValue) this.username = this.accountService.userValue.username!;
 
         this.items = [
             {

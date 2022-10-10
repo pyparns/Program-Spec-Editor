@@ -128,6 +128,7 @@ export class ProgramSpecPageComponent implements OnInit {
       }
       if (this.programForm.value.sheet.service) {
         let sheet = this.programForm.value.sheet;
+        this.doc.setFont("THSarabunNew", "normal");
         this.doc.text("Host : " + sheet.host, 47, 80);
         this.doc.text("Post : " + sheet.port, 47, 100);
         this.doc.text("contextRoot : " + sheet.contextRoot, 47, 120);
