@@ -8,14 +8,14 @@ import { ProgramSpec } from '../model/programspec.model';
 })
 export class ProgramSpecVersionComponent implements OnInit {
   @Input() programSpec: ProgramSpec = new ProgramSpec();
-  @Output() version = new EventEmitter<string>();
+  @Output() version = new EventEmitter<number>();
 
   constructor( ) { }
   
   ngOnInit(): void {
   }
 
-  onSelect(version: string): void {
+  onSelect(version: number): void {
     this.version.emit(version);
   }
 }
