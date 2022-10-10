@@ -27,8 +27,8 @@ export class ProgramSpecPageComponent implements OnInit {
     systemWorkName: new FormControl(''),
     systemWorkDesigner: new FormControl(''),
     status: new FormControl(''),
-    images: new FormControl(),
-    version: new FormControl(''),
+    sheet: new FormControl(),
+    version: new FormControl(),
   });
 
   id!: string | null;
@@ -81,9 +81,9 @@ export class ProgramSpecPageComponent implements OnInit {
     )
   }
 
-  onSelectVersion(version: string): void {
+  onSelectVersion(version: number): void {
     this.isVersion = false;
-    if (Number(version) == this.programSpec.latest) this.canEdit = true;
+    if (version == this.programSpec.latest) this.canEdit = true;
     this.programForm.patchValue(this.programSpec.programs?.filter(spec => spec.version === version)[0]!);
     this.initPdf();
   }
@@ -100,31 +100,40 @@ export class ProgramSpecPageComponent implements OnInit {
   }
 
   initPdf(): any {
-    console.log(this.programForm.value.programName!);
     this.doc.setProperties({ title: this.programForm.value.programName! });
     this.doc.setFont("THSarabunNew", "bold");
     this.doc.text(this.programForm.value.programName!, this.lenText(this.doc, this.programForm.value.programName!), 40);
 
-    if (this.programForm.value.images)
-    this.programForm.value.images.forEach((item: any, index: number) => {
-      let x = 47;
-      let y = 80;
-
-      if (index != 0) this.doc.addPage("a4");
-
-      this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250)
-
-      this.doc.setFont("THSarabunNew", "normal");
-      this.doc.text("Component : " + item.imageDescription, x, y += 290);
-
-      const components:any = [];
-      const actions:any = [];
-      item.components!.forEach((com: any) => components.push([com.label, com.attribute, com.action]));
-      item.actions!.forEach((act: any) => actions.push([act.action, act.description]));
-
-      (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 20});
-      (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
-    });
+    if (this.programForm.value.sheet) {
+      if (this.programForm.value.sheet.ui) {
+        this.programForm.value.sheet.ui.forEach((item: any, index: number) => {
+          let x = 47;
+          let y = 80;
+  
+          if (index != 0) this.doc.addPage("a4");
+  
+          this.doc.addImage("/assets/image1.png", "PNG", x, y, 500, 250)
+  
+          this.doc.setFont("THSarabunNew", "normal");
+          this.doc.text("Component : " + item.imageDescription, x, y += 290);
+  
+          const components:any = [];
+          const actions:any = [];
+          item.components!.forEach((com: any) => components.push([com.label, com.attribute, com.action]));
+          item.actions!.forEach((act: any) => actions.push([act.action, act.description]));
+  
+          (this.doc as any).autoTable({columns: ["Label", "Attribute", "Event"], body: components, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 20});
+          (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
+        });
+      }
+      if (this.programForm.value.sheet.service) {
+        let sheet = this.programForm.value.sheet;
+        this.doc.text("Host : " + sheet.host, 47, 80);
+        this.doc.text("Post : " + sheet.port, 47, 100);
+        this.doc.text("contextRoot : " + sheet.contextRoot, 47, 120);
+        
+      }
+    }
 
     this.pdfDat = this.doc.output('datauristring');
   }
