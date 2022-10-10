@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -9,6 +9,7 @@ import 'jspdf-autotable';
 import '../../THSarabunNew-normal';
 import { ProgramSpec } from '../model/programspec.model';
 import { Program } from '../model/program.model';
+import { Sheet } from '../model/sheet.model';
 
 @Component({
   selector: 'app-program-spec-page',
@@ -27,8 +28,8 @@ export class ProgramSpecPageComponent implements OnInit {
     systemWorkName: new FormControl(''),
     systemWorkDesigner: new FormControl(''),
     status: new FormControl(''),
-    sheet: new FormControl(),
-    version: new FormControl(),
+    sheet: new FormControl(new Sheet),
+    version: new FormControl(0),
   });
 
   id!: string | null;
@@ -104,9 +105,11 @@ export class ProgramSpecPageComponent implements OnInit {
     this.doc.setFont("THSarabunNew", "bold");
     this.doc.text(this.programForm.value.programName!, this.lenText(this.doc, this.programForm.value.programName!), 40);
 
-    if (this.programForm.value.sheet) {
-      if (this.programForm.value.sheet.ui) {
-        this.programForm.value.sheet.ui.forEach((item: any, index: number) => {
+    let sheet = this.programForm.value.sheet;
+
+    if (sheet) {
+      if (sheet.ui) {
+        sheet.ui.forEach((item: any, index: number) => {
           let x = 47;
           let y = 80;
   
@@ -117,8 +120,8 @@ export class ProgramSpecPageComponent implements OnInit {
           this.doc.setFont("THSarabunNew", "normal");
           this.doc.text("Component : " + item.imageDescription, x, y += 290);
   
-          const components:any = [];
-          const actions:any = [];
+          const components: any = [];
+          const actions: any = [];
           item.components!.forEach((com: any) => components.push([com.label, com.attribute, com.action]));
           item.actions!.forEach((act: any) => actions.push([act.action, act.description]));
   
@@ -126,13 +129,40 @@ export class ProgramSpecPageComponent implements OnInit {
           (this.doc as any).autoTable({columns: ["Event", "Description"], body: actions, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 130});
         });
       }
-      if (this.programForm.value.sheet.service) {
-        let sheet = this.programForm.value.sheet;
+      if (sheet.services) {
+        let x = 47;
+        let y = 80;
+
         this.doc.setFont("THSarabunNew", "normal");
-        this.doc.text("Host : " + sheet.host, 47, 80);
-        this.doc.text("Post : " + sheet.port, 47, 100);
-        this.doc.text("contextRoot : " + sheet.contextRoot, 47, 120);
-        
+        this.doc.text("Host : " + sheet.host, x, y);
+        this.doc.text("Post : " + sheet.port, x, y += 20);
+        this.doc.text("contextRoot : " + sheet.contextRoot, x, y += 20);
+        this.doc.text("ER Diagram", x, y += 40);
+        let textWidth = this.doc.getTextWidth("ER Diagram");
+        this.doc.line(x, y += 2, x + textWidth, y)
+        this.doc.addImage("/assets/image1.png", "PNG", x, y += 20, 500, 350)
+
+        this.doc.addPage("a4");
+        x = 47; y = 60;
+
+        this.doc.text("Class Diagram", x, y);
+        textWidth = this.doc.getTextWidth("Class Diagram");
+        this.doc.line(x, y += 2, x + textWidth, y)
+        this.doc.addImage("/assets/image1.png", "PNG", x, y += 20, 500, 400)
+
+        const services: any = [];
+        sheet.services!.forEach((service: any, index: number) => services.push([index, service.service, service.method, service.action]));
+        (this.doc as any).autoTable({columns: ["No.", "Service", "Method", "Action"], body: services, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 440});
+
+        sheet.services!.forEach((service: any) => {
+          const services: any = [
+            ['Method Name', service.methodName],
+            ['Input Parameter', service.inputParameter],
+            ['Example Response', service.exampleResponse],
+            [{content: service.description, colSpan: 2}]
+          ];
+          (this.doc as any).autoTable({head: [[{content: service.action, colSpan: 2, styles: { halign: 'center' }}]], body: services, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 300})
+        })
       }
     }
 
