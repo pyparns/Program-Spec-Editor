@@ -46,10 +46,10 @@ export class HomePageComponent implements OnInit {
 
   filterSpec(): void {
     if (this.selectedStatus.length > 0) {
-      this.filteredProgramSpecs = this.programSpecs.filter(spec => this.selectedStatus.indexOf(spec.programs![0].status!) >= 0);
+      this.filteredProgramSpecs = this.filteredProgramSpecs.filter(spec => this.selectedStatus.indexOf(spec.programs![0].status!) >= 0);
     }
     else
-      this.filteredProgramSpecs = this.programSpecs;
+      this.filteredProgramSpecs = this.filteredProgramSpecs
   }
 
   onSearch(event: any): void {
@@ -60,7 +60,6 @@ export class HomePageComponent implements OnInit {
       if (spec.programs![0].programName?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].projectName?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].systemWorkDesigner?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].programId?.toLowerCase().indexOf(word) !== -1)
         result.push(spec);
     });
-    this.programSpecs = result;
     this.filteredProgramSpecs = result;
   }
 

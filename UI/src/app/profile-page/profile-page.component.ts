@@ -33,7 +33,7 @@ export class ProfilePageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userForm.patchValue(this.accountService.userValue);
+    this.userForm.patchValue(this.accountService.userValue.value);
 
     this.mode = this.route.snapshot.url[0].path;
   }

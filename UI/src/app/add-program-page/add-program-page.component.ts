@@ -35,7 +35,7 @@ export class AddProgramPageComponent implements OnInit {
     private programSpecService: ProgramSpecService,
     private accountService: AccountService,
   ) {
-    if (!this.accountService.userValue) {
+    if (!this.accountService.userValue.value) {
       this.messageService.add({key: 'tl', severity: 'warn', summary: 'Not logged in', detail: 'please login and try again'});
       this.router.navigate(['/']);
     }

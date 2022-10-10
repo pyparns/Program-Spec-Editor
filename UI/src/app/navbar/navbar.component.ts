@@ -21,7 +21,11 @@ export class NavbarComponent implements OnInit {
     accItems!: MenuItem[];
 
     ngOnInit() {
-        if (this.accountService.userValue) this.username = this.accountService.userValue.username!;
+        this.accountService.userValue.subscribe((item: any) => {
+            if (item)
+                this.username = item.username;
+        });
+        // if (this.accountService.userValue) this.username = this.accountService.userValue.username!;
 
         this.items = [
             {
