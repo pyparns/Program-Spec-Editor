@@ -42,7 +42,9 @@
               "raf",
               "xlsx",
               "bcryptjs",
-              "@babel/runtime-corejs3"
+              "@babel/runtime-corejs3",
+              "pdfjs-dist/build/pdf",
+              "pdfjs-dist/web/pdf_viewer"
             ]
           },
           "configurations": {
