@@ -140,7 +140,7 @@ export class ProgramSpecPageComponent implements OnInit {
         this.doc.text("ER Diagram", x, y += 40);
         let textWidth = this.doc.getTextWidth("ER Diagram");
         this.doc.line(x, y += 2, x + textWidth, y)
-        this.doc.addImage("/assets/image1.png", "PNG", x, y += 20, 500, 350)
+        this.doc.addImage("/assets/er.png", "PNG", x, y += 20, 500, 350)
 
         this.doc.addPage("a4");
         x = 47; y = 60;
@@ -148,10 +148,10 @@ export class ProgramSpecPageComponent implements OnInit {
         this.doc.text("Class Diagram", x, y);
         textWidth = this.doc.getTextWidth("Class Diagram");
         this.doc.line(x, y += 2, x + textWidth, y)
-        this.doc.addImage("/assets/image1.png", "PNG", x, y += 20, 500, 400)
+        this.doc.addImage("/assets/class.png", "PNG", x, y += 20, 500, 400)
 
         const services: any = [];
-        sheet.services!.forEach((service: any, index: number) => services.push([index, service.service, service.method, service.action]));
+        sheet.services!.forEach((service: any, index: number) => services.push([index + 1, service.service, service.method, service.action]));
         (this.doc as any).autoTable({columns: ["No.", "Service", "Method", "Action"], body: services, styles: {font: "THSarabunNew", fontSize: 13}, startY: y += 440});
 
         sheet.services!.forEach((service: any) => {
