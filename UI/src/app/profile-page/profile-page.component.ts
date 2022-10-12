@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
 import { AccountService } from '../service/account.service';
 
 @Component({
@@ -29,7 +29,8 @@ export class ProfilePageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -52,15 +53,29 @@ export class ProfilePageComponent implements OnInit {
 
     this.isLoading = true;
 
-    this.accountService.editProfile(this.userForm.value).subscribe(
-      () => {
-        this.messageService.add({key: 'tl', severity: 'success', summary: 'Edit successful', detail: ''});
-        this.router.navigate(['../profile'], { relativeTo: this.route });
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to save?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.accountService.editProfile(this.userForm.value).subscribe(
+          () => {
+            this.messageService.add({key: 'tl', severity: 'success', summary: 'Edit successful', detail: ''});
+            this.router.navigate(['../profile'], { relativeTo: this.route });
+          }, () => {
+            this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to edit', detail: 'please try again'})
+            this.isLoading = false;
+          }
+        );
       },
-      () => {
-        this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to edit', detail: 'please try again'})
-        this.isLoading = false;
-      });;
+      reject: (type: any) => {
+        switch(type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+          break;
+        }
+      }
+    });
   }
 
 }

@@ -2,7 +2,7 @@
 <div class="container py-5">
     <div class="grid mt-5">
         <div class="col-8 col-offset-2">
-            <p-fileUpload name="demo[]" url="https://file.io" (onUpload)="onUpload($event)" (onError)="onError()"
+            <p-fileUpload name="demo[]" url="https://file.io" (onBeforeUpload)="onBeforeUpload()" (onUpload)="onUpload($event)" (onError)="onError()"
                     [multiple]="true" accept=".pdf" [maxFileSize]="1000000">
                     <ng-template pTemplate="content">
                         <ul *ngIf="uploadedFiles.length">

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ProgramSpecService } from '../service/program-spec.service';
 import { jsPDF } from "jspdf";
@@ -36,7 +36,6 @@ export class ProgramSpecPageComponent implements OnInit {
   isEdit: boolean = false;
   canEdit: boolean = false;
   isVersion: boolean = true;
-  isAddPage: boolean = false;
   subscribeProgramSpec!: Subscription;
 
   doc: jsPDF = new jsPDF("p", "pt", "a4");
@@ -46,7 +45,8 @@ export class ProgramSpecPageComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private messageService: MessageService,
-    private programSpecService: ProgramSpecService
+    private programSpecService: ProgramSpecService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -67,19 +67,47 @@ export class ProgramSpecPageComponent implements OnInit {
   }
 
   onSave(id: string | null): void {
-    this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, this.programForm.value as Program).subscribe(
-      () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program updated', detail: ''}),
-      () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to update', detail: 'please wait and try again'}),
-      () => this.isEdit = false
-    )
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to save?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, this.programForm.value as Program).subscribe(
+          () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program updated', detail: ''}),
+          () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to update', detail: 'please wait and try again'}),
+          () => this.isEdit = false
+        );
+      },
+      reject: (type: any) => {
+        switch(type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+          break;
+        }
+      }
+    });
   }
 
   onDelete(id: string | null): void {
-    this.subscribeProgramSpec = this.programSpecService.deleteProgramSpec(id).subscribe(
-      () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program deleted', detail: ''}),
-      () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to delete', detail: 'please wait and try again'}),
-      () => this.router.navigate(['home'])
-    )
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this spec?',
+      header: 'Delete confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.subscribeProgramSpec = this.programSpecService.deleteProgramSpec(id).subscribe(
+          () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program deleted', detail: ''}),
+          () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to delete', detail: 'please wait and try again'}),
+          () => this.router.navigate(['home'])
+        );
+      },
+      reject: (type: any) => {
+        switch(type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+          break;
+        }
+      }
+    });
   }
 
   onSelectVersion(version: number): void {
@@ -93,11 +121,30 @@ export class ProgramSpecPageComponent implements OnInit {
     this.isVersion = true;
     this.canEdit = false;
     this.isEdit = false;
-    this.isAddPage = false;
+    this.doc = new jsPDF("p", "pt", "a4");
   }
 
   lenText(doc: jsPDF, text: string): any {
     return (doc.internal.pageSize.getWidth() - doc.getTextWidth(text))/2
+  }
+
+  onPrint(): any {
+    this.confirmationService.confirm({
+      message: 'Do you want to print this spec?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.doc.save();
+        this.messageService.add({key: 'tl', severity:'info', summary:'Confirmed', detail:'You have accepted'});
+      },
+      reject: (type: any) => {
+        switch(type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+          break;
+        }
+      }
+    });
   }
 
   initPdf(): any {

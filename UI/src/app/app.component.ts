@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
-import { Message, MessageService } from 'primeng/api';
+import { ConfirmationService, Message, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class AppComponent {
   title = 'ProgramSpec';
-  
+  position!: String;
   msgs: Message[] = [];
 }

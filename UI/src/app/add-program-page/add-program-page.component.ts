@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { Program } from '../model/program.model';
-import { ProgramSpec } from '../model/programspec.model';
 import { AccountService } from '../service/account.service';
 import { ProgramSpecService } from '../service/program-spec.service';
 
@@ -31,9 +30,10 @@ export class AddProgramPageComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private accountService: AccountService,
     private messageService: MessageService,
     private programSpecService: ProgramSpecService,
-    private accountService: AccountService,
+    private confirmationService: ConfirmationService
   ) {
     if (!this.accountService.userValue.value) {
       this.messageService.add({key: 'tl', severity: 'warn', summary: 'Not logged in', detail: 'please login and try again'});
@@ -52,15 +52,29 @@ export class AddProgramPageComponent implements OnInit {
       return;
     }
 
-    this.programSpecService.createProgramSpec(this.programForm.value as Program).subscribe(
-      () => {
-        this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
-        this.router.navigate(['home']);
-      }, () => {
-        this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'});
-      }, () => {
-        this.isSubmitted = false;
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to submit?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.programSpecService.createProgramSpec(this.programForm.value as Program).subscribe(
+          () => {
+            this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
+            this.router.navigate(['home']);
+          }, () => {
+            this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'});
+          }, () => {
+            this.isSubmitted = false;
+          }
+        );
+      },
+      reject: (type: any) => {
+        switch(type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+          break;
+        }
       }
-    )
+    });
   }
 }

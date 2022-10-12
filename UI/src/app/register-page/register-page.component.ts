@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
 import { first } from 'rxjs';
 import { AccountService } from '../service/account.service';
 
@@ -21,7 +21,8 @@ export class RegisterPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     if (this.accountService.userValue.value) {
       this.messageService.add({key: 'tl', severity: 'info', summary: 'Already logged in', detail: ''});
@@ -53,17 +54,31 @@ export class RegisterPageComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.accountService.register(this.userForm.value)
-      .pipe(first())
-      .subscribe(
-        () => {
-          this.messageService.add({key: 'tl', severity: 'success', summary: 'Registration successful', detail: ''});
-          this.router.navigate(['../login'], { relativeTo: this.route });
-        },
-        () => {
-          this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to register', detail: 'please try again'})
-          this.isLoading = false;
-        });
 
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to register?',
+      header: 'Delete confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.accountService.register(this.userForm.value)
+          .pipe(first())
+          .subscribe(
+            () => {
+              this.messageService.add({key: 'tl', severity: 'success', summary: 'Registration successful', detail: ''});
+              this.router.navigate(['../login'], { relativeTo: this.route });
+            }, () => {
+              this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to register', detail: 'please try again'})
+              this.isLoading = false;
+            }
+          );
+      },
+      reject: (type: any) => {
+        switch(type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+          break;
+        }
+      }
+    });
   }
 }

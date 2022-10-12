@@ -80,25 +80,19 @@
                 </div>
                 <ng-template #elseBlock>
                     <div class="filter-fbox p-1">
-                        <div *ngIf="canEdit">
+                        <span *ngIf="canEdit">
                             <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="isEdit = true"></button>
                             <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onDelete(id)"></button>
-                            <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="isAddPage = true"></button>
-                        </div>
+                        </span>
+                        <button pButton pRipple type="button" icon="pi pi-print" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onPrint()"></button>
                     </div>
                 </ng-template>
             </div>
             <div class="col-12 md:col-8 lg:col-9 pb-5">
-                <ng-template *ngIf="isAddPage; else elseBody">
+                <ng-template *ngIf="isEdit; else elseBody">
                     
                 </ng-template>
                 <ng-template #elseBody class="p-5">
-                    <!-- <iframe
-                        [src]="pdfDat | safe"
-                        scrolling="auto"
-                        height="100%"
-                        width="100%"
-                    ></iframe> -->
                     <pdf-viewer [src]="pdfDat"
                         [render-text]="false"
                         [original-size]="true"

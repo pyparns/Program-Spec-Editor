@@ -27,6 +27,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { FileUploadModule } from 'primeng/fileupload';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -91,6 +92,7 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     HttpClientModule,
     FileUploadModule,
     SplitButtonModule,
+    ConfirmDialogModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers, {
