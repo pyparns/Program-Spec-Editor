@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
+import { MessageService, ConfirmationService, ConfirmEventType, MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ProgramSpecService } from '../service/program-spec.service';
 import { jsPDF } from "jspdf";
@@ -18,6 +18,7 @@ import { Sheet } from '../model/sheet.model';
 })
 export class ProgramSpecPageComponent implements OnInit {
   statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
+  uploadedFiles: File[] = [];
 
   programSpec: ProgramSpec = new ProgramSpec();
   programForm = new FormGroup({
@@ -33,10 +34,12 @@ export class ProgramSpecPageComponent implements OnInit {
   });
 
   id!: string | null;
-  isEdit: boolean = false;
+  isEdit: boolean = true;
   canEdit: boolean = false;
   isVersion: boolean = true;
+  isUploaded: boolean = false;
   subscribeProgramSpec!: Subscription;
+  items: MenuItem[] = [];
 
   doc: jsPDF = new jsPDF("p", "pt", "a4");
   pdfDat!: string;
@@ -56,6 +59,57 @@ export class ProgramSpecPageComponent implements OnInit {
     this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
       this.programSpec = response;
     });
+    this.items = [
+      {
+        label:'Text',
+        icon:'pi pi-pencil',
+        items:[
+          {
+            label:'Heading 1',
+            icon:'pi pi-pencil'
+          },
+          {
+            label:'Heading 2',
+            icon:'pi pi-pencil'
+          },
+          {
+            label:'Heading 3',
+            icon:'pi pi-pencil'
+          },
+          {
+            label:'Content',
+            icon:'pi pi-pencil'
+          },
+        ]
+      },
+      {
+        label:'Table',
+        icon:'pi pi-pencil',
+        items:[
+          {
+            label:'Component table',
+            icon: 'pi pi-table',
+            command: () => {
+                this.messageService.add({ key: 'tl', severity: 'info', summary: 'Add', detail: 'component table' });
+            }
+          },
+          {
+            label:'Action table',
+            icon: 'pi pi-table',
+            command: () => {
+                this.messageService.add({ key: 'tl', severity: 'info', summary: 'Add', detail: 'action table' });
+            }
+          },
+          {
+            label:'Service table',
+            icon: 'pi pi-table',
+            command: () => {
+              this.messageService.add({ key: 'tl', severity: 'info', summary: 'Add', detail: 'service table' });
+            }
+          },
+        ]
+      }
+  ];
 
     // this.programSpecService.getImage("image1.png").subscribe(response => {
     //   console.log(response);
@@ -145,6 +199,16 @@ export class ProgramSpecPageComponent implements OnInit {
         }
       }
     });
+  }
+
+  onUpload(event: { files: any; }): void {
+    this.isUploaded = true;
+    console.log("onUpload")
+    for (let file of event.files) {
+        this.uploadedFiles.push(file);
+    }
+    console.log("success")
+    this.messageService.add({key: 'tl', severity: 'success', summary: 'File Uploaded', detail: ''});
   }
 
   initPdf(): any {

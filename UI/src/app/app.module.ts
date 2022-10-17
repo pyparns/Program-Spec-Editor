@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { BrowserModule } from '@angular/platform-browser';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +12,7 @@ import { PanelModule } from 'primeng/panel';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { EditorModule } from 'primeng/editor';
 import { MenubarModule } from 'primeng/menubar';
 import { MessageModule } from 'primeng/message';
 import { TimelineModule } from 'primeng/timeline';
@@ -26,6 +26,7 @@ import { OrderListModule } from 'primeng/orderlist';
 import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { FileUploadModule } from 'primeng/fileupload';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
@@ -43,8 +44,9 @@ import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.com
 import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
 
 import { SafePipe } from './pipe/safe.pipe';
-import { UserEffects } from './state/user'
+import { UserEffects } from './state/user';
 import { AccountService } from './service/account.service';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AppRoutingModule } from './app-routing.module';
 import { reducers, metaReducers } from './reducers';
 import { ProgramSpecVersionComponent } from './program-spec-version/program-spec-version.component';
@@ -74,6 +76,7 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     ToastModule,
     ButtonModule,
     DialogModule,
+    EditorModule,
     BrowserModule,
     MessageModule,
     MenubarModule,
@@ -91,6 +94,7 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     AppRoutingModule,
     HttpClientModule,
     FileUploadModule,
+    TieredMenuModule,
     SplitButtonModule,
     ConfirmDialogModule,
     ReactiveFormsModule,
