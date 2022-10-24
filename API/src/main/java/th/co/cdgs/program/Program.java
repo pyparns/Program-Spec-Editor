@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
-import th.co.cdgs.sheet.Sheet;
-
 public class Program {
 	@BsonProperty("project_name")
 	private String projectName;	
@@ -26,7 +24,7 @@ public class Program {
 	@BsonProperty("date")
 	private LocalDateTime date;
 	@BsonProperty("sheet")
-	private Sheet sheet;
+	private String sheet;
 	
 	public String getProjectName() {
 		return projectName;
@@ -64,10 +62,10 @@ public class Program {
 	public void setSystemWorkDesigner(String systemWorkDesigner) {
 		this.systemWorkDesigner = systemWorkDesigner;
 	}
-	public Sheet getSheet() {
+	public String getSheet() {
 		return sheet;
 	}
-	public void setSheet(Sheet sheet) {
+	public void setSheet(String sheet) {
 		this.sheet = sheet;
 	}
 	public String getStatus() {

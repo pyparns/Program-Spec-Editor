@@ -18,7 +18,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 
 import org.bson.types.ObjectId;
 
-@Path("/api/user")
+@Path("/user")
 @Consumes("application/json")
 @Produces("application/json")
 public class UserResource {
