@@ -1,5 +1,3 @@
-import { Sheet } from "./sheet.model";
-
 export class Program {
     id?: string;
     projectName?: string;
@@ -9,7 +7,7 @@ export class Program {
     systemWorkName?: string;
     systemWorkDesigner?: string;
     status?: string;
-    sheet?: Sheet;
+    sheet?: string;
     version?: number;
     date?: Date;
 }
