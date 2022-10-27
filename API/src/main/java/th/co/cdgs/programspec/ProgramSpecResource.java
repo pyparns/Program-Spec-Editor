@@ -1,5 +1,7 @@
 package th.co.cdgs.programspec;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,6 +20,7 @@ import javax.ws.rs.core.Response;
 
 import org.bson.types.ObjectId;
 import org.jboss.resteasy.reactive.MultipartForm;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import th.co.cdgs.program.Program;
 
@@ -28,6 +31,12 @@ import th.co.cdgs.program.Program;
 public class ProgramSpecResource {
     @Inject
     ProgramSpecRepository programSpecRepository;
+    
+    // Save file
+    public static String saveFile(byte[] bytes, java.nio.file.Path path) throws IOException {
+        Files.write(path, bytes);
+        return "success";
+    }
     
     @GET
     public List<ProgramSpec> list() {
@@ -67,27 +76,96 @@ public class ProgramSpecResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response upload(@MultipartForm FormData formData) {
-        System.out.println(">>>>");
         try {
-            System.out.println(formData.getDescription());
-            System.out.println("input  = " + formData.getFile().uploadedFile());
-            System.out.println("inputFile = " + formData.getFile().fileName());
+        	String fileName = formData.getFile().fileName().toLowerCase();
+            String located = "./src/main/resources/assets/specs/" + fileName;
             
-            System.out.println("<<<<");
-            String located = "./src/main/resources/assets/specs/" + formData.getFile().fileName().toLowerCase(); // located File
-            String statusSave = saveFile(Files.readAllBytes(formData.getFile().uploadedFile()), located);
+            Integer count = 0;
+            String type = located.substring(located.length() - 4);
+            java.nio.file.Path path = Paths.get(located);
+            while (Files.exists(path) && !Files.isDirectory(path))
+                path = Paths.get(located.substring(0, located.length()-4) + " (" + ++count + ")" + type);
+            
+            String statusSave = saveFile(Files.readAllBytes(formData.getFile().uploadedFile()), path);
             System.out.println(statusSave);
-            return Response.ok(formData.getDescription()).status(200).build();
+            if (count > 0) fileName = fileName.substring(0, fileName.length()-4) + " (" + count + ")" + type;
+            return Response.ok(fileName).status(200).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.ok(e).status(500).build();
         }
     }
     
-    public static String saveFile(byte[] bytes, String located) throws IOException {
-        System.out.println("readfile");
-        java.nio.file.Path path = Paths.get(located);
-        Files.write(path, bytes);
-        return "success";
+    @GET
+    @Path("/file/{fileName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFile(String fileName) {
+    	String located = "./src/main/resources/assets/specs/" + fileName.toLowerCase();
+    	java.nio.file.Path path = Paths.get(located);
+    	System.out.println(path);
+    	try {
+			BufferedReader reader = Files.newBufferedReader(path);
+			System.out.println(reader);
+			return Response.ok().status(200).build();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Response.ok(e).status(200).build();
+		}
+    	
     }
+    
+//    @GET
+//    @Path("/file/{fileName}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public File getFile(String fileName) throws IOException, URISyntaxException {
+//    	ProgramSpecResource app = new ProgramSpecResource();
+//    	String fileName1 = fileName.toLowerCase();
+//    	
+//    	InputStream is = app.getFileFromResourceAsStream(fileName);
+//        printInputStream(is);
+//    	
+//    	File file = app.getFileFromResource(fileName1);
+//        printFile(file);
+//        
+//        return file;
+//    }
+//    private InputStream getFileFromResourceAsStream(String fileName) {
+//        ClassLoader classLoader = getClass().getClassLoader();
+//        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+//
+//        if (inputStream == null)
+//            throw new IllegalArgumentException("file not found! " + fileName);
+//        else
+//            return inputStream;
+//    }
+//    private File getFileFromResource(String fileName) throws URISyntaxException{
+//        ClassLoader classLoader = getClass().getClassLoader();
+//        URL resource = classLoader.getResource(fileName);
+//        if (resource == null) {
+//            throw new IllegalArgumentException("file not found! " + fileName);
+//        } else {
+//            return new File(resource.toURI());
+//        }
+//    }
+//    private static void printInputStream(InputStream is) {
+//        try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8); BufferedReader reader = new BufferedReader(streamReader)) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                System.out.println(line);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    // print a file
+//    private static void printFile(File file) {
+//        List<String> lines;
+//        try {
+//            lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+//            lines.forEach(System.out::println);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
