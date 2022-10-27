@@ -40,20 +40,9 @@ export class NavbarComponent implements OnInit {
                 routerLink: "/home"
             },
             {
-                label:'Add',
+                label:'Add Spec',
                 icon:'pi pi-fw pi-pencil',
-                items:[
-                    {
-                        label:'Blank form',
-                        icon:'pi pi-fw pi-align-center',
-                        routerLink: "/create/spec/blankform"
-                    },
-                    {
-                        label:'Import spec',
-                        icon:'pi pi-fw pi-upload',
-                        routerLink: "/create/spec/import"
-                    },
-                ]
+                routerLink: "/create/spec/blankform"
             },
             {
                 label:'Users',
@@ -76,6 +65,7 @@ export class NavbarComponent implements OnInit {
         
         this.accItems = [
             {label: 'Edit Profile', routerLink: "/account/edit"},
+            {label: 'Bookmark', routerLink: "/account/bookmark"},
             {separator: true},
             {label: 'Logout', command: () => {
                 this.accountService.logout();

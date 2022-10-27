@@ -88,26 +88,29 @@
                     </div>
                 </ng-template>
             </div>
-            <div class="col-12 md:col-8 lg:col-9">
-                <div class="grid" *ngIf="isEdit">
-                    <div class="col-1">
-                        <p-fileUpload #fubauto mode="basic" name="demo[]" accept="image/*" [maxFileSize]="1000000" (onUpload)="onUpload($event)" [auto]="true" chooseLabel="Browse"></p-fileUpload>
+            <div class="col-12 md:col-8 lg:col-9 my-3">
+                <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+                    <div [innerHTML]="programForm.value.sheet"></div>
+                    <!-- <pdf-viewer [src]="programForm.value.sheet!"
+                        [render-text]="false"
+                        [original-size]="true"
+                        [stick-to-page]="true"
+                        [show-all]="true"
+                        [autoresize]="true"
+                        [show-borders]="true"
+                        [zoom-scale]="'page-height'"
+                        style="width: 100%; height: 100%"
+                    ></pdf-viewer> -->
+                    <hr *ngIf="isEdit">
+                    <div class="grid" *ngIf="isEdit">
+                        <div class="col-12">
+                            <p-editor [ngModelOptions]="{standalone: true}" [(ngModel)]="programForm.value.sheet" [style]="{'height':'320px'}"></p-editor>
+                        </div>
+                        <div class="col-12">
+                            <p-button label="SAVE" (click)="onSavePdf()"></p-button>
+                        </div>
                     </div>
-                    <div class="col-1">
-                        <button #btn type="button" pButton icon="pi pi-bars" label="Text" (click)="menu.toggle($event)"></button>
-                        <p-tieredMenu #menu [model]="items" [popup]="true"></p-tieredMenu>
-                    </div>
-                </div>
-                <pdf-viewer [src]="pdfDat"
-                    [render-text]="false"
-                    [original-size]="true"
-                    [stick-to-page]="true"
-                    [show-all]="true"
-                    [autoresize]="true"
-                    [show-borders]="true"
-                    [zoom-scale]="'page-height'"
-                    style="width: 100%; height: 100%"
-                ></pdf-viewer>
+                </p-scrollPanel>
             </div>
         </div>
         <ng-template #version>

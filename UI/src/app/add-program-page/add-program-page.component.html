@@ -1,4 +1,7 @@
 <app-header [pageTitle]="'Add Program'"></app-header>
+<!-- <div class="card">
+    <p-steps [model]="items" [readonly]="true"></p-steps>
+</div> -->
 <div class="container">
     <form [formGroup]="programForm" (submit)="onAddBtn()">
         <div class="grid">
@@ -34,7 +37,7 @@
         </div>
         <div class="grid btn">
             <div class="col-6 col-offset-3 mt-3">
-                <p-button label="ADD" type="submit"></p-button>
+                <p-button label="NEXT" type="submit"></p-button>
             </div>
         </div>
     </form>

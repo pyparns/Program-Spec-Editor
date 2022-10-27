@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
+import { MessageService, ConfirmationService, ConfirmEventType, MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { Program } from '../model/program.model';
 import { AccountService } from '../service/account.service';
@@ -22,10 +22,14 @@ export class AddProgramPageComponent implements OnInit {
     systemWorkId: new FormControl(''),
     systemWorkName: new FormControl(''),
     systemWorkDesigner: new FormControl(''),
-    status: new FormControl('')
+    status: new FormControl(''),
+    sheet: new FormControl('')
   });
 
+  uploadedFile!: File;
+  isUpload: boolean = false;
   isSubmitted: boolean = false;
+  // items: MenuItem[] = [];
 
   constructor(
     private router: Router,
@@ -42,6 +46,24 @@ export class AddProgramPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.items = [
+    //   {
+    //     label: 'Personal',
+    //     routerLink: 'personal'
+    //   },
+    //   {
+    //       label: 'Seat',
+    //       routerLink: 'seat'
+    //   },
+    //   {
+    //       label: 'Payment',
+    //       routerLink: 'payment'
+    //   },
+    //   {
+    //       label: 'Confirmation',
+    //       routerLink: 'confirmation'
+    //   }
+    // ];
   }
 
   onAddBtn(): void {
@@ -57,16 +79,8 @@ export class AddProgramPageComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.programSpecService.createProgramSpec(this.programForm.value as Program).subscribe(
-          () => {
-            this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
-            this.router.navigate(['home']);
-          }, () => {
-            this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'});
-          }, () => {
-            this.isSubmitted = false;
-          }
-        );
+        const program: Program = this.programForm.value as Program;
+        this.router.navigate(['../import'], { relativeTo: this.activatedRoute, state: { program: program } });
       },
       reject: (type: any) => {
         switch(type) {

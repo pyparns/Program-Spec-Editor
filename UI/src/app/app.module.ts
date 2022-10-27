@@ -12,7 +12,6 @@ import { PanelModule } from 'primeng/panel';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { EditorModule } from 'primeng/editor';
 import { MenubarModule } from 'primeng/menubar';
 import { MessageModule } from 'primeng/message';
 import { TimelineModule } from 'primeng/timeline';
@@ -29,6 +28,9 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { EditorModule } from 'primeng/editor';
+import { StepsModule } from 'primeng/steps';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -69,6 +71,9 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     ProgramSpecVersionComponent,
   ],
   imports: [
+    EditorModule,
+    StepsModule,
+    ScrollPanelModule,
     TagModule,
     CardModule,
     PanelModule,
@@ -76,7 +81,6 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     ToastModule,
     ButtonModule,
     DialogModule,
-    EditorModule,
     BrowserModule,
     MessageModule,
     MenubarModule,

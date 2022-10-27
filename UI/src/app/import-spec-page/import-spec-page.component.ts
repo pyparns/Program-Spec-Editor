@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
+import { map, Observable } from 'rxjs';
+import { Program } from '../model/program.model';
 import { AccountService } from '../service/account.service';
+import { ProgramSpecService } from '../service/program-spec.service';
 
 @Component({
   selector: 'app-import-spec-page',
@@ -10,14 +13,21 @@ import { AccountService } from '../service/account.service';
 })
 export class ImportSpecPageComponent implements OnInit {
   
-  uploadedFiles: any[] = [];
-  isUploaded: boolean = false;
+  text: string = "";
+  uploadedFile!: File;
+  isUpload: boolean = false;
+  isSubmitted: boolean = false;
+  program!: Program;
+
+  state$!: Observable<object>;
 
   constructor(
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private messageService: MessageService,
     private accountService: AccountService,
-    private confirmationService: ConfirmationService
+    private programSpecService: ProgramSpecService,
+    private confirmationService: ConfirmationService,
   ) {
     if (!this.accountService.userValue.value) {
       this.messageService.add({key: 'tl', severity: 'warn', summary: 'Not logged in', detail: 'please login and try again'});
@@ -26,15 +36,50 @@ export class ImportSpecPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.state$ = this.activatedRoute.paramMap
+      .pipe(map(() => window.history.state));
+    this.program = window.history.state.program;
   }
 
-  onBeforeUpload(): void {
+  onUpload(event: any): void {
+    this.isUpload = true;
+    console.log("onUpload :", event.files[0])
+
+    const formData: FormData = new FormData();
+    formData.append("file", event.files[0]);
+    formData.append("description", "abc");
+
+    this.uploadedFile = event.files[0];
+    this.programSpecService.uploadFile(formData).subscribe(
+      () => { this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' }) },
+      () => { this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' }) },
+      () => { console.log('Success :', this.uploadedFile) }
+    );
+  }
+
+  onError(): void {
+    this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' });
+  }
+
+  onSavePdf(): void {
+    this.isSubmitted = true;
+
     this.confirmationService.confirm({
-      message: 'Do you want to upload file?',
+      message: 'Are you sure that you want to submit?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.isUploaded = true;
+        this.program.sheet = this.uploadedFile ? this.uploadedFile.name : this.text;
+        this.programSpecService.createProgramSpec(this.program).subscribe(
+          () => {
+            this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
+            this.router.navigate(['home']);
+          }, () => {
+            this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'});
+          }, () => {
+            this.isSubmitted = false;
+          }
+        );
       },
       reject: (type: any) => {
         switch(type) {
@@ -46,18 +91,7 @@ export class ImportSpecPageComponent implements OnInit {
     });
   }
 
-  onUpload(event: { files: any; }): void {
-    if (this.isUploaded) {
-      console.log("onUpload")
-      for (let file of event.files) {
-          this.uploadedFiles.push(file);
-      }
-      console.log("success")
-      this.messageService.add({key: 'tl', severity: 'success', summary: 'File Uploaded', detail: ''});
-    }
-  }
-
-  onError(): void {
-    this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' });
+  a(text: string) {
+    console.log(text);
   }
 }
