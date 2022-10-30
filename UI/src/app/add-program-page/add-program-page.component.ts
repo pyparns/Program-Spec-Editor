@@ -25,11 +25,11 @@ export class AddProgramPageComponent implements OnInit {
     status: new FormControl(''),
     sheet: new FormControl('')
   });
+  
 
   uploadedFile!: File;
   isUpload: boolean = false;
   isSubmitted: boolean = false;
-  // items: MenuItem[] = [];
 
   constructor(
     private router: Router,
@@ -46,24 +46,6 @@ export class AddProgramPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.items = [
-    //   {
-    //     label: 'Personal',
-    //     routerLink: 'personal'
-    //   },
-    //   {
-    //       label: 'Seat',
-    //       routerLink: 'seat'
-    //   },
-    //   {
-    //       label: 'Payment',
-    //       routerLink: 'payment'
-    //   },
-    //   {
-    //       label: 'Confirmation',
-    //       routerLink: 'confirmation'
-    //   }
-    // ];
   }
 
   onAddBtn(): void {
