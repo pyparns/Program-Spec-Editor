@@ -45,6 +45,27 @@ export class NavbarComponent implements OnInit {
                 routerLink: "/create/spec/blankform"
             },
             {
+                label:'Project',
+                icon:'pi pi-fw pi-globe',
+                items:[
+                    {
+                        label:'Project',
+                        icon:'pi pi-fw pi-folder-open',
+                        routerLink: "/project"
+                    },
+                    {
+                        label:'System',
+                        icon:'pi pi-fw pi-sitemap',
+                        routerLink: "/system"
+                    },
+                    {
+                        label:'System Analyst',
+                        icon:'pi pi-fw pi-users',
+                        routerLink: "/system-analyst"
+                    },
+                ]
+            },
+            {
                 label:'Users',
                 icon:'pi pi-fw pi-user',
                 items:[

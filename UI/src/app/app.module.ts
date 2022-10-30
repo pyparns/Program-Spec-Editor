@@ -46,12 +46,14 @@ import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.com
 import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
 
 import { SafePipe } from './pipe/safe.pipe';
-import { UserEffects } from './state/user';
 import { AccountService } from './service/account.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AppRoutingModule } from './app-routing.module';
-import { reducers, metaReducers } from './reducers';
 import { ProgramSpecVersionComponent } from './program-spec-version/program-spec-version.component';
+import { ProjectPageComponent } from './project-page/project-page.component';
+import { BookmarkPageComponent } from './bookmark-page/bookmark-page.component';
+import { SystemPageComponent } from './system-page/system-page.component';
+import { SystemAnalystPageComponent } from './system-analyst-page/system-analyst-page.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,10 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     ImportSpecPageComponent,
     ProgramSpecPageComponent,
     ProgramSpecVersionComponent,
+    ProjectPageComponent,
+    BookmarkPageComponent,
+    SystemPageComponent,
+    SystemAnalystPageComponent,
   ],
   imports: [
     EditorModule,
@@ -102,11 +108,7 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     SplitButtonModule,
     ConfirmDialogModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers
-    }),
-    EffectsModule.forRoot([UserEffects])
+    BrowserAnimationsModule
   ],
   providers: [AccountService],
   bootstrap: [AppComponent]
