@@ -90,8 +90,4 @@ export class ImportSpecPageComponent implements OnInit {
       }
     });
   }
-
-  a(text: string) {
-    console.log(text);
-  }
 }

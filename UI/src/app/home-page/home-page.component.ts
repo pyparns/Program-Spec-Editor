@@ -53,14 +53,14 @@ export class HomePageComponent implements OnInit {
   }
 
   onSearch(event: any): void {
-    let word = event.target.value.toLowerCase();
-    const result: ProgramSpec[] = [];
+  //   let word = event.target.value.toLowerCase();
+  //   const result: ProgramSpec[] = [];
 
-    this.programSpecs.forEach(spec => {
-      if (spec.programs![0].programName?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].projectName?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].systemWorkDesigner?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].programId?.toLowerCase().indexOf(word) !== -1)
-        result.push(spec);
-    });
-    this.filteredProgramSpecs = result;
+  //   this.programSpecs.forEach(spec => {
+  //     if (spec.programs![0].programName?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].project?.projectName?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].systemAnalyst?.systemAnalystName?.toLowerCase().indexOf(word) !== -1 || spec.programs![0].programId?.toLowerCase().indexOf(word) !== -1)
+  //       result.push(spec);
+  //   });
+  //   this.filteredProgramSpecs = result;
   }
 
   detailSpec(id: string): void {

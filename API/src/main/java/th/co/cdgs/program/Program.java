@@ -5,18 +5,16 @@ import java.time.LocalDateTime;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 public class Program {
-	@BsonProperty("project_name")
-	private String projectName;	
 	@BsonProperty("program_id")
 	private String programId;
 	@BsonProperty("program_name")
 	private String programName;
-	@BsonProperty("system_work_id")
-	private String systemWorkId;
-	@BsonProperty("system_work_name")
-	private String systemWorkName;
-	@BsonProperty("system_work_designer")
-	private String systemWorkDesigner;
+	@BsonProperty("project_id")
+	private String projectId;
+	@BsonProperty("system_id")
+	private String systemId;
+	@BsonProperty("system_analyst_id")
+	private String systemAnalystId;
 	@BsonProperty("status")
 	private String status;
 	@BsonProperty("version")
@@ -26,12 +24,6 @@ public class Program {
 	@BsonProperty("sheet")
 	private String sheet;
 	
-	public String getProjectName() {
-		return projectName;
-	}
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
 	public String getProgramId() {
 		return programId;
 	}
@@ -44,29 +36,23 @@ public class Program {
 	public void setProgramName(String programName) {
 		this.programName = programName;
 	}
-	public String getSystemWorkId() {
-		return systemWorkId;
+	public String getProjectId() {
+		return projectId;
 	}
-	public void setSystemWorkId(String systemWorkId) {
-		this.systemWorkId = systemWorkId;
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
 	}
-	public String getSystemWorkName() {
-		return systemWorkName;
+	public String getSystemId() {
+		return systemId;
 	}
-	public void setSystemWorkName(String systemWorkName) {
-		this.systemWorkName = systemWorkName;
+	public void setSystemId(String systemId) {
+		this.systemId = systemId;
 	}
-	public String getSystemWorkDesigner() {
-		return systemWorkDesigner;
+	public String getSystemAnalystId() {
+		return systemAnalystId;
 	}
-	public void setSystemWorkDesigner(String systemWorkDesigner) {
-		this.systemWorkDesigner = systemWorkDesigner;
-	}
-	public String getSheet() {
-		return sheet;
-	}
-	public void setSheet(String sheet) {
-		this.sheet = sheet;
+	public void setSystemAnalystId(String systemAnalystId) {
+		this.systemAnalystId = systemAnalystId;
 	}
 	public String getStatus() {
 		return status;
@@ -85,5 +71,11 @@ public class Program {
 	}
 	public void setDate(LocalDateTime date) {
 		this.date = date;
+	}
+	public String getSheet() {
+		return sheet;
+	}
+	public void setSheet(String sheet) {
+		this.sheet = sheet;
 	}
 }

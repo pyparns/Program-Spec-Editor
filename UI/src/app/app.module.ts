@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,8 +6,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
+import { StepsModule } from 'primeng/steps';
 import { PanelModule } from 'primeng/panel';
 import { ToastModule } from 'primeng/toast';
+import { TableModule } from 'primeng/table';
+import { EditorModule } from 'primeng/editor';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { MenubarModule } from 'primeng/menubar';
@@ -26,11 +27,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { EditorModule } from 'primeng/editor';
-import { StepsModule } from 'primeng/steps';
-import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -49,11 +48,11 @@ import { SafePipe } from './pipe/safe.pipe';
 import { AccountService } from './service/account.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AppRoutingModule } from './app-routing.module';
-import { ProgramSpecVersionComponent } from './program-spec-version/program-spec-version.component';
+import { SystemPageComponent } from './system-page/system-page.component';
 import { ProjectPageComponent } from './project-page/project-page.component';
 import { BookmarkPageComponent } from './bookmark-page/bookmark-page.component';
-import { SystemPageComponent } from './system-page/system-page.component';
 import { SystemAnalystPageComponent } from './system-analyst-page/system-analyst-page.component';
+import { ProgramSpecVersionComponent } from './program-spec-version/program-spec-version.component';
 
 @NgModule({
   declarations: [
@@ -64,29 +63,29 @@ import { SystemAnalystPageComponent } from './system-analyst-page/system-analyst
     FooterComponent,
     HomePageComponent,
     LoginPageComponent,
+    SystemPageComponent,
     ProfilePageComponent,
+    ProjectPageComponent,
+    BookmarkPageComponent,
     PageNotFoundComponent,
     RegisterPageComponent,
     AddProgramPageComponent,
     ImportSpecPageComponent,
     ProgramSpecPageComponent,
     ProgramSpecVersionComponent,
-    ProjectPageComponent,
-    BookmarkPageComponent,
-    SystemPageComponent,
     SystemAnalystPageComponent,
   ],
   imports: [
-    EditorModule,
-    StepsModule,
-    ScrollPanelModule,
     TagModule,
     CardModule,
     PanelModule,
     FormsModule,
     ToastModule,
+    TableModule,
+    StepsModule,
     ButtonModule,
     DialogModule,
+    EditorModule,
     BrowserModule,
     MessageModule,
     MenubarModule,
@@ -106,6 +105,7 @@ import { SystemAnalystPageComponent } from './system-analyst-page/system-analyst
     FileUploadModule,
     TieredMenuModule,
     SplitButtonModule,
+    ScrollPanelModule,
     ConfirmDialogModule,
     ReactiveFormsModule,
     BrowserAnimationsModule

@@ -1,1 +1,64 @@
-<p>system-page works!</p>
+<app-header [pageTitle]="'System'"></app-header>
+<div class="container">
+    <div class="grid">
+        <div class="col-8 col-offset-2 mt-5">
+            <div class="card">
+                <p-table #dt [value]="systems" dataKey="id" styleClass="p-datatable-customers" editMode="row" responsiveLayout="scroll"
+                    [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="id">System ID <p-sortIcon field="id"></p-sortIcon></th>
+                            <th pSortableColumn="systemName">System Name <p-sortIcon field="systemName"></p-sortIcon></th>
+                            <th style="width:8rem"></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'id', 'contains')" placeholder="Search by ID" class="p-column-filter">
+                            </th>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'systemName', 'contains')" placeholder="Search by Name" class="p-column-filter">
+                            </th>
+                            <th style="width:8rem"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-system let-editing="editing" let-ri="rowIndex">
+                        <tr [pEditableRow]="system">
+                            <td>
+                                <span class="p-column-title">System ID</span>
+                                {{system.id}}
+                            </td>
+                            <td>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="system.systemName" required>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{system.systemName}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="text-align:center">
+                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(system)" class="p-button-rounded p-button-text"></button>
+                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(system)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(system, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4">No systems found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+    <div class="grid">
+        <div class="col-8 col-offset-2 mt-5">
+            <div class="p-inputgroup">
+                <input type="text" [(ngModel)]="addSystemName" pInputText placeholder="System Name" required>
+                <button type="button" pButton pRipple label="Add" styleClass="p-button-warn" (click)="addSystem(addSystemName)"></button>      
+            </div>
+        </div>
+    </div>
+</div>

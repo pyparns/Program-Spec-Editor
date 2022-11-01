@@ -1,1 +1,64 @@
-<p>project-page works!</p>
+<app-header [pageTitle]="'Project'"></app-header>
+<div class="container">
+    <div class="grid">
+        <div class="col-8 col-offset-2 mt-5">
+            <div class="card">
+                <p-table #dt [value]="projects" dataKey="id" styleClass="p-datatable-customers" editMode="row" responsiveLayout="scroll"
+                    [rows]="5" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="id">Project ID <p-sortIcon field="id"></p-sortIcon></th>
+                            <th pSortableColumn="projectName">Project Name <p-sortIcon field="projectName"></p-sortIcon></th>
+                            <th style="width:8rem"></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'id', 'contains')" placeholder="Search by ID" class="p-column-filter">
+                            </th>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'projectName', 'contains')" placeholder="Search by Name" class="p-column-filter">
+                            </th>
+                            <th style="width:8rem"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-project let-editing="editing" let-ri="rowIndex">
+                        <tr [pEditableRow]="project">
+                            <td>
+                                <span class="p-column-title">Project ID</span>
+                                {{project.id}}
+                            </td>
+                            <td>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="project.projectName" required>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{project.projectName}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="text-align:center">
+                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onRowEditInit(project)" class="p-button-rounded p-button-text"></button>
+                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(project)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(project, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="4">No projects found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+    <div class="grid">
+        <div class="col-8 col-offset-2 mt-5">
+            <div class="p-inputgroup">
+                <input type="text" [(ngModel)]="addProjectName" pInputText placeholder="Project Name" required>   
+                <button type="button" pButton pRipple label="Add" styleClass="p-button-warn" (click)="addProject(addProjectName)"></button>      
+            </div>
+        </div>
+    </div>
+</div>

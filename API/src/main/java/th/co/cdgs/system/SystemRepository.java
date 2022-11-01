@@ -1,10 +1,10 @@
-package th.co.cdgs.user;
+package th.co.cdgs.system;
 
 import javax.enterprise.context.ApplicationScoped;
 
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 
 @ApplicationScoped
-public class UserRepository implements PanacheMongoRepository<User> {
+public class SystemRepository implements PanacheMongoRepository<System> {
 
 }

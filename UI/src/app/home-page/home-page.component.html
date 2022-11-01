@@ -34,8 +34,8 @@
                                 <img [src]="'assets/image1.png'" [alt]="programSpec.programs[0].programName"/>
                                 <div class="product-list-detail">
                                     <div class="product-name">{{programSpec.programs[0].programName}}</div>
-                                    <div class="product-description">{{programSpec.programs[0].systemWorkName}}</div>
-                                    <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{programSpec.programs[0].projectName}}</span>
+                                    <div class="product-description">{{programSpec.programs[0].systemId}}</div>
+                                    <i class="pi pi-tag product-category-icon"></i><span class="product-category">{{programSpec.programs[0].projectId}}</span>
                                 </div>
                                 <div class="product-list-action">
                                     <p-tag class="product-price" [value]="programSpec.programs[0].status" severity="success"></p-tag>
@@ -51,14 +51,14 @@
                                 <div class="product-grid-item-top">
                                     <div>
                                         <i class="pi pi-tag product-category-icon"></i>
-                                        <span class="product-category">{{programSpec.programs[0].projectName}}</span>
+                                        <span class="product-category">{{programSpec.programs[0].projectId}}</span>
                                     </div>
                                     <p-tag [value]="programSpec.programs[0].status" severity="success"></p-tag>
                                 </div>
                                 <div class="product-grid-item-content">
                                     <img [src]="'assets/image1.png'" [alt]="programSpec.programs[0].programName" />
                                     <div class="product-name">{{programSpec.programs[0].programName}}</div>
-                                    <div class="product-description">{{programSpec.programs[0].systemWorkName}}</div>
+                                    <div class="product-description">{{programSpec.programs[0].systemId}}</div>
                                 </div>
                                 <div class="product-grid-item-bottom">
                                     <span class="product-price">ID: {{programSpec.programs[0].programId}}</span>

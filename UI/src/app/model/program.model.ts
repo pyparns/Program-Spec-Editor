@@ -1,11 +1,10 @@
 export class Program {
     id?: string;
-    projectName?: string;
+    projectId?: string;
     programId?: string;
     programName?: string;
-    systemWorkId?: string;
-    systemWorkName?: string;
-    systemWorkDesigner?: string;
+    systemId?: string;
+    systemAnalystId?: string;
     status?: string;
     sheet?: string;
     version?: number;
