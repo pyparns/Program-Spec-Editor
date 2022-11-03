@@ -13,6 +13,10 @@ export class SystemAnalystService {
     return this.http.get<SystemAnalyst[]>("/api/systemanalyst");
   }
 
+  getSystemAnalyst(id: string): any {
+    return this.http.get<SystemAnalyst>("/api/systemanalyst/" + id);
+  }
+
   addSystemAnalyst(systemAnalyst: SystemAnalyst): any {
     return this.http.post("/api/systemanalyst", systemAnalyst);
   }

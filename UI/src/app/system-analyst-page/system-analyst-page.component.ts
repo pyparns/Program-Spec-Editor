@@ -15,13 +15,13 @@ export class SystemAnalystPageComponent implements OnInit {
   addSystemAnalystName: string = "";
 
   constructor(
-    private systemService: SystemAnalystService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private systemAnalystService: SystemAnalystService,
   ) { }
 
   ngOnInit(): void {
-    this.systemService.getSystemAnalysts().subscribe((data: any) => {
+    this.systemAnalystService.getSystemAnalysts().subscribe((data: any) => {
       this.systemAnalysts = data
       this.isLoading = false;
     });;
@@ -38,7 +38,7 @@ export class SystemAnalystPageComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.systemService.addSystemAnalyst({systemAnalystName: systemAnalystName} as SystemAnalyst).subscribe((res: any) => {
+        this.systemAnalystService.addSystemAnalyst({systemAnalystName: systemAnalystName} as SystemAnalyst).subscribe((res: any) => {
           this.systemAnalysts = res;
           this.addSystemAnalystName = "";
           this.messageService.add({key: 'tl', severity: 'success', summary: 'System Analyst added', detail: ''});
@@ -59,7 +59,7 @@ export class SystemAnalystPageComponent implements OnInit {
   }
 
   onRowEditSave(systemAnalyst: SystemAnalyst) {
-    this.systemService.updateSystemAnalyst(systemAnalyst).subscribe((res: any) => {
+    this.systemAnalystService.updateSystemAnalyst(systemAnalyst).subscribe((res: any) => {
       delete this.clonedSystemAnalysts[systemAnalyst.id!];
       this.messageService.add({key: 'tl', severity: 'success', summary: 'System Analyst edited', detail: ''});
     });

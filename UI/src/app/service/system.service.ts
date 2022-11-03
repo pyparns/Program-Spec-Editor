@@ -13,6 +13,10 @@ export class SystemService {
     return this.http.get<System[]>("/api/system");
   }
 
+  getSystem(id: string): any {
+    return this.http.get<System>("/api/system/" + id);
+  }
+
   addSystem(system: System): any {
     return this.http.post("/api/system", system);
   }

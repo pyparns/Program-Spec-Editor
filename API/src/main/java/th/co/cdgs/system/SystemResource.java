@@ -22,8 +22,14 @@ public class SystemResource {
 	SystemRepository systemRepository;
 
 	@GET
-	public List<System> getUsers() {
+	public List<System> getSystems() {
 		return systemRepository.listAll();
+	}
+
+	@GET
+	@Path("/{id}")
+	public System getSystem(String id) {
+		return systemRepository.findById(new ObjectId(id));
 	}
 	
 	@POST

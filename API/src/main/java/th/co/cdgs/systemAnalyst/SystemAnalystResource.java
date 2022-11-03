@@ -22,8 +22,14 @@ public class SystemAnalystResource {
 	SystemAnalystRepository systemAnalystRepository;
 
 	@GET
-	public List<SystemAnalyst> getUsers() {
+	public List<SystemAnalyst> getSystemAnalysts() {
 		return systemAnalystRepository.listAll();
+	}
+
+	@GET
+	@Path("/{id}")
+	public SystemAnalyst getSystemAnalyst(String id) {
+		return systemAnalystRepository.findById(new ObjectId(id));
 	}
 	
 	@POST

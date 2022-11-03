@@ -1,6 +1,6 @@
 <app-header [pageTitle]="'Home'"></app-header>
 <div class="container">
-    <div class="grid">
+    <!-- <div class="grid">
         <div class="col-12 md:col-3 lg:col-2 sm:flex-nowrap">
             <div class="filter-hbox">
                 <label class="filter-htext">Filter</label>
@@ -74,6 +74,68 @@
                     <p-skeleton height="2rem" styleClass="mt-5" width="100%"></p-skeleton>
                 </div>
             </ng-template>
+        </div>
+    </div> -->
+    <!-- {{ programSpecs | json }} -->
+    <div class="grid">
+        <div class="col-12">
+            <div class="card">
+                <p-table #dt responsiveLayout="stack" [value]="programSpecs" responsiveLayout="scroll" dataKey="programId" [rows]="6" [paginator]="true" [loading]="isLoading" >
+                    <ng-template pTemplate="caption">
+                        Program
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="text-align:center" pSortableColumn="programId">Program ID <p-sortIcon field="programId"></p-sortIcon></th>
+                            <th style="text-align:center" pSortableColumn="programName">Program Name <p-sortIcon field="programName"></p-sortIcon></th>
+                            <th style="text-align:center" pSortableColumn="projectName">Project <p-sortIcon field="projectName"></p-sortIcon></th>
+                            <th style="text-align:center" pSortableColumn="systemName">System <p-sortIcon field="systemName"></p-sortIcon></th>
+                            <th style="text-align:center" pSortableColumn="systemAnalystName">System Analyst <p-sortIcon field="systemAnalystName"></p-sortIcon></th>
+                            <th style="text-align:center" pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                            <th style="text-align:center" style="width:8rem"></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'programId', 'contains')" placeholder="Search by ID" class="p-column-filter">
+                            </th>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'programName', 'contains')" placeholder="Search by Name" class="p-column-filter">
+                            </th>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'projectName', 'contains')" placeholder="Search by ID" class="p-column-filter">
+                            </th>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'systemName', 'contains')" placeholder="Search by ID" class="p-column-filter">
+                            </th>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'systemAnalystName', 'contains')" placeholder="Search by ID" class="p-column-filter">
+                            </th>
+                            <th>
+                                <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'status', 'contains')" placeholder="Search by ID" class="p-column-filter">
+                            </th>
+                            <th style="width:8rem"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-spec>
+                        <tr>
+                            <td style="text-align:center"><span class="p-column-title"></span>{{ spec.programId }}</td>
+                            <td style="text-align:center"><span class="p-column-title"></span>{{ spec.programName }}</td>
+                            <td style="text-align:center"><span class="p-column-title"></span>{{ spec.projectName }}</td>
+                            <td style="text-align:center"><span class="p-column-title"></span>{{ spec.systemName }}</td>
+                            <td style="text-align:center"><span class="p-column-title"></span>{{ spec.systemAnalystName }}</td>
+                            <td style="text-align:center"><span class="p-column-title"></span><p-tag styleClass="mr-2" severity="info" [value]="spec.status"></p-tag></td>
+                            <td style="text-align:center">
+                                <button pButton pRipple type="button" icon="pi pi-eye" (click)="detailSpec(spec.id)" class="p-button-rounded p-button-text mr-2"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-spec>
+                        <tr>
+                            <td colspan="7">No programs found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
         </div>
     </div>
 </div>

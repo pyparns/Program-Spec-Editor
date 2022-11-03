@@ -72,8 +72,8 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     AddProgramPageComponent,
     ImportSpecPageComponent,
     ProgramSpecPageComponent,
-    ProgramSpecVersionComponent,
     SystemAnalystPageComponent,
+    ProgramSpecVersionComponent,
   ],
   imports: [
     TagModule,

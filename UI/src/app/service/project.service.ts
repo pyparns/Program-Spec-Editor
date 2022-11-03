@@ -13,6 +13,10 @@ export class ProjectService {
     return this.http.get<Project[]>("/api/project");
   }
 
+  getProject(id: string): any {
+    return this.http.get<Project>("/api/project/" + id);
+  }
+
   addProject(project: Project): any {
     return this.http.post("/api/project", project);
   }
