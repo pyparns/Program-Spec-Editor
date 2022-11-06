@@ -42,6 +42,7 @@ export class ProgramSpecPageComponent implements OnInit {
   isUploaded: boolean = false;
   subscribeProgramSpec!: Subscription;
   text: string = "";
+  isLoading: boolean = true;
 
   constructor(
     private router: Router,
@@ -112,6 +113,11 @@ export class ProgramSpecPageComponent implements OnInit {
   }
 
   onSelectVersion(version: number): void {
+    this.isLoading = true;
+    let isProjectLoading = true;
+    let isSystemLoading = true;
+    let isSystemAnalystLoading = true;
+    
     this.isVersion = false;
     if (version == this.programSpec.latest) this.canEdit = true;
     this.programSpecVersion = this.programSpec.programs?.filter(spec => spec.version === version)[0]!;
@@ -124,19 +130,33 @@ export class ProgramSpecPageComponent implements OnInit {
     this.projectService.getProject(this.programSpecVersion.projectId!).subscribe((res: any) => {
       delete res.id;
       Object.assign(this.programSpecVersion, res)
+      isProjectLoading = false;
     });
     this.systemService.getSystem(this.programSpecVersion.systemId!).subscribe((res: any) => {
       delete res.id;
       Object.assign(this.programSpecVersion, res)
+      isSystemLoading = false;
     });
     this.systemAnalystService.getSystemAnalyst(this.programSpecVersion.systemAnalystId!).subscribe((res: any) => {
       delete res.id;
       Object.assign(this.programSpecVersion, res)
+      isSystemAnalystLoading = false;
     });
 
-    console.log(this.programForm.value);
-    this.programForm.patchValue(this.programSpecVersion);
-    console.log(this.programForm.value);
+    if (isProjectLoading || isSystemLoading || isSystemAnalystLoading || this.isLoading) {
+      console.log("inif")
+      this.programForm.patchValue({
+        programId: this.programSpecVersion.programId,
+        programName: this.programSpecVersion.programName,
+        projectName: this.programSpecVersion.projectName,
+        sheet: this.programSpecVersion.sheet,
+        status: this.programSpecVersion.status,
+        systemAnalystName: this.programSpecVersion.systemAnalystName,
+        systemName: this.programSpecVersion.systemName,
+        version: this.programSpecVersion.version
+      });
+      console.log(isProjectLoading,isSystemLoading,isSystemAnalystLoading,this.isLoading);
+    }
   }
 
   toVersion(): void {

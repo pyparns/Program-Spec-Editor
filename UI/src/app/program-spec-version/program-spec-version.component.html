@@ -1,9 +1,15 @@
 <div class="container p-5">
-    <p-timeline [value]="programSpec.programs!" align="left">
+    <p-timeline [value]="programSpec.programs!">
         <ng-template pTemplate="content" let-event>
-            <p-card [header]="event.programName" (click)="onSelect(event.version)" [subheader]="'Version : ' + event.version" [style]="{width: '90%'}">
-                <label>{{ event.date | date: 'MMMM d, y, HH:mm:ss' }}</label>
-            </p-card>
+            <p-card [header]="event.programName" (click)="onSelect(event.version)" [subheader]="'Version : ' + event.version" [style]="{width: '35%', height: '85%'}"></p-card>
+        </ng-template>
+        <ng-template pTemplate="opposite" let-event>
+            <div class="mb-2">
+                <small class="p-text-secondary">{{ event.date | date: 'HH : mm : ss' }}</small>
+            </div>
+            <div>
+                <small class="p-text-secondary">{{ event.date | date: 'MMMM d, y' }}</small>
+            </div>
         </ng-template>
     </p-timeline>
 </div>
