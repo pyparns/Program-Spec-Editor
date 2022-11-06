@@ -77,10 +77,11 @@
         </div>
     </div> -->
     <!-- {{ programSpecs | json }} -->
+    
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <p-table #dt responsiveLayout="stack" [value]="programSpecs" responsiveLayout="scroll" dataKey="programId" [rows]="6" [paginator]="true" [loading]="isLoading" >
+                <p-table #dt [value]="programSpecs" responsiveLayout="scroll" dataKey="programId" [rows]="5" [paginator]="true" [loading]="isLoading" >
                     <ng-template pTemplate="caption">
                         Program
                     </ng-template>
@@ -95,22 +96,22 @@
                             <th style="text-align:center" style="width:8rem"></th>
                         </tr>
                         <tr>
-                            <th>
+                            <th style="text-align:center">
                                 <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'programId', 'contains')" placeholder="Search by ID" class="p-column-filter">
                             </th>
-                            <th>
+                            <th style="text-align:center">
                                 <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'programName', 'contains')" placeholder="Search by Name" class="p-column-filter">
                             </th>
-                            <th>
+                            <th style="text-align:center">
                                 <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'projectName', 'contains')" placeholder="Search by ID" class="p-column-filter">
                             </th>
-                            <th>
+                            <th style="text-align:center">
                                 <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'systemName', 'contains')" placeholder="Search by ID" class="p-column-filter">
                             </th>
-                            <th>
+                            <th style="text-align:center">
                                 <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'systemAnalystName', 'contains')" placeholder="Search by ID" class="p-column-filter">
                             </th>
-                            <th>
+                            <th style="text-align:center">
                                 <input pInputText type="text" (input)="dt.filter(getTarget($event).value, 'status', 'contains')" placeholder="Search by ID" class="p-column-filter">
                             </th>
                             <th style="width:8rem"></th>

@@ -9,6 +9,9 @@ import 'jspdf-autotable';
 import '../../THSarabunNew-normal';
 import { ProgramSpec } from '../model/programspec.model';
 import { Program } from '../model/program.model';
+import { SystemAnalystService } from '../service/system-analyst.service';
+import { ProjectService } from '../service/project.service';
+import { SystemService } from '../service/system.service';
 
 @Component({
   selector: 'app-program-spec-page',
@@ -20,13 +23,13 @@ export class ProgramSpecPageComponent implements OnInit {
   uploadedFiles: File[] = [];
 
   programSpec: ProgramSpec = new ProgramSpec();
+  programSpecVersion: any;
   programForm = new FormGroup({
-    projectName: new FormControl(''),
     programId: new FormControl(''),
     programName: new FormControl(''),
-    systemWorkId: new FormControl(''),
-    systemWorkName: new FormControl(''),
-    systemWorkDesigner: new FormControl(''),
+    projectName: new FormControl(''),
+    systemName: new FormControl(''),
+    systemAnalystName: new FormControl(''),
     status: new FormControl(''),
     sheet: new FormControl(''),
     version: new FormControl(0),
@@ -42,14 +45,17 @@ export class ProgramSpecPageComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private systemService: SystemService,
+    private projectService: ProjectService,
     private activatedRoute: ActivatedRoute,
     private messageService: MessageService,
     private programSpecService: ProgramSpecService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private systemAnalystService: SystemAnalystService,
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(params => { 
+    this.activatedRoute.paramMap.subscribe(params => {
       this.id = params.get('id');
     });
     this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
@@ -108,7 +114,29 @@ export class ProgramSpecPageComponent implements OnInit {
   onSelectVersion(version: number): void {
     this.isVersion = false;
     if (version == this.programSpec.latest) this.canEdit = true;
-    this.programForm.patchValue(this.programSpec.programs?.filter(spec => spec.version === version)[0]!);
+    this.programSpecVersion = this.programSpec.programs?.filter(spec => spec.version === version)[0]!;
+    console.log(this.programSpecVersion);
+
+    let program = [this.programSpecVersion.programs?.filter((spec: any) => Number(spec.version) === this.programSpecVersion.latest)[0]!][0];
+    Object.assign(this.programSpecVersion, program)
+    delete this.programSpecVersion.programs;
+
+    this.projectService.getProject(this.programSpecVersion.projectId!).subscribe((res: any) => {
+      delete res.id;
+      Object.assign(this.programSpecVersion, res)
+    });
+    this.systemService.getSystem(this.programSpecVersion.systemId!).subscribe((res: any) => {
+      delete res.id;
+      Object.assign(this.programSpecVersion, res)
+    });
+    this.systemAnalystService.getSystemAnalyst(this.programSpecVersion.systemAnalystId!).subscribe((res: any) => {
+      delete res.id;
+      Object.assign(this.programSpecVersion, res)
+    });
+
+    console.log(this.programForm.value);
+    this.programForm.patchValue(this.programSpecVersion);
+    console.log(this.programForm.value);
   }
 
   toVersion(): void {

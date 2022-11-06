@@ -4,7 +4,7 @@
         <div class="col-8 col-offset-2 mt-5">
             <div class="card">
                 <p-table #dt [value]="systems" dataKey="id" styleClass="p-datatable-customers" editMode="row" responsiveLayout="scroll"
-                    [rows]="10" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
+                    [rows]="5" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
                     <ng-template pTemplate="header">
                         <tr>
                             <th pSortableColumn="id">System ID <p-sortIcon field="id"></p-sortIcon></th>

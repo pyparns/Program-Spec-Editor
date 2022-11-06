@@ -38,9 +38,18 @@ export class HomePageComponent implements OnInit {
         Object.assign(item, program)
         delete item.programs;
 
-        this.projectService.getProject(item.projectId!).subscribe((res: any) => Object.assign(item, res));
-        this.systemService.getSystem(item.systemId!).subscribe((res: any) => Object.assign(item, res));
-        this.systemAnalystService.getSystemAnalyst(item.systemAnalystId!).subscribe((res: any) => Object.assign(item, res));
+        this.projectService.getProject(item.projectId!).subscribe((res: any) => {
+          delete res.id;
+          Object.assign(item, res)
+        });
+        this.systemService.getSystem(item.systemId!).subscribe((res: any) => {
+          delete res.id;
+          Object.assign(item, res)
+        });
+        this.systemAnalystService.getSystemAnalyst(item.systemAnalystId!).subscribe((res: any) => {
+          delete res.id;
+          Object.assign(item, res)
+        });
         
         this.programSpecs.push(item);
       });
@@ -59,6 +68,7 @@ export class HomePageComponent implements OnInit {
   }
 
   detailSpec(id: string): void {
+    console.log(id);
     this.router.navigate(['programspec/' + id ]);
   }
 }
