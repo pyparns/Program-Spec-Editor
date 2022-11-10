@@ -34,6 +34,7 @@ export class AddProgramPageComponent implements OnInit {
   systems!: System[];
   systemAnalysts!: SystemAnalyst[];
   isSubmitted: boolean = false;
+  displayDialog: boolean = false;
 
   constructor(
     private router: Router,
@@ -59,7 +60,7 @@ export class AddProgramPageComponent implements OnInit {
     this.isLoading = false;
   }
 
-  onAddBtn(): void {
+  onSelected(spec: string): void {
     this.isSubmitted = true;
 
     // Check program form is valid.
@@ -67,22 +68,11 @@ export class AddProgramPageComponent implements OnInit {
       return;
     }
 
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to submit?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        const program: Program = this.programForm.value as Program;
-        console.log(program);
-        this.router.navigate(['../import'], { relativeTo: this.activatedRoute, state: { program: program } });
-      },
-      reject: (type: any) => {
-        switch(type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
-          break;
-        }
-      }
-    });
+    const program: Program = this.programForm.value as Program;
+    
+    // this.router.navigate(['../import'], { relativeTo: this.activatedRoute, state: { program: program } });
+    this.router.navigate(['../' + spec], { relativeTo: this.activatedRoute, state: { program: program } });
+
+    this.displayDialog = false;
   }
 }

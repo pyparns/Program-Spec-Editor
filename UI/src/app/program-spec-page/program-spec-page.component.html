@@ -17,24 +17,25 @@
                     <div class="grid mt-4">
                         <span class="p-float-label mb-2" *ngIf="isEdit; else elseProgramId">
                             <input id="float-input-invalid" type="text" pInputText pKeyFilter="int" formControlName="programId" class="ng-dirty p-inputtext-sm"> 
-                            <label for="float-input-invalid">Program id</label>
+                            <label for="float-input-invalid">Program ID</label>
                         </span>
                         <ng-template #elseProgramId>
-                            <label for="programId">Program id : {{ programForm.value.programId }}</label>
+                            <label for="programId">Program ID : {{ programForm.value.programId }}</label>
                         </ng-template>
                     </div>
                     <div class="grid mt-4">
                         <span class="p-float-label mb-2" *ngIf="isEdit; else elseProgramName">
                             <input id="float-input-invalid" type="text" pInputText formControlName="programName" class="ng-dirty p-inputtext-sm"> 
-                            <label for="float-input-invalid">Program name</label>
+                            <label for="float-input-invalid">Program Name</label>
                         </span>
                         <ng-template #elseProgramName>
-                            <label for="programName">Program name : {{ programForm.value.programName }}</label>
+                            <label for="programName">Program Name : {{ programForm.value.programName }}</label>
                         </ng-template>
                     </div>
                     <div class="grid mt-4">
                         <span class="p-float-label mb-2" *ngIf="isEdit; else elseProjectName">
-                            <input id="float-input-invalid" type="text" pInputText formControlName="projectName" class="ng-dirty p-inputtext-sm"> 
+                            <p-dropdown [options]="projects" optionLabel="projectName" [autoDisplayFirst]="false" [filter]="true"
+                                filterBy="projectName" (onChange)="onChangeOption($event, 'project')" ></p-dropdown>
                             <label for="float-input-invalid">Project</label>
                         </span>
                         <ng-template #elseProjectName>
@@ -43,29 +44,22 @@
                     </div>
                     <div class="grid mt-4">
                         <span class="p-float-label mb-2" *ngIf="isEdit; else elseSystemName">
-                            <input id="float-input-invalid" type="text" pInputText pKeyFilter="int" formControlName="systemName" class="ng-dirty p-inputtext-sm"> 
+                            <p-dropdown [options]="systems" optionLabel="systemName" [autoDisplayFirst]="false" [filter]="true"
+                                filterBy="systemName" (onChange)="onChangeOption($event, 'system')" ></p-dropdown>
                             <label for="float-input-invalid">System</label>
                         </span>
                         <ng-template #elseSystemName>
                             <label for="systemName">System : {{ programForm.value.systemName }}</label>
                         </ng-template>
                     </div>
-                    <!-- <div class="grid mt-4">
-                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseSystemWorkName">
-                            <input id="float-input-invalid" type="text" pInputText formControlName="systemWorkName" class="ng-dirty p-inputtext-sm"> 
-                            <label for="float-input-invalid">System work name</label>
-                        </span>
-                        <ng-template #elseSystemWorkName>
-                            <label for="systemWorkName">System work name : {{ programForm.value.systemWorkName }}</label>
-                        </ng-template>
-                    </div> -->
                     <div class="grid mt-4">
                         <span class="p-float-label mb-2" *ngIf="isEdit; else elseSystemAnalystName">
-                            <input id="float-input-invalid" type="text" pInputText formControlName="systemAnalystName" class="ng-dirty p-inputtext-sm"> 
-                            <label for="float-input-invalid">System analyst</label>
+                            <p-dropdown [options]="systemAnalysts" optionLabel="systemAnalystName" [autoDisplayFirst]="false" [filter]="true"
+                            filterBy="systemAnalystName" (onChange)="onChangeOption($event, 'systemAnalyst')" ></p-dropdown>
+                            <label for="float-input-invalid">System Analyst</label>
                         </span>
                         <ng-template #elseSystemAnalystName>
-                            <label for="systemAnalystName">System analyst : {{ programForm.value.systemAnalystName }}</label>
+                            <label for="systemAnalystName">System Analyst : {{ programForm.value.systemAnalystName }}</label>
                         </ng-template>
                     </div>
                     <div class="grid mt-4">
@@ -105,9 +99,6 @@
                     <div class="grid" *ngIf="isEdit">
                         <div class="col-12">
                             <p-editor [ngModelOptions]="{standalone: true}" [(ngModel)]="programForm.value.sheet" [style]="{'height':'320px'}"></p-editor>
-                        </div>
-                        <div class="col-12">
-                            <p-button label="SAVE" (click)="onSavePdf()"></p-button>
                         </div>
                     </div>
                 </p-scrollPanel>

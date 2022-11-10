@@ -53,6 +53,9 @@ import { ProjectPageComponent } from './project-page/project-page.component';
 import { BookmarkPageComponent } from './bookmark-page/bookmark-page.component';
 import { SystemAnalystPageComponent } from './system-analyst-page/system-analyst-page.component';
 import { ProgramSpecVersionComponent } from './program-spec-version/program-spec-version.component';
+import { AddUiSpecPageComponent } from './add-ui-spec-page/add-ui-spec-page.component';
+import { AddServiceSpecPageComponent } from './add-service-spec-page/add-service-spec-page.component';
+import { AddProgramStepComponent } from './add-program-step/add-program-step.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +77,9 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
     ProgramSpecPageComponent,
     SystemAnalystPageComponent,
     ProgramSpecVersionComponent,
+    AddUiSpecPageComponent,
+    AddServiceSpecPageComponent,
+    AddProgramStepComponent,
   ],
   imports: [
     TagModule,

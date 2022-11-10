@@ -16,7 +16,6 @@ import { SystemService } from '../service/system.service';
 })
 export class HomePageComponent implements OnInit {
   programSpecs: any[] = [];
-  test: any[] = [{programName: "asdsads"}];
 
   isLoading: boolean = true;
 
@@ -33,6 +32,7 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeProgramSpec = this.programSpecService.getProgramSpecs().subscribe(response => {
+      let result: any[] = [];
       response.forEach((item: any) => {
         let program = [item.programs?.filter((spec: any) => Number(spec.version) === item.latest)[0]!][0];
         Object.assign(item, program)
@@ -51,10 +51,9 @@ export class HomePageComponent implements OnInit {
           Object.assign(item, res)
         });
         
-        this.programSpecs.push(item);
+        result.push(item);
       });
-      console.log(this.programSpecs);
-      
+      this.programSpecs = result;
       this.isLoading = false;
     });
   }
@@ -70,5 +69,14 @@ export class HomePageComponent implements OnInit {
   detailSpec(id: string): void {
     console.log(id);
     this.router.navigate(['programspec/' + id ]);
+  }
+
+  getSeverity(value: string): string {
+    if (value === "Publish")
+      return 'warning';
+    else if (value === "Coding Success")
+      return 'success';
+    else
+      return 'info';
   }
 }

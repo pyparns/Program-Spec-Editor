@@ -1,0 +1,49 @@
+<app-header [pageTitle]="'Add Service Specification'"></app-header>
+<div class="container">
+
+    <div class="grid">
+        <div class="col-8 col-offset-2 mt-3">
+            <app-add-program-step></app-add-program-step>
+        </div>
+    </div>
+
+    <form [formGroup]="specForm" (submit)="createProgram()">
+        <div class="grid">
+            <div class="col-4 col-offset-4 mt-5">
+                <span class="p-float-label">
+                    <input class="inputForm" type="text" pInputText formControlName="title">
+                    <label for="inputtext">Title</label>
+                </span>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-4 col-offset-4 mt-5">
+                <span class="p-float-label">
+                    <input class="inputForm" type="text" pInputText formControlName="host">
+                    <label for="inputtext">Host</label>
+                </span>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-4 col-offset-4 mt-5">
+                <span class="p-float-label">
+                    <input class="inputForm" type="text" pInputText formControlName="port">
+                    <label for="inputtext">Port</label>
+                </span>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-4 col-offset-4 mt-5">
+                <span class="p-float-label">
+                    <input class="inputForm" type="text" pInputText formControlName="contextRoot">
+                    <label for="inputtext">Context Root</label>
+                </span>
+            </div>
+        </div>
+        <div class="grid btn">
+            <div class="col-4 col-offset-4 mt-5">
+                <p-button label="NEXT" type="submit"></p-button>
+            </div>
+        </div>
+    </form>
+</div>

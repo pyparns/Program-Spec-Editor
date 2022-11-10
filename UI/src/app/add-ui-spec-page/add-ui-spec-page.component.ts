@@ -1,25 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
-import { map, Observable } from 'rxjs';
 import { Program } from '../model/program.model';
+import { map, Observable } from 'rxjs';
 import { AccountService } from '../service/account.service';
 import { ProgramSpecService } from '../service/program-spec.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-import-spec-page',
-  templateUrl: './import-spec-page.component.html',
-  styleUrls: ['./import-spec-page.component.scss']
+  selector: 'app-add-ui-spec-page',
+  templateUrl: './add-ui-spec-page.component.html',
+  styleUrls: ['./add-ui-spec-page.component.scss']
 })
-export class ImportSpecPageComponent implements OnInit {
-  
+export class AddUiSpecPageComponent implements OnInit {
+  isSubmitted: boolean = false;
+  program!: Program;
   text: string = "";
   uploadedFile!: File;
   isUpload: boolean = false;
-  isSubmitted: boolean = false;
-  program!: Program;
 
   state$!: Observable<object>;
+
+  specForm = new FormGroup({
+    title: new FormControl(null),
+    host: new FormControl(null),
+    port: new FormControl(null),
+    contextRoot: new FormControl(null),
+  });
 
   constructor(
     private router: Router,
@@ -41,26 +48,6 @@ export class ImportSpecPageComponent implements OnInit {
     this.program = window.history.state.program;
   }
 
-  onUpload(event: any): void {
-    this.isUpload = true;
-    console.log("onUpload :", event.files[0])
-
-    const formData: FormData = new FormData();
-    formData.append("file", event.files[0]);
-    formData.append("description", "abc");
-
-    this.uploadedFile = event.files[0];
-    this.programSpecService.uploadFile(formData).subscribe(
-      () => { this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' }) },
-      () => { this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' }) },
-      () => { console.log('Success :', this.uploadedFile) }
-    );
-  }
-
-  onError(): void {
-    this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' });
-  }
-
   createProgram(): void {
     this.isSubmitted = true;
 
@@ -69,7 +56,7 @@ export class ImportSpecPageComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.program.sheet = this.uploadedFile ? this.uploadedFile.name : this.text;
+        this.program.sheet = this.text;
         this.programSpecService.createProgramSpec(this.program).subscribe(
           () => {
             this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
@@ -89,5 +76,21 @@ export class ImportSpecPageComponent implements OnInit {
         }
       }
     });
+  }
+
+  onUpload(event: any): void {
+    this.isUpload = true;
+    console.log("onUpload :", event.files[0])
+
+    const formData: FormData = new FormData();
+    formData.append("file", event.files[0]);
+    formData.append("description", "abc");
+
+    this.uploadedFile = event.files[0];
+    this.programSpecService.uploadFile(formData).subscribe(
+      () => { this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' }) },
+      () => { this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' }) },
+      () => { console.log('Success :', this.uploadedFile) }
+    );
   }
 }

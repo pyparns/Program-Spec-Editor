@@ -13,6 +13,8 @@ import { AddProgramPageComponent } from './add-program-page/add-program-page.com
 import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.component';
 import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
 import { SystemAnalystPageComponent } from './system-analyst-page/system-analyst-page.component';
+import { AddUiSpecPageComponent } from './add-ui-spec-page/add-ui-spec-page.component';
+import { AddServiceSpecPageComponent } from './add-service-spec-page/add-service-spec-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -31,6 +33,8 @@ const routes: Routes = [
   { path: 'create/spec', children: [
     { path: 'blankform', component: AddProgramPageComponent },
     { path: 'import', component: ImportSpecPageComponent },
+    { path: 'ui', component: AddUiSpecPageComponent },
+    { path: 'service', component: AddServiceSpecPageComponent },
   ] },
   { path: '**', component: PageNotFoundComponent }
 ];

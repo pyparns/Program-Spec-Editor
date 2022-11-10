@@ -12,6 +12,9 @@ import { Program } from '../model/program.model';
 import { SystemAnalystService } from '../service/system-analyst.service';
 import { ProjectService } from '../service/project.service';
 import { SystemService } from '../service/system.service';
+import { Project } from '../model/project.model';
+import { System } from '../model/system.model';
+import { SystemAnalyst } from '../model/systemAnalyst.model';
 
 @Component({
   selector: 'app-program-spec-page',
@@ -23,12 +26,18 @@ export class ProgramSpecPageComponent implements OnInit {
   uploadedFiles: File[] = [];
 
   programSpec: ProgramSpec = new ProgramSpec();
-  programSpecVersion: any;
+  projects!: Project[];
+  systems!: System[];
+  systemAnalysts!: SystemAnalyst[];
+  
   programForm = new FormGroup({
     programId: new FormControl(''),
     programName: new FormControl(''),
+    projectId: new FormControl(''),
     projectName: new FormControl(''),
+    systemId: new FormControl(''),
     systemName: new FormControl(''),
+    systemAnalystId: new FormControl(''),
     systemAnalystName: new FormControl(''),
     status: new FormControl(''),
     sheet: new FormControl(''),
@@ -40,9 +49,11 @@ export class ProgramSpecPageComponent implements OnInit {
   canEdit: boolean = false;
   isVersion: boolean = true;
   isUploaded: boolean = false;
+
   subscribeProgramSpec!: Subscription;
-  text: string = "";
-  isLoading: boolean = true;
+  subscribeProject!: Subscription;
+  subscribeSystem!: Subscription;
+  subscribeSystemAnalyst!: Subscription;
 
   constructor(
     private router: Router,
@@ -62,6 +73,15 @@ export class ProgramSpecPageComponent implements OnInit {
     this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
       this.programSpec = response;
     });
+    this.subscribeProject = this.projectService.getProjects().subscribe((response: Project[]) => {
+      this.projects = response;
+    });
+    this.subscribeSystem = this.systemService.getSystems().subscribe((response: System[]) => {
+      this.systems = response;
+    });
+    this.subscribeSystemAnalyst = this.systemAnalystService.getSystemAnalysts().subscribe((response: SystemAnalyst[]) => {
+      this.systemAnalysts = response;
+    });
   }
 
   ngOnDestroy(): void {
@@ -74,6 +94,7 @@ export class ProgramSpecPageComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        // console.log(this.programForm.value as Program);
         this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, this.programForm.value as Program).subscribe(
           () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program updated', detail: ''}),
           () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to update', detail: 'please wait and try again'}),
@@ -113,50 +134,33 @@ export class ProgramSpecPageComponent implements OnInit {
   }
 
   onSelectVersion(version: number): void {
-    this.isLoading = true;
-    let isProjectLoading = true;
-    let isSystemLoading = true;
-    let isSystemAnalystLoading = true;
-    
     this.isVersion = false;
+
+    let result: any = {};
+
     if (version == this.programSpec.latest) this.canEdit = true;
-    this.programSpecVersion = this.programSpec.programs?.filter(spec => spec.version === version)[0]!;
-    console.log(this.programSpecVersion);
+    result = this.programSpec.programs?.filter(spec => spec.version === version)[0]!;
 
-    let program = [this.programSpecVersion.programs?.filter((spec: any) => Number(spec.version) === this.programSpecVersion.latest)[0]!][0];
-    Object.assign(this.programSpecVersion, program)
-    delete this.programSpecVersion.programs;
+    let program = [result.programs?.filter((spec: any) => Number(spec.version) === result.latest)[0]!][0];
+    Object.assign(result, program)
+    delete result.programs;
 
-    this.projectService.getProject(this.programSpecVersion.projectId!).subscribe((res: any) => {
-      delete res.id;
-      Object.assign(this.programSpecVersion, res)
-      isProjectLoading = false;
-    });
-    this.systemService.getSystem(this.programSpecVersion.systemId!).subscribe((res: any) => {
-      delete res.id;
-      Object.assign(this.programSpecVersion, res)
-      isSystemLoading = false;
-    });
-    this.systemAnalystService.getSystemAnalyst(this.programSpecVersion.systemAnalystId!).subscribe((res: any) => {
-      delete res.id;
-      Object.assign(this.programSpecVersion, res)
-      isSystemAnalystLoading = false;
-    });
+    this.programForm.patchValue(result);
 
-    if (isProjectLoading || isSystemLoading || isSystemAnalystLoading || this.isLoading) {
-      console.log("inif")
-      this.programForm.patchValue({
-        programId: this.programSpecVersion.programId,
-        programName: this.programSpecVersion.programName,
-        projectName: this.programSpecVersion.projectName,
-        sheet: this.programSpecVersion.sheet,
-        status: this.programSpecVersion.status,
-        systemAnalystName: this.programSpecVersion.systemAnalystName,
-        systemName: this.programSpecVersion.systemName,
-        version: this.programSpecVersion.version
-      });
-      console.log(isProjectLoading,isSystemLoading,isSystemAnalystLoading,this.isLoading);
-    }
+    let project: Project = this.projects.find(ele => ele.id === result.projectId)!;
+    delete project.id;
+    this.programForm.patchValue(project);
+    Object.assign(result, project);
+
+    let system: System = this.systems.find(ele => ele.id === result.systemId)!;
+    delete system.id;
+    this.programForm.patchValue(system);
+    Object.assign(result, system);
+
+    let systemAnalyst: SystemAnalyst = this.systemAnalysts.find(ele => ele.id === result.systemAnalystId)!;
+    delete systemAnalyst.id;
+    this.programForm.patchValue(systemAnalyst);
+    Object.assign(result, systemAnalyst);
   }
 
   toVersion(): void {
@@ -199,5 +203,32 @@ export class ProgramSpecPageComponent implements OnInit {
 
   onSavePdf(): void {
     
+  }
+
+  onChangeOption(e: any, type: string) {
+    console.log("Type, " + type);
+    console.log("ID, " + e.value.id);
+    
+    if (!e.value.id) {
+      console.log("not");
+    } else if (e.value.projectName) {
+      console.log("Name, " + e.value.projectName);
+      this.programForm.patchValue({
+        projectId: e.value.id,
+        projectName: e.value.projectName
+      });
+    } else if (e.value.systemName) {
+      console.log("Name, " + e.value.systemName);
+      this.programForm.patchValue({
+        systemId: e.value.id,
+        systemName: e.value.systemName
+      });
+    } else if (e.value.systemAnalystName) {
+      console.log("Name, " + e.value.systemAnalystName);
+      this.programForm.patchValue({
+        systemAnalystId: e.value.id,
+        systemAnalystName: e.value.systemAnalystName
+      });
+    }
   }
 }

@@ -26,7 +26,11 @@ export class ProgramSpecService {
     program.version = 1;
     programSpec.latest = 1;
     programSpec.programs = [program];
-    programSpec.accId = this.accountService.userValue.id;
+    this.accountService.userValue.subscribe((item: any) => {
+      programSpec.accId = item.id
+    });
+
+    // console.log(programSpec);
 
     return this.http.post("/api/programspec", programSpec);
   }
