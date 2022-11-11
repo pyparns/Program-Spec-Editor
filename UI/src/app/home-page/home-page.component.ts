@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { Program } from '../model/program.model';
 import { ProgramSpec } from '../model/programspec.model';
@@ -15,9 +16,11 @@ import { SystemService } from '../service/system.service';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
+  datasource: any[] = [];
   programSpecs: any[] = [];
 
   isLoading: boolean = true;
+  totalRecords!: number;
 
   subscribeProgramSpec!: Subscription;
 
@@ -53,9 +56,23 @@ export class HomePageComponent implements OnInit {
         
         result.push(item);
       });
-      this.programSpecs = result;
-      this.isLoading = false;
+      this.datasource = result;
+      this.totalRecords = result.length;
     });
+  }
+
+  loadProgramSpecs(event: LazyLoadEvent): void {
+    this.isLoading = true;
+
+    setTimeout(() => {
+      if (this.datasource) {
+        this.programSpecs = this.datasource.slice(
+          event.first,
+          event.first! + event.rows!
+        );
+        this.isLoading = false;
+      }
+    }, 1000);
   }
 
   ngOnDestroy(): void {

@@ -6,6 +6,7 @@ import { map, Observable } from 'rxjs';
 import { AccountService } from '../service/account.service';
 import { ProgramSpecService } from '../service/program-spec.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActionTable, ComponentTable } from '../model/uiSpec.model';
 
 @Component({
   selector: 'app-add-ui-spec-page',
@@ -15,17 +16,21 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class AddUiSpecPageComponent implements OnInit {
   isSubmitted: boolean = false;
   program!: Program;
+  uiSpec: any = ['1'];
   text: string = "";
   uploadedFile!: File;
   isUpload: boolean = false;
+  components: ComponentTable[] = [];
+  actions: ActionTable[] = [];
+
+  clonedComponents: { [s: string]: ComponentTable; } = {};
+  clonedActions: { [s: string]: ActionTable; } = {};
 
   state$!: Observable<object>;
 
   specForm = new FormGroup({
     title: new FormControl(null),
-    host: new FormControl(null),
-    port: new FormControl(null),
-    contextRoot: new FormControl(null),
+    name: new FormControl(null)
   });
 
   constructor(
@@ -92,5 +97,51 @@ export class AddUiSpecPageComponent implements OnInit {
       () => { this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' }) },
       () => { console.log('Success :', this.uploadedFile) }
     );
+  }
+
+  addPage(): void {
+    this.uiSpec.push('1');
+  }
+
+  addComponentRow(component: ComponentTable = new ComponentTable): void {
+    component.id = this.components.length.toString();
+    this.components.push(component);
+  }
+
+  addActionRow(action: ActionTable = new ActionTable): void {
+    action.id = this.actions.length.toString();
+    this.actions.push(action);
+  }
+
+  onComponentRowEditInit(component: ComponentTable): void {
+    this.clonedComponents[component.id!] = {...component};
+  }
+
+  onComponentRowEditSave(component: ComponentTable): void {
+    delete this.clonedComponents[component.id!];
+    this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
+  }
+
+  onComponentRowEditCancel(component: ComponentTable, index: number): void {
+    this.components.splice(index, 1, this.clonedComponents[component.id!]);
+    delete this.clonedComponents[component.id!];
+    this.components = this.components.slice();
+    this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
+  }
+
+  onActionRowEditInit(action: ActionTable): void {
+    this.clonedActions[action.id!] = {...action};
+  }
+
+  onActionRowEditSave(action: ActionTable): void {
+    delete this.clonedActions[action.id!];
+    this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
+  }
+
+  onActionRowEditCancel(action: ActionTable, index: number): void {
+    this.actions.splice(index, 1, this.clonedActions[action.id!]);
+    delete this.clonedActions[action.id!];
+    this.actions = this.actions.slice();
+    this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
   }
 }

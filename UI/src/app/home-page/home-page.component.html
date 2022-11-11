@@ -3,8 +3,8 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <p-table #table [value]="programSpecs" [paginator]="true" styleClass="p-datatable-customers"
-                responsiveLayout="scroll" dataKey="id" [rows]="5" stateStorage="session" stateKey="statedemo-session">
+                <p-table #table [value]="programSpecs" [lazy]="true" (onLazyLoad)="loadProgramSpecs($event)"
+                    [paginator]="true" [rows]="5" [loading]="isLoading" [totalRecords]="totalRecords" responsiveLayout="scroll">
                     <ng-template pTemplate="caption">
                         Program
                     </ng-template>

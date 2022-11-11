@@ -16,7 +16,10 @@ export class AddServiceSpecPageComponent implements OnInit {
   
   isSubmitted: boolean = false;
   program!: Program;
+  serviceSpec: any = [];
   text: string = "";
+  uploadedFile!: File;
+  isUpload: boolean = false;
 
   state$!: Observable<object>;
 
@@ -75,6 +78,22 @@ export class AddServiceSpecPageComponent implements OnInit {
         }
       }
     });
+  }
+
+  onUpload(event: any): void {
+    this.isUpload = true;
+    console.log("onUpload :", event.files[0])
+
+    const formData: FormData = new FormData();
+    formData.append("file", event.files[0]);
+    formData.append("description", "abc");
+
+    this.uploadedFile = event.files[0];
+    this.programSpecService.uploadFile(formData).subscribe(
+      () => { this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' }) },
+      () => { this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' }) },
+      () => { console.log('Success :', this.uploadedFile) }
+    );
   }
 
 }

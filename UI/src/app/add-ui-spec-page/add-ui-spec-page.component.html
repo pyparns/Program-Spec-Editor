@@ -2,54 +2,190 @@
 <div class="container">
 
     <div class="grid">
-        <div class="col-8 col-offset-2 mt-3">
+        <div class="col-6 col-offset-3 mt-3">
             <app-add-program-step></app-add-program-step>
         </div>
     </div>
 
     <form [formGroup]="specForm" (submit)="createProgram()">
-        <div class="grid">
-            <div class="col-4 col-offset-4 mt-5">
-                <span class="p-float-label">
-                    <input class="inputForm" type="text" pInputText formControlName="title">
-                    <label for="inputtext">Title</label>
-                </span>
+        <div class="grid mt-4 px-5">
+            <div class="col-6 col-offset-3 box" style="height: 750px; overflow-y: scroll;">
+                <div class="grid mt-5">
+                    <div class="col-10 col-offset-1">
+                        <span class="p-float-label">
+                            <input class="inputForm" type="text" pInputText formControlName="title">
+                            <label for="inputtext">Title</label>
+                        </span>
+                    </div>
+                </div>
+                <div *ngFor="let com of uiSpec; index as i">
+                    <div class="grid mt-1">
+                        <div class="col-2 col-offset-3 py-5 mt-2">
+                            <hr style="background-color: rgb(190, 190, 190); height: 10px">
+                        </div>
+                        <div class="col-2">
+                            <h2 style="color: gray;">Component {{i+1}}</h2>
+                        </div>
+                        <div class="col-2 py-5">
+                            <hr style="background-color: rgb(190, 190, 190); height: 10px">
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="col-10 col-offset-1 mt-3">
+                            <label class="desc ml-2 mt-5">Image Component {{i+1}}</label>
+                            <p-fileUpload name="demo[]" [customUpload]="true" (uploadHandler)="onUpload($event)" [multiple]="false" accept="image/*">
+                                <ng-template pTemplate="content">
+                                    <li *ngIf="uploadedFile">{{ uploadedFile.name }} - {{ uploadedFile.size }} bytes</li>
+                                </ng-template>
+                            </p-fileUpload>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="col-10 col-offset-1">
+                            <span class="p-float-label">
+                                <input class="inputForm" type="text" pInputText formControlName="name">
+                                <label for="inputtext">Component Name</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="col-10 col-offset-1">
+                            <p-table [value]="components" dataKey="id" editMode="row" responsiveLayout="scroll">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:20%">Label</th>
+                                        <th style="width:20%">Attribute</th>
+                                        <th style="width:20%">Property</th>
+                                        <th style="width:20%">Event</th>
+                                        <th style="width:20%"></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-component let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="component">
+                                        <td style="width:20%">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" [(ngModel)]="component.label">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{component.label || "Label"}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td style="width:20%">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" [(ngModel)]="component.attribute">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{component.attribute || "Attribute"}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td style="width:20%">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" [(ngModel)]="component.property">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{component.property || "Property"}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td style="width:20%">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" [(ngModel)]="component.event">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{component.event || "Event"}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td style="width:20%">
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onComponentRowEditInit(component)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onComponentRowEditSave(component)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onComponentRowEditCancel(component, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button pButton pRipple type="button" icon="pi pi-plus" (click)="addComponentRow()" class="p-button-rounded p-button-text"></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                    <div class="grid">
+                        <div class="col-10 col-offset-1">
+                            <p-table [value]="actions" dataKey="id" editMode="row">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:40%">Action Name</th>
+                                        <th style="width:40%">Description</th>
+                                        <th style="width:20%"></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-action let-editing="editing" let-ri="rowIndex">
+                                    <tr [pEditableRow]="action">
+                                        <td style="width:40%">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" [(ngModel)]="action.name">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{action.name || "Action Name"}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td style="width:40%">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="text" [(ngModel)]="action.description">
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{action.description || "Description"}}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td style="width:20%">
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onActionRowEditInit(action)" class="p-button-rounded p-button-text"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onActionRowEditSave(action)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onActionRowEditCancel(action, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="flex align-items-center justify-content-center gap-2">
+                                                <button pButton pRipple type="button" icon="pi pi-plus" (click)="addActionRow()" class="p-button-rounded p-button-text"></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid btn my-5">
+                    <div class="col-10 col-offset-1">
+                        <p-button label="Add Page" (click)="addPage()"></p-button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="grid">
-            <div class="col-4 col-offset-4 mt-5">
-                <p-fileUpload name="demo[]" [customUpload]="true" (uploadHandler)="onUpload($event)" [multiple]="false" accept="application/pdf">
-                        <ng-template pTemplate="content">
-                            <li *ngIf="uploadedFile">{{ uploadedFile.name }} - {{ uploadedFile.size }} bytes</li>
-                        </ng-template>
-                </p-fileUpload>
-                <label class="desc ml-2">Choose image and upload.</label>
-            </div>
-            <!-- <div class="col-4 col-offset-4 mt-5">
-                <span class="p-float-label">
-                    <input class="inputForm" type="text" pInputText formControlName="host">
-                    <label for="inputtext">Image</label>
-                </span>
-            </div> -->
-        </div>
-        <div class="grid">
-            <div class="col-4 col-offset-4 mt-5">
-                <span class="p-float-label">
-                    <input class="inputForm" type="text" pInputText formControlName="port">
-                    <label for="inputtext">Component</label>
-                </span>
-            </div>
-        </div>
-        <div class="grid">
-            <div class="col-4 col-offset-4 mt-5">
-                <span class="p-float-label">
-                    <input class="inputForm" type="text" pInputText formControlName="contextRoot">
-                    <label for="inputtext">Action</label>
-                </span>
-            </div>
-        </div>
-        <div class="grid btn">
-            <div class="col-4 col-offset-4 mt-5">
+        <div class="grid btn mt-5">
+            <div class="col-10 col-offset-1">
                 <p-button label="NEXT" type="submit"></p-button>
             </div>
         </div>
