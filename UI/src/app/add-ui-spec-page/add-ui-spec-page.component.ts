@@ -6,7 +6,7 @@ import { map, Observable } from 'rxjs';
 import { AccountService } from '../service/account.service';
 import { ProgramSpecService } from '../service/program-spec.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActionTable, ComponentTable } from '../model/uiSpec.model';
+import { ActionTable, ComponentPage, ComponentTable } from '../model/uiSpec.model';
 
 @Component({
   selector: 'app-add-ui-spec-page',
@@ -16,22 +16,17 @@ import { ActionTable, ComponentTable } from '../model/uiSpec.model';
 export class AddUiSpecPageComponent implements OnInit {
   isSubmitted: boolean = false;
   program!: Program;
-  uiSpec: any = ['1'];
+  pages: ComponentPage[] = [];
   text: string = "";
-  uploadedFile!: File;
   isUpload: boolean = false;
-  components: ComponentTable[] = [];
-  actions: ActionTable[] = [];
+  // uploadedFile!: File;
 
   clonedComponents: { [s: string]: ComponentTable; } = {};
   clonedActions: { [s: string]: ActionTable; } = {};
 
   state$!: Observable<object>;
 
-  specForm = new FormGroup({
-    title: new FormControl(null),
-    name: new FormControl(null)
-  });
+  title: string = '';
 
   constructor(
     private router: Router,
@@ -51,27 +46,26 @@ export class AddUiSpecPageComponent implements OnInit {
     this.state$ = this.activatedRoute.paramMap
       .pipe(map(() => window.history.state));
     this.program = window.history.state.program;
+
+    console.log(this.program);
+
+    this.addPage();
   }
 
-  createProgram(): void {
-    this.isSubmitted = true;
-
+  goToServiceSpec(): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to submit?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.program.sheet = this.text;
-        this.programSpecService.createProgramSpec(this.program).subscribe(
-          () => {
-            this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
-            this.router.navigate(['home']);
-          }, () => {
-            this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'});
-          }, () => {
-            this.isSubmitted = false;
-          }
-        );
+        this.isSubmitted = true;
+
+        let uiComponent: any = {
+          title: this.title,
+          componentPage: this.pages
+        };
+
+        this.router.navigate(['../service'], { relativeTo: this.activatedRoute, state: { program: this.program, uiComponent: uiComponent } });
       },
       reject: (type: any) => {
         switch(type) {
@@ -83,34 +77,43 @@ export class AddUiSpecPageComponent implements OnInit {
     });
   }
 
-  onUpload(event: any): void {
+  onUpload(event: any, index: number): void {
     this.isUpload = true;
-    console.log("onUpload :", event.files[0])
+    // console.log("onUpload :", event.files[0]);
 
-    const formData: FormData = new FormData();
-    formData.append("file", event.files[0]);
-    formData.append("description", "abc");
+    this.pages[index].image = event.files[0];
 
-    this.uploadedFile = event.files[0];
-    this.programSpecService.uploadFile(formData).subscribe(
-      () => { this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' }) },
-      () => { this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' }) },
-      () => { console.log('Success :', this.uploadedFile) }
-    );
+    // const formData: FormData = new FormData();
+    // formData.append("file", event.files[0]);
+    // formData.append("description", "abc");
+    
+    // this.uploadedFile = event.files[0];
+    // this.programSpecService.uploadFile(formData).subscribe(
+      //   () => { this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' }) },
+      //   () => { this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' }) },
+      //   () => { console.log('Success :', this.uploadedFile) }
+      // );
+
+    this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' });
   }
 
   addPage(): void {
-    this.uiSpec.push('1');
+    let componentPage = new ComponentPage();
+    componentPage.id = (this.pages.length + 1).toString();
+    componentPage.componentTable = [];
+    componentPage.actionTable = [];
+
+    this.pages.push(componentPage);
   }
 
-  addComponentRow(component: ComponentTable = new ComponentTable): void {
-    component.id = this.components.length.toString();
-    this.components.push(component);
+  addComponentRow(index: number, component: ComponentTable = new ComponentTable): void {
+    component.id = (this.pages[index].componentTable?.length! + 1).toString();
+    this.pages[index].componentTable?.push(component);
   }
 
-  addActionRow(action: ActionTable = new ActionTable): void {
-    action.id = this.actions.length.toString();
-    this.actions.push(action);
+  addActionRow(index: number, action: ActionTable = new ActionTable): void {
+    action.id = (this.pages[index].actionTable?.length! + 1).toString();
+    this.pages[index].actionTable?.push(action);
   }
 
   onComponentRowEditInit(component: ComponentTable): void {
@@ -123,9 +126,9 @@ export class AddUiSpecPageComponent implements OnInit {
   }
 
   onComponentRowEditCancel(component: ComponentTable, index: number): void {
-    this.components.splice(index, 1, this.clonedComponents[component.id!]);
+    this.pages[index].componentTable?.splice(index, 1, this.clonedComponents[component.id!]);
     delete this.clonedComponents[component.id!];
-    this.components = this.components.slice();
+    this.pages[index].componentTable = this.pages[index].componentTable?.slice();
     this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
   }
 
@@ -139,9 +142,9 @@ export class AddUiSpecPageComponent implements OnInit {
   }
 
   onActionRowEditCancel(action: ActionTable, index: number): void {
-    this.actions.splice(index, 1, this.clonedActions[action.id!]);
+    this.pages[index].actionTable?.splice(index, 1, this.clonedActions[action.id!]);
     delete this.clonedActions[action.id!];
-    this.actions = this.actions.slice();
+    this.pages[index].actionTable = this.pages[index].actionTable?.slice();
     this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
   }
 }

@@ -69,7 +69,7 @@ export class ImportSpecPageComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.program.sheet = this.uploadedFile ? this.uploadedFile.name : this.text;
+        let sheet = this.uploadedFile ? this.uploadedFile.name : this.text;
         this.programSpecService.createProgramSpec(this.program).subscribe(
           () => {
             this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});

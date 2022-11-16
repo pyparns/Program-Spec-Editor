@@ -21,8 +21,10 @@ public class Program {
 	private Integer version;
 	@BsonProperty("date")
 	private LocalDateTime date;
-	@BsonProperty("sheet")
-	private String sheet;
+	@BsonProperty("ui_component")
+	private String uiComponent;
+	@BsonProperty("service_component")
+	private String serviceComponent;
 	
 	public String getProgramId() {
 		return programId;
@@ -72,10 +74,16 @@ public class Program {
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
-	public String getSheet() {
-		return sheet;
+	public String getUiComponent() {
+		return uiComponent;
 	}
-	public void setSheet(String sheet) {
-		this.sheet = sheet;
+	public void setUiComponent(String uiComponent) {
+		this.uiComponent = uiComponent;
+	}
+	public String getServiceComponent() {
+		return serviceComponent;
+	}
+	public void setServiceComponent(String serviceComponent) {
+		this.serviceComponent = serviceComponent;
 	}
 }

@@ -8,6 +8,14 @@ export class ComponentTable {
 
 export class ActionTable {
     id?: string;
-    name?: string;
+    action?: string;
     description?: string;
+}
+
+export class ComponentPage {
+    id?: string;
+    image?: File;
+    name?: string;
+    componentTable?: ComponentTable[];
+    actionTable?: ActionTable[];
 }

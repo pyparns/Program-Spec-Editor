@@ -3,69 +3,65 @@
 <div class="container">
 
     <div class="grid">
-        <div class="col-8 col-offset-2 mt-3">
+        <div class="col-6 col-offset-3 mt-3">
             <app-add-program-step></app-add-program-step>
         </div>
     </div>
     
-    <form [formGroup]="programForm" (submit)="displayDialog = true">
-        <div class="grid">
-            <div class="col-2 col-offset-4 mt-5">
-                <span class="p-float-label">
-                    <input class="inputForm" type="text" pInputText formControlName="programId">
-                    <label for="inputtext">Program ID</label>
-                </span>
-            </div>
-            <div class="col-2 mt-5">
-                <span class="p-float-label">
-                    <input class="inputForm" type="text" pInputText formControlName="programName">
-                    <label for="inputtext">Program Name</label>
-                </span>
-            </div>
-        </div>
-        <div class="grid">
-            <div class="col-4 col-offset-4 mt-5">
-                <span class="p-float-label">
-                    <p-dropdown [options]="projects" formControlName="projectId" [autoDisplayFirst]="false" optionLabel="projectName" optionValue="id" [filter]="true" filterBy="projectName, id" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
-                    <label for="dropdown">Project</label>
-                </span>
-            </div>
-        </div>
-        <div class="grid">
-            <div class="col-4 col-offset-4 mt-5">
-                <span class="p-float-label">
-                    <p-dropdown [options]="systems" formControlName="systemId" [autoDisplayFirst]="false" optionLabel="systemName" optionValue="id" [filter]="true" filterBy="systemName" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
-                    <label for="dropdown">System</label>
-                </span>
-            </div>
-        </div>
-        <div class="grid">
-            <div class="col-4 col-offset-4 mt-5">
-                <span class="p-float-label">
-                    <p-dropdown [options]="systemAnalysts" formControlName="systemAnalystId" [autoDisplayFirst]="false" optionLabel="systemAnalystName" optionValue="id" [filter]="true" filterBy="systemAnalystName" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
-                    <label for="dropdown">System Analyst</label>
-                </span>
-            </div>
-        </div>
-        <div class="grid">
-            <div class="col-4 col-offset-4 mt-5">
-                <span class="p-float-label">
-                    <p-dropdown [options]="statuses" formControlName="status" [autoDisplayFirst]="false" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
-                    <label for="dropdown">Status</label>
-                </span>
+    <form [formGroup]="programForm" (submit)="onSubmit()">
+        <div class="grid mt-4 px-5">
+            <div class="col-6 col-offset-3 py-5 box" style="height: 470px">
+                <div class="grid">
+                    <div class="col-5 col-offset-1">
+                        <span class="p-float-label">
+                            <input class="inputForm" type="text" pInputText formControlName="programId">
+                            <label for="inputtext">Program ID</label>
+                        </span>
+                    </div>
+                    <div class="col-5">
+                        <span class="p-float-label">
+                            <input class="inputForm" type="text" pInputText formControlName="programName">
+                            <label for="inputtext">Program Name</label>
+                        </span>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-10 col-offset-1 mt-5">
+                        <span class="p-float-label">
+                            <p-dropdown [options]="projects" formControlName="projectId" [autoDisplayFirst]="false" optionLabel="projectName" optionValue="id" [filter]="true" filterBy="projectName, id" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
+                            <label for="dropdown">Project</label>
+                        </span>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-10 col-offset-1 mt-5">
+                        <span class="p-float-label">
+                            <p-dropdown [options]="systems" formControlName="systemId" [autoDisplayFirst]="false" optionLabel="systemName" optionValue="id" [filter]="true" filterBy="systemName" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
+                            <label for="dropdown">System</label>
+                        </span>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-10 col-offset-1 mt-5">
+                        <span class="p-float-label">
+                            <p-dropdown [options]="systemAnalysts" formControlName="systemAnalystId" [autoDisplayFirst]="false" optionLabel="systemAnalystName" optionValue="id" [filter]="true" filterBy="systemAnalystName" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
+                            <label for="dropdown">System Analyst</label>
+                        </span>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="col-10 col-offset-1 mt-5">
+                        <span class="p-float-label">
+                            <p-dropdown [options]="statuses" formControlName="status" [autoDisplayFirst]="false" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
+                            <label for="dropdown">Status</label>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="grid btn">
-            <div class="col-4 col-offset-4 mt-5">
+            <div class="col-10 col-offset-1 mt-5">
                 <p-button label="NEXT" type="submit"></p-button>
-                <p-dialog [(visible)]="displayDialog" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
-                    [draggable]="false" [resizable]="false">
-                    <p>Do you want to create "UI Specification" or "Service Specification"?</p>
-                    <ng-template pTemplate="footer">
-                        <p-button (click)="onSelected('ui')" label="UI Specification" styleClass="p-button-text"></p-button>
-                        <p-button (click)="onSelected('service')" label="Service Specification" styleClass="p-button-text"></p-button>
-                    </ng-template>
-                </p-dialog>
             </div>
         </div>
     </form>

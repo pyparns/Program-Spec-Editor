@@ -6,7 +6,8 @@ export class Program {
     systemId?: string;
     systemAnalystId?: string;
     status?: string;
-    sheet?: string;
     version?: number;
     date?: Date;
+    uiComponent?: string;
+    serviceComponent?: string;
 }
