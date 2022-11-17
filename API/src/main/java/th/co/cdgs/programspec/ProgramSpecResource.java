@@ -87,9 +87,9 @@ public class ProgramSpecResource {
                 path = Paths.get(located.substring(0, located.length()-4) + " (" + ++count + ")" + type);
             
             String statusSave = saveFile(Files.readAllBytes(formData.getFile().uploadedFile()), path);
-            System.out.println(statusSave);
             if (count > 0) fileName = fileName.substring(0, fileName.length()-4) + " (" + count + ")" + type;
-            return Response.ok(fileName).status(200).build();
+            System.out.println(statusSave);
+            return Response.ok(fileName).status(201).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.ok(e).status(500).build();

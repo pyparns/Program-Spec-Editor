@@ -55,9 +55,6 @@ export class AddServiceSpecPageComponent implements OnInit {
     this.program = window.history.state.program;
     this.uiComponent = window.history.state.uiComponent;
 
-    console.log(this.program);
-    console.log(this.uiComponent);
-
     let sc = new ServiceComponent();
     sc.services = [];
     this.serviceComponent = sc;
@@ -75,18 +72,21 @@ export class AddServiceSpecPageComponent implements OnInit {
         console.log(this.uiComponent);
         console.log(this.serviceComponent);
 
-        // this.programSpecService.createProgramSpec(this.program).subscribe(
-        //   () => {
-        //     this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
-        //     this.router.navigate(['home']);
-        //   }, () => {
-        //     this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'});
-        //   }, () => {
-        //     this.isSubmitted = false;
-        //   }
-        // );
+        // this.program.uiComponent = this.uiComponent;
+        // this.program.serviceComponent = this.serviceComponent;
 
-        // this.router.navigate(['home']);
+        this.programSpecService.createProgramSpec(this.program).subscribe(
+          () => {
+            this.messageService.add({key: 'tl', severity: 'success', summary: 'Program created', detail: ''});
+            this.router.navigate(['home']);
+          }, () => {
+            this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'});
+          }, () => {
+            this.isSubmitted = false;
+          }
+        );
+
+        this.router.navigate(['home']);
       },
       reject: (type: any) => {
         switch(type) {
@@ -102,21 +102,26 @@ export class AddServiceSpecPageComponent implements OnInit {
     this.isUpload = true;
     // console.log("onUpload :", event.files[0]);
 
-    // const formData: FormData = new FormData();
-    // formData.append("file", event.files[0]);
-    // formData.append("description", "abc");
+    const formData: FormData = new FormData();
+    formData.append("file", event.files[0]);
+    formData.append("description", "service");
 
-    if (type === 'er') this.serviceComponent.erDiagram = event.files[0];
-    else if (type === 'class') this.serviceComponent.classDiagram = event.files[0];
+    if (type === 'er') this.serviceComponent.erDiagram = event.files[0].name;
+    else if (type === 'class') this.serviceComponent.classDiagram = event.files[0].name;
 
-    // this.uploadedFile = event.files[0];
-    // this.programSpecService.uploadFile(formData).subscribe(
-    //   () => { this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' }) },
-    //   () => { this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' }) },
-    //   () => { console.log('Success :', this.uploadedFile) }
-    // );
+    this.programSpecService.uploadFile(formData).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' });
+      },
+      (err: any) => {
+        console.log(err);
+        this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' });
+      },
+      () => {  }
+    );
 
-    this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' })
+    // this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' })
   }
 
   addServiceRow(service: ServiceTable = new ServiceTable()): void {

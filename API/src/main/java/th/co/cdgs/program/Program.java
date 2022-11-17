@@ -22,9 +22,9 @@ public class Program {
 	@BsonProperty("date")
 	private LocalDateTime date;
 	@BsonProperty("ui_component")
-	private String uiComponent;
+	private UiComponent uiComponent;
 	@BsonProperty("service_component")
-	private String serviceComponent;
+	private ServiceComponent serviceComponent;
 	
 	public String getProgramId() {
 		return programId;
@@ -74,16 +74,16 @@ public class Program {
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
-	public String getUiComponent() {
+	public UiComponent getUiComponent() {
 		return uiComponent;
 	}
-	public void setUiComponent(String uiComponent) {
+	public void setUiComponent(UiComponent uiComponent) {
 		this.uiComponent = uiComponent;
 	}
-	public String getServiceComponent() {
+	public ServiceComponent getServiceComponent() {
 		return serviceComponent;
 	}
-	public void setServiceComponent(String serviceComponent) {
+	public void setServiceComponent(ServiceComponent serviceComponent) {
 		this.serviceComponent = serviceComponent;
 	}
 }

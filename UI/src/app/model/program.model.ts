@@ -8,6 +8,6 @@ export class Program {
     status?: string;
     version?: number;
     date?: Date;
-    uiComponent?: string;
-    serviceComponent?: string;
+    uiComponent?: any;
+    serviceComponent?: any;
 }

@@ -25,8 +25,7 @@ export class AddProgramPageComponent implements OnInit {
     projectId: new FormControl(null),
     systemId: new FormControl(null),
     systemAnalystId: new FormControl(null),
-    status: new FormControl(null),
-    sheet: new FormControl(null)
+    status: new FormControl(null)
   });
   
   isLoading: boolean = true;

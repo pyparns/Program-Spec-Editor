@@ -47,8 +47,6 @@ export class AddUiSpecPageComponent implements OnInit {
       .pipe(map(() => window.history.state));
     this.program = window.history.state.program;
 
-    console.log(this.program);
-
     this.addPage();
   }
 
@@ -81,20 +79,26 @@ export class AddUiSpecPageComponent implements OnInit {
     this.isUpload = true;
     // console.log("onUpload :", event.files[0]);
 
-    this.pages[index].image = event.files[0];
+    this.pages[index].image = event.files[0].name;
 
-    // const formData: FormData = new FormData();
-    // formData.append("file", event.files[0]);
-    // formData.append("description", "abc");
+    const formData: FormData = new FormData();
+    formData.append("file", event.files[0]);
+    formData.append("description", "ui");
     
     // this.uploadedFile = event.files[0];
-    // this.programSpecService.uploadFile(formData).subscribe(
-      //   () => { this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' }) },
-      //   () => { this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' }) },
-      //   () => { console.log('Success :', this.uploadedFile) }
-      // );
+    this.programSpecService.uploadFile(formData).subscribe(
+        (res: any) => {
+          console.log(res);
+          this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' });
+        },
+        (err: any) => {
+          console.log(err);
+          this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' });
+        },
+        () => {  }
+      );
 
-    this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' });
+    // this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' });
   }
 
   addPage(): void {
