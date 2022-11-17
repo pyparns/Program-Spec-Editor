@@ -48,7 +48,10 @@
               "bcryptjs",
               "@babel/runtime-corejs3",
               "pdfjs-dist/build/pdf",
-              "pdfjs-dist/web/pdf_viewer"
+              "pdfjs-dist/web/pdf_viewer",
+              "dompurify",
+              "html2canvas",
+              "quill"
             ]
           },
           "configurations": {
