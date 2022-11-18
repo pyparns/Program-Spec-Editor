@@ -72,8 +72,8 @@ export class AddServiceSpecPageComponent implements OnInit {
         console.log(this.uiComponent);
         console.log(this.serviceComponent);
 
-        // this.program.uiComponent = this.uiComponent;
-        // this.program.serviceComponent = this.serviceComponent;
+        this.program.uiComponent = this.uiComponent;
+        this.program.serviceComponent = this.serviceComponent;
 
         this.programSpecService.createProgramSpec(this.program).subscribe(
           () => {

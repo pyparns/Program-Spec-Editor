@@ -10,6 +10,7 @@ import { StepsModule } from 'primeng/steps';
 import { PanelModule } from 'primeng/panel';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
+import { ImageModule } from 'primeng/image';
 import { EditorModule } from 'primeng/editor';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -89,6 +90,7 @@ import { AddProgramStepComponent } from './add-program-step/add-program-step.com
     ToastModule,
     TableModule,
     StepsModule,
+    ImageModule,
     ButtonModule,
     DialogModule,
     EditorModule,

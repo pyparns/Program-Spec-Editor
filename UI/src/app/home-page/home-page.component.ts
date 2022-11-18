@@ -84,7 +84,6 @@ export class HomePageComponent implements OnInit {
   }
 
   detailSpec(id: string): void {
-    console.log(id);
     this.router.navigate(['programspec/' + id ]);
   }
 

@@ -137,10 +137,10 @@
                                     <td style="width:30%">
                                         <p-cellEditor>
                                             <ng-template pTemplate="input">
-                                                <input pInputText type="text" [(ngModel)]="action.name">
+                                                <input pInputText type="text" [(ngModel)]="action.action">
                                             </ng-template>
                                             <ng-template pTemplate="output">
-                                                {{action.name || "''Action Name''"}}
+                                                {{action.action || "''Action Name''"}}
                                             </ng-template>
                                         </p-cellEditor>
                                     </td>

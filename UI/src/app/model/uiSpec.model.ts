@@ -19,3 +19,8 @@ export class ComponentPage {
     componentTable?: ComponentTable[];
     actionTable?: ActionTable[];
 }
+
+export class UiComponent {
+    title?: string;
+    componentPage?: ComponentPage[];
+}
