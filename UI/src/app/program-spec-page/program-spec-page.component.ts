@@ -105,8 +105,10 @@ export class ProgramSpecPageComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        // console.log(this.programForm.value as Program);
-        this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, this.programForm.value as Program).subscribe(
+        let program = this.programForm.value as Program;
+        program.uiComponent = this.uiComponent;
+        program.serviceComponent = this.serviceComponent;
+        this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, program).subscribe(
           () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program updated', detail: ''}),
           () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to update', detail: 'please wait and try again'}),
           () => this.isEdit = false
