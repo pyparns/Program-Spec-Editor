@@ -8,7 +8,7 @@ public class ServiceTable {
 	@BsonProperty("service")
 	private String service;
 	@BsonProperty("method")
-	private String methid;
+	private String method;
 	@BsonProperty("action")
 	private String action;
 	@BsonProperty("detail")
@@ -26,11 +26,11 @@ public class ServiceTable {
 	public void setService(String service) {
 		this.service = service;
 	}
-	public String getMethid() {
-		return methid;
+	public String getMethod() {
+		return method;
 	}
-	public void setMethid(String methid) {
-		this.methid = methid;
+	public void setMethod(String method) {
+		this.method = method;
 	}
 	public String getAction() {
 		return action;
