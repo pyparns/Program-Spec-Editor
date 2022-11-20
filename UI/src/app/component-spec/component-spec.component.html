@@ -1,0 +1,170 @@
+<div class="grid">
+    <div class="col-12 py-5" style="height: 650px; overflow-y: scroll;">
+        <!-- <span class="p-float-label">
+            <input class="inputForm" type="text" pInputText [(ngModel)]="uiComponent.title">
+            <label for="inputtext">Title</label>
+        </span> -->
+        <h2>{{ componentSpec.title }}</h2>
+        <div *ngFor="let page of componentSpec.componentPage; index as i">
+            <div class="grid">
+                <div class="col-10 col-offset-1 mt-4">
+                    <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadImage">
+                        <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
+                    </div>
+                    <ng-template #uploadImage>
+                        <p-fileUpload name="demo[]" [customUpload]="true" (uploadHandler)="onUpload($event, i)" [multiple]="false" accept="image/*">
+                            <ng-template pTemplate="content">
+                                <li *ngIf="page.image">{{ page.image.name }} - {{ page.image.size }} bytes</li>
+                            </ng-template>
+                        </p-fileUpload>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-10 col-offset-1">
+                    <p-table [value]="page.componentTable!" dataKey="id" editMode="row" responsiveLayout="scroll">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th colspan="5" pEditableColumn>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="page.name" width="100%">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{page.name || "''Component " + (i + 1) + "''"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th style="width:20%">Label</th>
+                                <th style="width:20%">Attribute</th>
+                                <th style="width:20%">Property</th>
+                                <th style="width:20%">Event</th>
+                                <th style="width:20%"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-component let-editing="editing" let-ri="rowIndex">
+                            <tr [pEditableRow]="component">
+                                <td style="width:20%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="component.label">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{component.label || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:20%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="component.attribute">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{component.attribute || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:20%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="component.property">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{component.property || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:20%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="component.event">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{component.event || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:20%">
+                                    <div class="flex align-items-center justify-content-center gap-2">
+                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onComponentRowEditInit(component)" class="p-button-rounded p-button-text"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onComponentRowEditSave(component)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onComponentRowEditCancel(component, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="footer">
+                            <tr>
+                                <td colspan="5">
+                                    <div class="flex align-items-center justify-content-center gap-2">
+                                        <button pButton pRipple type="button" icon="pi pi-plus" (click)="addComponentRow(i)" class="p-button-rounded p-button-text"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="col-10 col-offset-1">
+                    <p-table [value]="page.actionTable!" dataKey="id" editMode="row">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width:25%">Action Name</th>
+                                <th style="width:55%">Description</th>
+                                <th style="width:20%"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-action let-editing="editing" let-ri="rowIndex">
+                            <tr [pEditableRow]="action">
+                                <td style="width:25%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="action.action">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{action.action || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:55%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="action.description">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{action.description || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:20%">
+                                    <div class="flex align-items-center justify-content-center gap-2">
+                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onActionRowEditInit(action)" class="p-button-rounded p-button-text"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onActionRowEditSave(action)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onActionRowEditCancel(action, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="footer">
+                            <tr>
+                                <td colspan="3">
+                                    <div class="flex align-items-center justify-content-center gap-2">
+                                        <button pButton pRipple type="button" icon="pi pi-plus" (click)="addActionRow(i)" class="p-button-rounded p-button-text"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+        <div class="grid btn mt-5">
+            <div class="col-10 col-offset-1">
+                <p-button label="Add Component" (click)="addPage()"></p-button>
+            </div>
+        </div>
+    </div>
+</div>

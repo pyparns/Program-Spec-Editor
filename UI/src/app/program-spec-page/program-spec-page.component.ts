@@ -51,11 +51,7 @@ export class ProgramSpecPageComponent implements OnInit {
   isEdit: boolean = false;
   canEdit: boolean = false;
   isVersion: boolean = true;
-  isUploaded: boolean = false;
   isUpload: boolean = false;
-
-  clonedComponents: { [s: string]: ComponentTable; } = {};
-  clonedActions: { [s: string]: ActionTable; } = {};
 
   subscribeProgramSpec!: Subscription;
   subscribeProject!: Subscription;
@@ -191,50 +187,6 @@ export class ProgramSpecPageComponent implements OnInit {
   //   return (doc.internal.pageSize.getWidth() - doc.getTextWidth(text))/2
   // }
 
-  onPrint(): any {
-    this.confirmationService.confirm({
-      message: 'Do you want to print this spec?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.messageService.add({key: 'tl', severity:'info', summary:'Confirmed', detail:'You have accepted'});
-      },
-      reject: (type: any) => {
-        switch(type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
-          break;
-        }
-      }
-    });
-  }
-
-  onUpload(event: any, index: number): void {
-    this.isUpload = true;
-
-    this.uiComponent.componentPage![index].image = event.files[0].name;
-
-    const formData: FormData = new FormData();
-    formData.append("file", event.files[0]);
-    formData.append("description", "ui");
-    
-    this.programSpecService.uploadFile(formData).subscribe(
-      (res: any) => {
-        console.log(res);
-        this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' });
-      },
-      (err: any) => {
-        console.log(err);
-        this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' });
-      },
-      () => {  }
-    );
-  }
-
-  onSavePdf(): void {
-    
-  }
-
   onChangeOption(e: any, type: string) {
     console.log("Type, " + type);
     console.log("ID, " + e.value.id);
@@ -260,56 +212,5 @@ export class ProgramSpecPageComponent implements OnInit {
         systemAnalystName: e.value.systemAnalystName
       });
     }
-  }
-
-  addPage(): void {
-    let componentPage = new ComponentPage();
-    componentPage.id = (this.uiComponent.componentPage!.length + 1).toString();
-    componentPage.componentTable = [];
-    componentPage.actionTable = [];
-
-    this.uiComponent.componentPage!.push(componentPage);
-  }
-
-  addComponentRow(index: number, component: ComponentTable = new ComponentTable()): void {
-    component.id = (this.uiComponent.componentPage![index].componentTable?.length! + 1).toString();
-    this.uiComponent.componentPage![index].componentTable?.push(component);
-  }
-
-  addActionRow(index: number, action: ActionTable = new ActionTable()): void {
-    action.id = (this.uiComponent.componentPage![index].actionTable?.length! + 1).toString();
-    this.uiComponent.componentPage![index].actionTable?.push(action);
-  }
-
-  onComponentRowEditInit(component: ComponentTable): void {
-    this.clonedComponents[component.id!] = {...component};
-  }
-
-  onComponentRowEditSave(component: ComponentTable): void {
-    delete this.clonedComponents[component.id!];
-    this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
-  }
-
-  onComponentRowEditCancel(component: ComponentTable, index: number): void {
-    this.uiComponent.componentPage![index].componentTable?.splice(index, 1, this.clonedComponents[component.id!]);
-    delete this.clonedComponents[component.id!];
-    this.uiComponent.componentPage![index].componentTable = this.uiComponent.componentPage![index].componentTable?.slice();
-    this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
-  }
-
-  onActionRowEditInit(action: ActionTable): void {
-    this.clonedActions[action.id!] = {...action};
-  }
-
-  onActionRowEditSave(action: ActionTable): void {
-    delete this.clonedActions[action.id!];
-    this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
-  }
-
-  onActionRowEditCancel(action: ActionTable, index: number): void {
-    this.uiComponent.componentPage![index].actionTable?.splice(index, 1, this.clonedActions[action.id!]);
-    delete this.clonedActions[action.id!];
-    this.uiComponent.componentPage![index].actionTable = this.uiComponent.componentPage![index].actionTable?.slice();
-    this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
   }
 }

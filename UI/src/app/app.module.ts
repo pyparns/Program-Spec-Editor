@@ -14,6 +14,7 @@ import { ImageModule } from 'primeng/image';
 import { EditorModule } from 'primeng/editor';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { TabViewModule } from 'primeng/tabview';
 import { MenubarModule } from 'primeng/menubar';
 import { MessageModule } from 'primeng/message';
 import { TimelineModule } from 'primeng/timeline';
@@ -57,6 +58,8 @@ import { ProgramSpecVersionComponent } from './program-spec-version/program-spec
 import { AddUiSpecPageComponent } from './add-ui-spec-page/add-ui-spec-page.component';
 import { AddServiceSpecPageComponent } from './add-service-spec-page/add-service-spec-page.component';
 import { AddProgramStepComponent } from './add-program-step/add-program-step.component';
+import { ServiceSpecComponent } from './service-spec/service-spec.component';
+import { ComponentSpecComponent } from './component-spec/component-spec.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +84,8 @@ import { AddProgramStepComponent } from './add-program-step/add-program-step.com
     AddUiSpecPageComponent,
     AddServiceSpecPageComponent,
     AddProgramStepComponent,
+    ServiceSpecComponent,
+    ComponentSpecComponent,
   ],
   imports: [
     TagModule,
@@ -97,6 +102,7 @@ import { AddProgramStepComponent } from './add-program-step/add-program-step.com
     BrowserModule,
     MessageModule,
     MenubarModule,
+    TabViewModule,
     SkeletonModule,
     TimelineModule,
     MessagesModule,

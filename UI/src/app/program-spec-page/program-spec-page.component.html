@@ -1,271 +1,56 @@
 <app-header [pageTitle]="programForm.value.programName || ''"></app-header>
 <div class="container">
     <div class="grid" *ngIf="!isVersion; else version">
-        <div class="col-12 md:col-4 lg:col-3">
-            <div class="filter-hbox">
-                <div class="grid">
-                    <div class="col-8 col-offset-2 pt-3">
-                        <label class="filter-htext">About Program</label>
-                    </div>
-                    <div class="col-2 pt-3">
-                        <i class="pi pi-history" style="font-size: 1.4rem" (click)="toVersion()"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="filter-box px-5 py-4">
-                <form [formGroup]="programForm">
-                    <div class="grid mt-4">
-                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseProgramId">
-                            <input id="float-input-invalid" type="text" pInputText pKeyFilter="int" formControlName="programId" class="ng-dirty p-inputtext-sm"> 
-                            <label for="float-input-invalid">Program ID</label>
-                        </span>
-                        <ng-template #elseProgramId>
-                            <label for="programId">Program ID : {{ programForm.value.programId }}</label>
+        <div class="col-12 lg:col-8 lg:col-offset-2 my-5">
+            <p-tabView>
+                <p-tabPanel header="Program Details">
+                    <p-table [value]="[programForm.value]" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '100%'}">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th colspan="2" style="width:32%">Program</th>
+                                <th rowspan="2" style="width:17%">Project</th>
+                                <th rowspan="2" style="width:17%">System</th>
+                                <th rowspan="2" style="width:17%">System Analyst</th>
+                                <th rowspan="2" style="width:17%">Status</th>
+                            </tr>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                            </tr>
                         </ng-template>
-                    </div>
-                    <div class="grid mt-4">
-                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseProgramName">
-                            <input id="float-input-invalid" type="text" pInputText formControlName="programName" class="ng-dirty p-inputtext-sm"> 
-                            <label for="float-input-invalid">Program Name</label>
-                        </span>
-                        <ng-template #elseProgramName>
-                            <label for="programName">Program Name : {{ programForm.value.programName }}</label>
+                        <ng-template pTemplate="body" let-program>
+                            <tr>
+                                <td>{{program.programId}}</td>
+                                <td>{{program.programName}}</td>
+                                <td>{{program.projectName}}</td>
+                                <td>{{program.systemName}}</td>
+                                <td>{{program.systemAnalystName}}</td>
+                                <td>{{program.status}}</td>
+                            </tr>
                         </ng-template>
-                    </div>
-                    <div class="grid mt-4">
-                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseProjectName">
-                            <p-dropdown [options]="projects" optionLabel="projectName" [autoDisplayFirst]="false" [filter]="true"
-                                filterBy="projectName" (onChange)="onChangeOption($event, 'project')" ></p-dropdown>
-                            <label for="float-input-invalid">Project</label>
-                        </span>
-                        <ng-template #elseProjectName>
-                            <label for="projectName">Project : {{ programForm.value.projectName }}</label>
+                        <ng-template pTemplate="footer">
+                            <tr>
+                                <td colspan="6" class="text-right" *ngIf="canEdit">
+                                    <span *ngIf="!isEdit; else saveBtn">
+                                        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="isEdit = true"></button>
+                                        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onDelete(id)"></button>
+                                    </span>
+                                    <ng-template #saveBtn>
+                                        <button pButton pRipple type="button" icon="pi pi-save" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onSave(id)"></button>
+                                    </ng-template>
+                                </td>
+                            </tr>
                         </ng-template>
-                    </div>
-                    <div class="grid mt-4">
-                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseSystemName">
-                            <p-dropdown [options]="systems" optionLabel="systemName" [autoDisplayFirst]="false" [filter]="true"
-                                filterBy="systemName" (onChange)="onChangeOption($event, 'system')" ></p-dropdown>
-                            <label for="float-input-invalid">System</label>
-                        </span>
-                        <ng-template #elseSystemName>
-                            <label for="systemName">System : {{ programForm.value.systemName }}</label>
-                        </ng-template>
-                    </div>
-                    <div class="grid mt-4">
-                        <span class="p-float-label mb-2" *ngIf="isEdit; else elseSystemAnalystName">
-                            <p-dropdown [options]="systemAnalysts" optionLabel="systemAnalystName" [autoDisplayFirst]="false" [filter]="true"
-                            filterBy="systemAnalystName" (onChange)="onChangeOption($event, 'systemAnalyst')" ></p-dropdown>
-                            <label for="float-input-invalid">System Analyst</label>
-                        </span>
-                        <ng-template #elseSystemAnalystName>
-                            <label for="systemAnalystName">System Analyst : {{ programForm.value.systemAnalystName }}</label>
-                        </ng-template>
-                    </div>
-                    <div class="grid mt-4">
-                        <p-dropdown *ngIf="isEdit; else elseStatus" [options]="statuses" formControlName="status" class="p-inputtext-sm" placeholder="Select a status"></p-dropdown>
-                        <ng-template #elseStatus>
-                            <label for="status">Status : {{ programForm.value.status }}</label>
-                        </ng-template>
-                    </div>
-                </form>
-            </div>
-            <div class="filter-fbox p-1"  *ngIf="isEdit; else elseBlock">
-                <button pButton pRipple type="button" icon="pi pi-save" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onSave(id)"></button>
-            </div>
-            <ng-template #elseBlock>
-                <div class="filter-fbox p-1">
-                    <span *ngIf="canEdit">
-                        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="isEdit = true"></button>
-                        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onDelete(id)"></button>
-                    </span>
-                    <button pButton pRipple type="button" icon="pi pi-print" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onPrint()"></button>
-                </div>
-            </ng-template>
-        </div>
-        <!-- <p-scrollPanel [style]="{width: '100%', height: '100%'}">
-            <pdf-viewer [src]="programForm.value.sheet!"
-                [render-text]="false"
-                [original-size]="true"
-                [stick-to-page]="true"
-                [show-all]="true"
-                [autoresize]="true"
-                [show-borders]="true"
-                [zoom-scale]="'page-height'"
-                style="width: 100%; height: 100%"
-            ></pdf-viewer>
-        </p-scrollPanel> -->
-        <div class="col-12 md:col-8 lg:col-9 my-5">
-            <!-- <h2>UI Component</h2> -->
-            <div class="grid">
-                <div class="col-10 col-offset-1 py-5 box" style="height: 700px; overflow-y: scroll;">
-                    <!-- <span class="p-float-label">
-                        <input class="inputForm" type="text" pInputText [(ngModel)]="uiComponent.title">
-                        <label for="inputtext">Title</label>
-                    </span> -->
-                    <h2>{{ uiComponent.title }}</h2>
-                    <div *ngFor="let page of uiComponent.componentPage; index as i">
-                        <div class="grid mt-2">
-                            <div class="col-10 col-offset-1 mt-3">
-                                <p-image *ngIf="!isEdit; else uploadImage" src="assets/image1.png" alt="Image" width="80%" [preview]="true"></p-image>
-                                <ng-template #uploadImage>
-                                    <label class="desc ml-2 mt-5">Image Component {{i+1}}</label>
-                                    <p-fileUpload name="demo[]" [customUpload]="true" (uploadHandler)="onUpload($event, i)" [multiple]="false" accept="image/*">
-                                        <ng-template pTemplate="content">
-                                            <li *ngIf="page.image">{{ page.image.name }} - {{ page.image.size }} bytes</li>
-                                        </ng-template>
-                                    </p-fileUpload>
-                                </ng-template>
-                            </div>
-                        </div>
-                        <div class="grid">
-                            <div class="col-10 col-offset-1">
-                                <p-table [value]="page.componentTable!" dataKey="id" editMode="row" responsiveLayout="scroll">
-                                    <ng-template pTemplate="header">
-                                        <tr>
-                                            <th colspan="5" pEditableColumn>
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" [(ngModel)]="page.name" width="100%">
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{page.name || "''Component " + (i + 1) + "''"}}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width:20%">Label</th>
-                                            <th style="width:20%">Attribute</th>
-                                            <th style="width:20%">Property</th>
-                                            <th style="width:20%">Event</th>
-                                            <th style="width:20%"></th>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-component let-editing="editing" let-ri="rowIndex">
-                                        <tr [pEditableRow]="component">
-                                            <td style="width:20%">
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" [(ngModel)]="component.label">
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{component.label}}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-                                            <td style="width:20%">
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" [(ngModel)]="component.attribute">
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{component.attribute}}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-                                            <td style="width:20%">
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" [(ngModel)]="component.property">
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{component.property || "-"}}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-                                            <td style="width:20%">
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" [(ngModel)]="component.event">
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{component.event}}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-                                            <td style="width:20%">
-                                                <div class="flex align-items-center justify-content-center gap-2">
-                                                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onComponentRowEditInit(component)" class="p-button-rounded p-button-text"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onComponentRowEditSave(component)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onComponentRowEditCancel(component, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="footer">
-                                        <tr>
-                                            <td colspan="5">
-                                                <div class="flex align-items-center justify-content-center gap-2">
-                                                    <button pButton pRipple type="button" icon="pi pi-plus" (click)="addComponentRow(i)" class="p-button-rounded p-button-text"></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </ng-template>
-                                </p-table>
-                            </div>
-                        </div>
-                        <div class="grid">
-                            <div class="col-10 col-offset-1">
-                                <p-table [value]="page.actionTable!" dataKey="id" editMode="row">
-                                    <ng-template pTemplate="header">
-                                        <tr>
-                                            <th style="width:25%">Action Name</th>
-                                            <th style="width:55%">Description</th>
-                                            <th style="width:20%"></th>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-action let-editing="editing" let-ri="rowIndex">
-                                        <tr [pEditableRow]="action">
-                                            <td style="width:25%">
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" [(ngModel)]="action.action">
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{action.action}}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-                                            <td style="width:55%">
-                                                <p-cellEditor>
-                                                    <ng-template pTemplate="input">
-                                                        <input pInputText type="text" [(ngModel)]="action.description">
-                                                    </ng-template>
-                                                    <ng-template pTemplate="output">
-                                                        {{action.description}}
-                                                    </ng-template>
-                                                </p-cellEditor>
-                                            </td>
-                                            <td style="width:20%">
-                                                <div class="flex align-items-center justify-content-center gap-2">
-                                                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onActionRowEditInit(action)" class="p-button-rounded p-button-text"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onActionRowEditSave(action)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onActionRowEditCancel(action, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="footer">
-                                        <tr>
-                                            <td colspan="3">
-                                                <div class="flex align-items-center justify-content-center gap-2">
-                                                    <button pButton pRipple type="button" icon="pi pi-plus" (click)="addActionRow(i)" class="p-button-rounded p-button-text"></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </ng-template>
-                                </p-table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid btn mt-5">
-                        <div class="col-10 col-offset-1">
-                            <p-button label="Add Component" (click)="addPage()"></p-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    </p-table>
+                </p-tabPanel>
+
+                <p-tabPanel header="UI Components">
+                    <app-component-spec [componentSpec]="uiComponent"></app-component-spec>
+                </p-tabPanel>
+                <p-tabPanel header="Service Components">
+                    <app-service-spec [serviceSpec]="serviceComponent"></app-service-spec>
+                </p-tabPanel>
+            </p-tabView>
         </div>
     </div>
     <ng-template #version>

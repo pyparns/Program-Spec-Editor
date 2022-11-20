@@ -20,20 +20,11 @@ export class AddServiceSpecPageComponent implements OnInit {
 
   isSubmitted: boolean = false;
   isUpload: boolean = false;
-  erDiagram!: File;
-  classDiagram!: File;
 
   clonedServices: { [s: string]: ServiceTable; } = {};
   clonedDetailService: { [s: string]: DetailServiceTable; } = {};
 
   state$!: Observable<object>;
-
-  specForm = new FormGroup({
-    title: new FormControl(null),
-    host: new FormControl(null),
-    port: new FormControl(null),
-    contextRoot: new FormControl(null),
-  });
 
   constructor(
     private router: Router,

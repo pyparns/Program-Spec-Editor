@@ -1,0 +1,246 @@
+<div class="grid">
+    <div class="col-12 py-5" style="height: 650px; overflow-y: scroll;">
+        <div class="grid">
+            <div class="col-10 col-offset-1">
+                <span class="p-float-label" *ngIf="isEdit; else title">
+                    <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.title">
+                    <label for="inputtext">Title</label>
+                </span>
+                <ng-template #title>
+                        <h2>{{serviceSpec.title}}</h2>
+                </ng-template>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-10 col-offset-1">
+                <span class="p-float-label" *ngIf="isEdit; else host">
+                    <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.host">
+                    <label for="inputtext">Host</label>
+                </span>
+                <ng-template #host>
+                    <div class="text-left">
+                        <h4>Host : {{serviceSpec.host}}</h4>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-10 col-offset-1">
+                <span class="p-float-label" *ngIf="isEdit; else port">
+                    <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.port">
+                    <label for="inputtext">Port</label>
+                </span>
+                <ng-template #port>
+                    <div class="text-left">
+                        <h4>Port : {{serviceSpec.port}}</h4>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-10 col-offset-1">
+                <span class="p-float-label" *ngIf="isEdit; else contextRoot">
+                    <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.contextRoot">
+                    <label for="inputtext">Context Root</label>
+                </span>
+                <ng-template #contextRoot>
+                    <div class="text-left">
+                        <h4>Context Root : {{serviceSpec.contextRoot}}</h4>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-10 col-offset-1">
+                <div class="text-left">
+                    <h4>Er Diagram</h4>
+                </div>
+                <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadErImage">
+                    <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
+                </div>
+                <ng-template #uploadErImage>
+                    <p-fileUpload name="er[]" [customUpload]="true" (uploadHandler)="onUpload($event, 'er')" [multiple]="false" accept="image/*">
+                        <ng-template pTemplate="content">
+                            <li *ngIf="serviceSpec.erDiagram">{{ serviceSpec.erDiagram.name }} - {{ serviceSpec.erDiagram.size }} bytes</li>
+                        </ng-template>
+                    </p-fileUpload>
+                </ng-template>
+            </div>
+        </div>
+        <div class="grid mt-3">
+            <div class="col-10 col-offset-1">
+                <div class="text-left">
+                    <h4>Class Diagram</h4>
+                </div>
+                <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadClassImage">
+                    <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
+                </div>
+                <ng-template #uploadClassImage>
+                    <p-fileUpload name="class[]" [customUpload]="true" (uploadHandler)="onUpload($event, 'class')" [multiple]="false" accept="image/*">
+                        <ng-template pTemplate="content">
+                            <li *ngIf="serviceSpec.classDiagram">{{ serviceSpec.classDiagram.name }} - {{ serviceSpec.classDiagram.size }} bytes</li>
+                        </ng-template>
+                    </p-fileUpload>
+                </ng-template>
+            </div>
+        </div>
+        <div class="grid mt-2">
+            <div class="col-10 col-offset-1">
+                <p-table [value]="serviceSpec.services!" dataKey="id" editMode="row" responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width:8%">No.</th>
+                            <th style="width:44%">Service</th>
+                            <th style="width:14%">Method</th>
+                            <th style="width:14%">Action</th>
+                            <th style="width:20%"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-service let-editing="editing" let-ri="rowIndex">
+                        <tr [pEditableRow]="service">
+                            <td style="width:8%">
+                                {{ri + 1}}
+                            </td>
+                            <td style="width:44%">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="service.service">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{service.service || "-"}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:14%">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="service.method">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{service.method || "-"}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:14%">
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="service.action">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{service.action || "-"}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td style="width:20%">
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onServiceRowEditInit(service)" class="p-button-rounded p-button-text"></button>
+                                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onServiceRowEditSave(service)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onServiceRowEditCancel(service, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <tr>
+                            <td colspan="5">
+                                <div class="flex align-items-center justify-content-center gap-2">
+                                    <button pButton pRipple type="button" icon="pi pi-plus" (click)="addServiceRow()" class="p-button-rounded p-button-text"></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+        <div *ngFor="let service of serviceSpec.services!; index as i">
+            <div class="grid mt-2">
+                <div class="col-10 col-offset-1">
+                    <p-table [value]="[service]" dataKey="id" editMode="row" responsiveLayout="scroll">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th colspan="3">
+                                    {{service.action || "-"}}
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-detail let-editing="editing" let-ri="rowIndex">
+                            <tr [pEditableRow]="detail">
+                                <td style="width:20%">
+                                    Method Name
+                                </td>
+                                <td style="width:60%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="detail.detail.methodName">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{detail.detail?.methodName || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:20%">
+                                    <div class="flex align-items-center justify-content-center gap-2">
+                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onDetailServiceRowEditInit(detail.detail!)" class="p-button-rounded p-button-text"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onDetailServiceRowEditSave(detail.detail!)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onDetailServiceRowEditCancel(detail.detail!, i)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr [pEditableRow]="detail">
+                                <td style="width:20%">
+                                    Input Parameter
+                                </td>
+                                <td style="width:60%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="detail.detail.inputParameter">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{detail.detail?.inputParameter || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:20%">
+                                </td>
+                            </tr>
+                            <tr [pEditableRow]="detail">
+                                <td style="width:20%">
+                                    Example Response
+                                </td>
+                                <td style="width:60%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="detail.detail.exampleResponse">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{detail.detail?.exampleResponse || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:20%">
+                                </td>
+                            </tr>
+                            <tr [pEditableRow]="detail">
+                                <td style="width:20%">
+                                    Description
+                                </td>
+                                <td style="width:60%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="detail.detail.description">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            <label>{{detail.detail?.description || "-"}}</label>
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:20%">
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
