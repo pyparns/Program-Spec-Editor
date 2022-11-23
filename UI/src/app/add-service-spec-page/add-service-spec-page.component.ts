@@ -7,6 +7,7 @@ import { AccountService } from '../service/account.service';
 import { ProgramSpecService } from '../service/program-spec.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DetailServiceTable, ServiceComponent, ServiceTable } from '../model/serviceSpec.model';
+import { UiComponent } from '../model/uiSpec.model';
 
 @Component({
   selector: 'app-add-service-spec-page',
@@ -15,14 +16,10 @@ import { DetailServiceTable, ServiceComponent, ServiceTable } from '../model/ser
 })
 export class AddServiceSpecPageComponent implements OnInit {
   program!: Program;
-  uiComponent: any;
-  serviceComponent!: ServiceComponent;
+  componentSpec!: UiComponent;
+  serviceSpec!: ServiceComponent;
 
   isSubmitted: boolean = false;
-  isUpload: boolean = false;
-
-  clonedServices: { [s: string]: ServiceTable; } = {};
-  clonedDetailService: { [s: string]: DetailServiceTable; } = {};
 
   state$!: Observable<object>;
 
@@ -44,14 +41,14 @@ export class AddServiceSpecPageComponent implements OnInit {
     this.state$ = this.activatedRoute.paramMap
       .pipe(map(() => window.history.state));
     this.program = window.history.state.program;
-    this.uiComponent = window.history.state.uiComponent;
-
+    this.componentSpec = window.history.state.uiComponent;
+    
     let sc = new ServiceComponent();
     sc.services = [];
-    this.serviceComponent = sc;
+    this.serviceSpec = sc;
   }
 
-  createProgram(): void {
+  createProgram(serviceSpec: ServiceComponent): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to submit?',
       header: 'Confirmation',
@@ -59,12 +56,10 @@ export class AddServiceSpecPageComponent implements OnInit {
       accept: () => {
         this.isSubmitted = true;
 
-        console.log(this.program);
-        console.log(this.uiComponent);
-        console.log(this.serviceComponent);
+        this.program.uiComponent = this.componentSpec;
+        this.program.serviceComponent = serviceSpec;
 
-        this.program.uiComponent = this.uiComponent;
-        this.program.serviceComponent = this.serviceComponent;
+        console.log(this.program);
 
         this.programSpecService.createProgramSpec(this.program).subscribe(
           () => {
@@ -74,10 +69,10 @@ export class AddServiceSpecPageComponent implements OnInit {
             this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to create', detail: 'please wait and try again'});
           }, () => {
             this.isSubmitted = false;
+            this.router.navigate(['home']);
           }
         );
 
-        this.router.navigate(['home']);
       },
       reject: (type: any) => {
         switch(type) {
@@ -87,72 +82,5 @@ export class AddServiceSpecPageComponent implements OnInit {
         }
       }
     });
-  }
-
-  onUpload(event: any, type: string): void {
-    this.isUpload = true;
-    // console.log("onUpload :", event.files[0]);
-
-    const formData: FormData = new FormData();
-    formData.append("file", event.files[0]);
-    formData.append("description", "service");
-
-    if (type === 'er') this.serviceComponent.erDiagram = event.files[0].name;
-    else if (type === 'class') this.serviceComponent.classDiagram = event.files[0].name;
-
-    this.programSpecService.uploadFile(formData).subscribe(
-      (res: any) => {
-        console.log(res);
-        this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' });
-      },
-      (err: any) => {
-        console.log(err);
-        this.messageService.add({ key: 'tl', severity: 'error', summary: 'Failed to upload', detail: 'please wait and try again' });
-      },
-      () => {  }
-    );
-
-    // this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' })
-  }
-
-  addServiceRow(service: ServiceTable = new ServiceTable()): void {
-    service.id = (this.serviceComponent.services!.length + 1).toString();
-    service.detail = new DetailServiceTable();
-
-    this.serviceComponent.services!.push(service);
-
-    console.log(this.serviceComponent);
-  }
-
-  onServiceRowEditInit(service: any): void {
-    this.clonedServices[service.id!] = {...service};
-  }
-
-  onServiceRowEditSave(service: any): void {
-    delete this.clonedServices[service.id!];
-    this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
-  }
-
-  onServiceRowEditCancel(service: any, index: number): void {
-    this.serviceComponent.services!.splice(index, 1, this.clonedServices[service.id!]);
-    delete this.clonedServices[service.id!];
-    this.serviceComponent.services! = this.serviceComponent.services!.slice();
-    this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
-  }
-
-  onDetailServiceRowEditInit(service: any): void {
-    this.clonedServices[service.id!] = {...service};
-  }
-
-  onDetailServiceRowEditSave(service: any): void {
-    delete this.clonedServices[service.id!];
-    this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
-  }
-
-  onDetailServiceRowEditCancel(service: any, index: number): void {
-    this.serviceComponent.services!.splice(index, 1, this.clonedServices[service.id!]);
-    delete this.clonedServices[service.id!];
-    this.serviceComponent.services! = this.serviceComponent.services!.slice();
-    this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
   }
 }

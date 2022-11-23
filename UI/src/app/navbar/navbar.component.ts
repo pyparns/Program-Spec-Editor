@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
             {
                 label:'Add Spec',
                 icon:'pi pi-fw pi-pencil',
-                routerLink: "/create/spec/blankform"
+                routerLink: "/create/spec/program"
             },
             {
                 label:'Project',

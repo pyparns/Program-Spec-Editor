@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-add-program-step',
@@ -18,8 +18,8 @@ export class AddProgramStepComponent implements OnInit {
         routerLink: 'program'
       },
       {
-        label: 'UI',
-        routerLink: 'ui'
+        label: 'Component',
+        routerLink: 'component'
       },
       {
         label: 'Service',

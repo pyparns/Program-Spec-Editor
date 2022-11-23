@@ -1,62 +1,72 @@
 <app-header [pageTitle]="programForm.value.programName || ''"></app-header>
 <div class="container">
-    <div class="grid" *ngIf="!isVersion; else version">
-        <div class="col-12 lg:col-8 lg:col-offset-2 my-5">
-            <p-tabView>
-                <p-tabPanel header="Program Details">
-                    <p-table [value]="[programForm.value]" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '100%'}">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th colspan="2" style="width:32%">Program</th>
-                                <th rowspan="2" style="width:17%">Project</th>
-                                <th rowspan="2" style="width:17%">System</th>
-                                <th rowspan="2" style="width:17%">System Analyst</th>
-                                <th rowspan="2" style="width:17%">Status</th>
-                            </tr>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-program>
-                            <tr>
-                                <td>{{program.programId}}</td>
-                                <td>{{program.programName}}</td>
-                                <td>{{program.projectName}}</td>
-                                <td>{{program.systemName}}</td>
-                                <td>{{program.systemAnalystName}}</td>
-                                <td>{{program.status}}</td>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="footer">
-                            <tr>
-                                <td colspan="6" class="text-right" *ngIf="canEdit">
-                                    <span *ngIf="!isEdit; else saveBtn">
-                                        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="isEdit = true"></button>
-                                        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onDelete(id)"></button>
-                                    </span>
-                                    <ng-template #saveBtn>
-                                        <button pButton pRipple type="button" icon="pi pi-save" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onSave(id)"></button>
-                                    </ng-template>
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-                </p-tabPanel>
-
-                <p-tabPanel header="UI Components">
-                    <app-component-spec [componentSpec]="uiComponent"></app-component-spec>
-                </p-tabPanel>
-                <p-tabPanel header="Service Components">
-                    <app-service-spec [serviceSpec]="serviceComponent"></app-service-spec>
-                </p-tabPanel>
-            </p-tabView>
+    <div class="grid" *ngIf="isVersion; else page">
+        <div class="col-12">
+            <app-program-spec-version [programSpec]="programSpec" (version)="onSelectVersion($event)"></app-program-spec-version>
         </div>
     </div>
-    <ng-template #version>
+    <ng-template #page>
         <div class="grid">
-            <div class="col-12">
-                <app-program-spec-version [programSpec]="programSpec" (version)="onSelectVersion($event)"></app-program-spec-version>
+            <div class="col-12 lg:col-8 lg:col-offset-2 my-5">
+                <p-tabView>
+                    <p-tabPanel header="Program Details">
+                        <p-table [value]="[programForm.value]" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '100%'}">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th colspan="2" style="width:32%">Program</th>
+                                    <th rowspan="2" style="width:17%">Project</th>
+                                    <th rowspan="2" style="width:17%">System</th>
+                                    <th rowspan="2" style="width:17%">System Analyst</th>
+                                    <th rowspan="2" style="width:17%">Status</th>
+                                </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-program>
+                                <tr>
+                                    <td>{{program.programId}}</td>
+                                    <td>{{program.programName}}</td>
+                                    <td>{{program.projectName}}</td>
+                                    <td>{{program.systemName}}</td>
+                                    <td>{{program.systemAnalystName}}</td>
+                                    <td>{{program.status}}</td>
+                                </tr>
+                            </ng-template>
+                            <!-- <ng-template pTemplate="footer">
+                                <tr>
+                                    <td colspan="6" class="text-right" *ngIf="canEdit">
+                                        <span *ngIf="!isEdit; else saveBtn">
+                                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="isEdit = true"></button>
+                                            <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onDelete(id)"></button>
+                                        </span>
+                                        <ng-template #saveBtn>
+                                            <button pButton pRipple type="button" icon="pi pi-save" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onSave(id)"></button>
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                            </ng-template> -->
+                        </p-table>
+                    </p-tabPanel>
+    
+                    <p-tabPanel header="UI Components">
+                        <app-component-spec [componentSpec]="uiComponent" [isEdit]="isEdit"></app-component-spec>
+                    </p-tabPanel>
+                    <p-tabPanel header="Service Components">
+                        <app-service-spec [serviceSpec]="serviceComponent" [isEdit]="isEdit"></app-service-spec>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+        <div class="grid">
+            <div class="col-12 lg:col-8 lg:col-offset-2">
+                <div *ngIf="!isEdit; else saveBtn">
+                    <button pButton label="EDIT" (click)="isEdit = true" class="p-button-warning"></button>
+                </div>
+                <ng-template #saveBtn>
+                    <button pButton label="SAVE" (click)="isEdit = false" class="p-button-success"></button>
+                </ng-template>
             </div>
         </div>
     </ng-template>

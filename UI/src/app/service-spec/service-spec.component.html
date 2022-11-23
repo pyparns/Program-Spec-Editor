@@ -1,51 +1,51 @@
 <div class="grid">
-    <div class="col-12 py-5" style="height: 650px; overflow-y: scroll;">
+    <div class="col-12" style="height: 600px; overflow-y: scroll;">
         <div class="grid">
             <div class="col-10 col-offset-1">
-                <span class="p-float-label" *ngIf="isEdit; else title">
+                <span class="p-float-label" *ngIf="isEdit || isAdd; else title">
                     <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.title">
                     <label for="inputtext">Title</label>
                 </span>
                 <ng-template #title>
-                        <h2>{{serviceSpec.title}}</h2>
+                    <h2>{{serviceSpec.title}}</h2>
                 </ng-template>
             </div>
         </div>
-        <div class="grid">
+        <div class="grid mt-3">
             <div class="col-10 col-offset-1">
-                <span class="p-float-label" *ngIf="isEdit; else host">
+                <span class="p-float-label" *ngIf="isEdit || isAdd; else host">
                     <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.host">
                     <label for="inputtext">Host</label>
                 </span>
                 <ng-template #host>
                     <div class="text-left">
-                        <h4>Host : {{serviceSpec.host}}</h4>
+                        <label><b>Host : </b>{{serviceSpec.host}}</label>
                     </div>
                 </ng-template>
             </div>
         </div>
-        <div class="grid">
+        <div class="grid mt-3">
             <div class="col-10 col-offset-1">
-                <span class="p-float-label" *ngIf="isEdit; else port">
+                <span class="p-float-label" *ngIf="isEdit || isAdd; else port">
                     <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.port">
                     <label for="inputtext">Port</label>
                 </span>
                 <ng-template #port>
                     <div class="text-left">
-                        <h4>Port : {{serviceSpec.port}}</h4>
+                        <label><b>Port : </b>{{serviceSpec.port}}</label>
                     </div>
                 </ng-template>
             </div>
         </div>
-        <div class="grid">
+        <div class="grid mt-3">
             <div class="col-10 col-offset-1">
-                <span class="p-float-label" *ngIf="isEdit; else contextRoot">
+                <span class="p-float-label" *ngIf="isEdit || isAdd; else contextRoot">
                     <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.contextRoot">
                     <label for="inputtext">Context Root</label>
                 </span>
                 <ng-template #contextRoot>
                     <div class="text-left">
-                        <h4>Context Root : {{serviceSpec.contextRoot}}</h4>
+                        <label><b>Context Root : </b>{{serviceSpec.contextRoot}}</label>
                     </div>
                 </ng-template>
             </div>
@@ -55,7 +55,7 @@
                 <div class="text-left">
                     <h4>Er Diagram</h4>
                 </div>
-                <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadErImage">
+                <div class="col-8 col-offset-2" *ngIf="!isEdit && !isAdd; else uploadErImage">
                     <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
                 </div>
                 <ng-template #uploadErImage>
@@ -67,12 +67,12 @@
                 </ng-template>
             </div>
         </div>
-        <div class="grid mt-3">
+        <div class="grid">
             <div class="col-10 col-offset-1">
                 <div class="text-left">
                     <h4>Class Diagram</h4>
                 </div>
-                <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadClassImage">
+                <div class="col-8 col-offset-2" *ngIf="!isEdit && !isAdd; else uploadClassImage">
                     <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
                 </div>
                 <ng-template #uploadClassImage>
@@ -166,7 +166,7 @@
                         <ng-template pTemplate="body" let-detail let-editing="editing" let-ri="rowIndex">
                             <tr [pEditableRow]="detail">
                                 <td style="width:20%">
-                                    Method Name
+                                    <b>Method Name</b>
                                 </td>
                                 <td style="width:60%">
                                     <p-cellEditor>
@@ -188,7 +188,7 @@
                             </tr>
                             <tr [pEditableRow]="detail">
                                 <td style="width:20%">
-                                    Input Parameter
+                                    <b>Input Parameter</b>
                                 </td>
                                 <td style="width:60%">
                                     <p-cellEditor>
@@ -205,7 +205,7 @@
                             </tr>
                             <tr [pEditableRow]="detail">
                                 <td style="width:20%">
-                                    Example Response
+                                    <b>Example Response</b>
                                 </td>
                                 <td style="width:60%">
                                     <p-cellEditor>
@@ -222,7 +222,7 @@
                             </tr>
                             <tr [pEditableRow]="detail">
                                 <td style="width:20%">
-                                    Description
+                                    <b>Description</b>
                                 </td>
                                 <td style="width:60%">
                                     <p-cellEditor>
@@ -243,4 +243,7 @@
             </div>
         </div>
     </div>
+</div>
+<div class="col-10 col-offset-1 py-4" *ngIf="isAdd">
+    <p-button label="SUBMIT" (click)="onSubmitBtn()"></p-button>
 </div>

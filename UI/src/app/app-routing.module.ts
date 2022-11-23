@@ -10,11 +10,11 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { BookmarkPageComponent } from './bookmark-page/bookmark-page.component';
 import { AddProgramPageComponent } from './add-program-page/add-program-page.component';
-import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.component';
 import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
 import { SystemAnalystPageComponent } from './system-analyst-page/system-analyst-page.component';
 import { AddUiSpecPageComponent } from './add-ui-spec-page/add-ui-spec-page.component';
 import { AddServiceSpecPageComponent } from './add-service-spec-page/add-service-spec-page.component';
+import { AddProgramStepComponent } from './add-program-step/add-program-step.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -30,10 +30,9 @@ const routes: Routes = [
   { path: 'system', component: SystemPageComponent },
   { path: 'system-analyst', component: SystemAnalystPageComponent },
   { path: 'programspec/:id', component: ProgramSpecPageComponent },
-  { path: 'create/spec', children: [
-    { path: 'blankform', component: AddProgramPageComponent },
-    { path: 'import', component: ImportSpecPageComponent },
-    { path: 'ui', component: AddUiSpecPageComponent },
+  { path: 'create/spec', component: AddProgramStepComponent, children: [
+    { path: 'program', component: AddProgramPageComponent },
+    { path: 'component', component: AddUiSpecPageComponent },
     { path: 'service', component: AddServiceSpecPageComponent },
   ] },
   { path: '**', component: PageNotFoundComponent }

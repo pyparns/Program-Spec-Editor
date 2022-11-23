@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DetailServiceTable, ServiceComponent, ServiceTable } from '../model/serviceSpec.model';
 import { ProgramSpecService } from '../service/program-spec.service';
@@ -10,8 +10,10 @@ import { ProgramSpecService } from '../service/program-spec.service';
 })
 export class ServiceSpecComponent implements OnInit {
   @Input() serviceSpec!: ServiceComponent;
+  @Input() isAdd: boolean = false;
+  @Input() isEdit: boolean = false;
+  @Output() onSubmit = new EventEmitter<ServiceComponent>;
 
-  isEdit: boolean = false;
   isUpload: boolean = false;
   isSubmitted: boolean = false;
 
@@ -28,7 +30,6 @@ export class ServiceSpecComponent implements OnInit {
 
   onUpload(event: any, type: string): void {
     this.isUpload = true;
-    // console.log("onUpload :", event.files[0]);
 
     const formData: FormData = new FormData();
     formData.append("file", event.files[0]);
@@ -48,8 +49,10 @@ export class ServiceSpecComponent implements OnInit {
       },
       () => {  }
     );
+  }
 
-    // this.messageService.add({ key: 'tl', severity: 'success', summary: 'File Uploaded', detail: '' })
+  onSubmitBtn(): void {
+    this.onSubmit.emit(this.serviceSpec);
   }
 
   addServiceRow(service: ServiceTable = new ServiceTable()): void {

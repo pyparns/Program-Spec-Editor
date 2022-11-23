@@ -1,14 +1,20 @@
 <div class="grid">
-    <div class="col-12 py-5" style="height: 650px; overflow-y: scroll;">
-        <!-- <span class="p-float-label">
-            <input class="inputForm" type="text" pInputText [(ngModel)]="uiComponent.title">
-            <label for="inputtext">Title</label>
-        </span> -->
-        <h2>{{ componentSpec.title }}</h2>
+    <div class="col-12" style="height: 600px; overflow-y: scroll;">
+        <div class="grid">
+            <div class="col-10 col-offset-1">
+                <span class="p-float-label" *ngIf="isEdit || isAdd; else title">
+                    <input class="inputForm" type="text" pInputText [(ngModel)]="componentSpec.title">
+                    <label for="inputtext">Title</label>
+                </span>
+                <ng-template #title>
+                    <h2>{{ componentSpec.title }}</h2>
+                </ng-template>
+            </div>
+        </div>
         <div *ngFor="let page of componentSpec.componentPage; index as i">
             <div class="grid">
                 <div class="col-10 col-offset-1 mt-4">
-                    <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadImage">
+                    <div class="col-8 col-offset-2" *ngIf="!isEdit && !isAdd; else uploadImage">
                         <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
                     </div>
                     <ng-template #uploadImage>
@@ -161,10 +167,13 @@
                 </div>
             </div>
         </div>
-        <div class="grid btn mt-5">
+        <div class="grid btn mt-3">
             <div class="col-10 col-offset-1">
                 <p-button label="Add Component" (click)="addPage()"></p-button>
             </div>
         </div>
     </div>
+</div>
+<div class="col-10 col-offset-1 py-4" *ngIf="isAdd">
+    <p-button label="NEXT" (click)="onSubmitBtn()"></p-button>
 </div>

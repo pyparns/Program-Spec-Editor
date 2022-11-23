@@ -43,7 +43,6 @@ import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AddProgramPageComponent } from './add-program-page/add-program-page.component';
-import { ImportSpecPageComponent } from './import-spec-page/import-spec-page.component';
 import { ProgramSpecPageComponent } from './program-spec-page/program-spec-page.component';
 
 import { SafePipe } from './pipe/safe.pipe';
@@ -77,7 +76,6 @@ import { ComponentSpecComponent } from './component-spec/component-spec.componen
     PageNotFoundComponent,
     RegisterPageComponent,
     AddProgramPageComponent,
-    ImportSpecPageComponent,
     ProgramSpecPageComponent,
     SystemAnalystPageComponent,
     ProgramSpecVersionComponent,

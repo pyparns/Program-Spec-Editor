@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ActionTable, ComponentPage, ComponentTable, UiComponent } from '../model/uiSpec.model';
 import { ProgramSpecService } from '../service/program-spec.service';
@@ -10,8 +10,10 @@ import { ProgramSpecService } from '../service/program-spec.service';
 })
 export class ComponentSpecComponent implements OnInit {
   @Input() componentSpec!: UiComponent;
-  
-  isEdit: boolean = false;
+  @Input() isAdd: boolean = false;
+  @Input() isEdit: boolean = false;
+  @Output() onSubmit = new EventEmitter<UiComponent>;
+
   isUpload: boolean = false;
   
   clonedComponents: { [s: string]: ComponentTable; } = {};
@@ -45,6 +47,10 @@ export class ComponentSpecComponent implements OnInit {
       },
       () => {  }
     );
+  }
+
+  onSubmitBtn(): void {
+    this.onSubmit.emit(this.componentSpec);
   }
 
   addPage(): void {

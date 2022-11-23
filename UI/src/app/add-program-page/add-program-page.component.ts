@@ -73,7 +73,7 @@ export class AddProgramPageComponent implements OnInit {
 
         const program: Program = this.programForm.value as Program;
         
-        this.router.navigate(['../ui'], { relativeTo: this.activatedRoute, state: { program: program } });
+        this.router.navigate(['../component'], { relativeTo: this.activatedRoute, state: { program: program } });
       },
       reject: (type: any) => {
         switch(type) {
