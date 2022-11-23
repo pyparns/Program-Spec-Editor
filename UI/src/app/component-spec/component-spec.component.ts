@@ -10,9 +10,7 @@ import { ProgramSpecService } from '../service/program-spec.service';
 })
 export class ComponentSpecComponent implements OnInit {
   @Input() componentSpec!: UiComponent;
-  @Input() isAdd: boolean = false;
   @Input() isEdit: boolean = false;
-  @Output() onSubmit = new EventEmitter<UiComponent>;
 
   isUpload: boolean = false;
   
@@ -47,10 +45,6 @@ export class ComponentSpecComponent implements OnInit {
       },
       () => {  }
     );
-  }
-
-  onSubmitBtn(): void {
-    this.onSubmit.emit(this.componentSpec);
   }
 
   addPage(): void {

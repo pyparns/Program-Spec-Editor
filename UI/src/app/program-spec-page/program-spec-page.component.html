@@ -10,64 +10,173 @@
             <div class="col-12 lg:col-8 lg:col-offset-2 my-5">
                 <p-tabView>
                     <p-tabPanel header="Program Details">
-                        <p-table [value]="[programForm.value]" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '100%'}">
+                        <p-table [value]="[programForm.value]" editMode="row" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '100%'}">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th colspan="2" style="width:32%">Program</th>
-                                    <th rowspan="2" style="width:17%">Project</th>
-                                    <th rowspan="2" style="width:17%">System</th>
-                                    <th rowspan="2" style="width:17%">System Analyst</th>
-                                    <th rowspan="2" style="width:17%">Status</th>
+                                    <th colspan="2" style="width:27%">Program</th>
+                                    <th rowspan="2" style="width:15%">Project</th>
+                                    <th rowspan="2" style="width:15%">System</th>
+                                    <th rowspan="2" style="width:15%">System Analyst</th>
+                                    <th rowspan="2" style="width:15%">Status</th>
+                                    <th rowspan="2" style="width:13%" *ngIf="isEdit"></th>
                                 </tr>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-program>
-                                <tr>
-                                    <td>{{program.programId}}</td>
-                                    <td>{{program.programName}}</td>
-                                    <td>{{program.projectName}}</td>
-                                    <td>{{program.systemName}}</td>
-                                    <td>{{program.systemAnalystName}}</td>
-                                    <td>{{program.status}}</td>
-                                </tr>
-                            </ng-template>
-                            <!-- <ng-template pTemplate="footer">
-                                <tr>
-                                    <td colspan="6" class="text-right" *ngIf="canEdit">
-                                        <span *ngIf="!isEdit; else saveBtn">
-                                            <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="isEdit = true"></button>
-                                            <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onDelete(id)"></button>
-                                        </span>
-                                        <ng-template #saveBtn>
-                                            <button pButton pRipple type="button" icon="pi pi-save" class="p-button-rounded p-button-secondary p-button-text mx-4" (click)="onSave(id)"></button>
-                                        </ng-template>
+                            <ng-template pTemplate="body" let-program let-editing="editing">
+                                <tr [pEditableRow]="program">
+                                    <td style="width:13.5%">
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <input pInputText type="text" [(ngModel)]="program.programId">
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{program.programId || "-"}}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td>
+                                    <td style="width:13.5%">
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <input pInputText type="text" [(ngModel)]="program.programName">
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{program.programName || "-"}}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td>
+                                    <td style="width:15%">
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <p-dropdown [options]="projects" optionLabel="projectName" [autoDisplayFirst]="false" [filter]="true"
+                                                    filterBy="projectName" (onChange)="onChangeOption($event, 'project')" ></p-dropdown>
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{program.projectName || "-"}}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td>
+                                    <td style="width:15%">
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <p-dropdown [options]="systems" optionLabel="systemName" [autoDisplayFirst]="false" [filter]="true"
+                                                    filterBy="systemName" (onChange)="onChangeOption($event, 'system')" ></p-dropdown>
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{program.systemName || "-"}}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td>
+                                    <td style="width:15%">
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <p-dropdown [options]="systemAnalysts" optionLabel="systemAnalystName" [autoDisplayFirst]="false" [filter]="true"
+                                                    filterBy="systemAnalystName" (onChange)="onChangeOption($event, 'systemAnalyst')" ></p-dropdown>
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{program.systemAnalystName || "-"}}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td>
+                                    <td style="width:15%">
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <p-dropdown [options]="statuses" formControlName="status" class="p-inputtext-sm" placeholder="Select a status"></p-dropdown>
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{program.status || "-"}}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td>
+                                    <td style="width:13%" class="text-right" *ngIf="isEdit">
+                                        <div class="flex align-items-center justify-content-center gap-2">
+                                            <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onProgramRowEditInit(program)" class="p-button-rounded p-button-text"></button>
+                                            <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onProgramRowEditSave()" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                            <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onProgramRowEditCancel()" class="p-button-rounded p-button-text p-button-danger"></button>
+                                        </div>
                                     </td>
                                 </tr>
-                            </ng-template> -->
+                            </ng-template>
                         </p-table>
                     </p-tabPanel>
     
-                    <p-tabPanel header="UI Components">
+                    <p-tabPanel header="Component Spec">
                         <app-component-spec [componentSpec]="uiComponent" [isEdit]="isEdit"></app-component-spec>
                     </p-tabPanel>
-                    <p-tabPanel header="Service Components">
+                    
+                    <p-tabPanel header="Service Spec">
                         <app-service-spec [serviceSpec]="serviceComponent" [isEdit]="isEdit"></app-service-spec>
                     </p-tabPanel>
                 </p-tabView>
             </div>
         </div>
-        <div class="grid">
+        <div class="grid" *ngIf="canEdit">
             <div class="col-12 lg:col-8 lg:col-offset-2">
-                <div *ngIf="!isEdit; else saveBtn">
-                    <button pButton label="EDIT" (click)="isEdit = true" class="p-button-warning"></button>
+                <div class="grid px-2">
+                    <div class="col-6 text-left">
+                        <div *ngIf="!isEdit; else saveBtn">
+                            <button pButton label="Edit" icon="pi pi-pencil" (click)="isEdit = true" class="p-button-warning p-button-sm"></button>
+                            <button pButton label="Delete" icon="pi pi-trash" (click)="onDelete(id)" class="p-button-danger p-button-sm ml-3"></button>
+                        </div>
+                        <ng-template #saveBtn>
+                            <button pButton label="Save" icon="pi pi-save" (click)="onSave(id)" class="p-button-success p-button-sm"></button>
+                            <button pButton label="Cancle" icon="pi pi-times" (click)="cancleEdit()" class="p-button-danger p-button-sm ml-3"></button>
+                        </ng-template>
+                    </div>
+                    <div class="col-6 text-right">
+                        <div *ngIf="!isEdit">
+                            <button pButton label="Bookmark" icon="pi pi-bookmark" (click)="onBookmark(id)" class="p-button-info p-button-sm"></button>
+                            <button pButton label="Export" icon="pi pi-upload" (click)="openExportDialog()" class="p-button-help p-button-sm ml-3"></button>
+                        </div>
+                    </div>
                 </div>
-                <ng-template #saveBtn>
-                    <button pButton label="SAVE" (click)="isEdit = false" class="p-button-success"></button>
-                </ng-template>
             </div>
         </div>
     </ng-template>
 </div>
+
+<p-dialog [(visible)]="isExport" [style]="{width: '450px'}" header="Export File" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <label for="type"><b>File Type</b></label>
+            <div class="formgrid grid">
+                <div class="field-radiobutton col-6">
+                    <p-radioButton name="type" value="pdf" [(ngModel)]="exportFile.type"></p-radioButton>
+                    <label for="category1">PDF</label>
+                </div>
+                <div class="field-radiobutton col-6">
+                    <p-radioButton name="type" value="docx" [(ngModel)]="exportFile.type"></p-radioButton>
+                    <label for="category2">DOCX</label>
+                </div>
+                <small class="p-error ml-2" *ngIf="isExportSubmit && !exportFile.type"><i>File type is required.</i></small>
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="file"><b>Select File</b></label>
+            <div class="formgrid grid">
+                <div class="field-checkbox col-6">
+                    <p-checkbox name="fileSelect" [value]="{spec: 'Component', name: ''}" [(ngModel)]="exportFile.fileSelect" inputId="cs"></p-checkbox>
+                    <label for="cs">Component Spec</label>
+                </div>
+                <div class="field-checkbox col-6">
+                    <p-checkbox name="fileSelect" [value]="{spec: 'Service', name: ''}" [(ngModel)]="exportFile.fileSelect" inputId="ss"></p-checkbox>
+                    <label for="ss">Service Spec</label>
+                </div>
+                <small class="p-error ml-2" *ngIf="isExportSubmit && exportFile.fileSelect.length < 1"><i>Please select file.</i></small>
+            </div>
+        </div>
+        
+        <div class="field" *ngFor="let file of exportFile.fileSelect">
+            <label for="name"><b>File Name ({{file.spec}} Spec)</b></label>
+            <input type="text" pInputText [(ngModel)]="file.name" autofocus />
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="OK" icon="pi pi-check" class="p-button-success" (click)="onExport(exportFile)"></button>
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-danger" (click)="hideExportDialog()"></button>
+    </ng-template>
+</p-dialog>

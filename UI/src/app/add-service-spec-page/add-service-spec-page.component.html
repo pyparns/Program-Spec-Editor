@@ -1,5 +1,10 @@
 <div class="grid mt-4 px-5">
     <div class="col-8 col-offset-2 pt-5 box">
-        <app-service-spec [serviceSpec]="serviceSpec" [isAdd]="true" (onSubmit)="createProgram($event)"></app-service-spec>
+        <app-service-spec [serviceSpec]="serviceSpec" [isEdit]="true"></app-service-spec>
+    </div>
+</div>
+<div class="grid">
+    <div class="col-10 col-offset-1 py-4">
+        <p-button label="SUBMIT" (click)="createProgram()"></p-button>
     </div>
 </div>

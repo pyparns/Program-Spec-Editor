@@ -10,12 +10,9 @@ import { ProgramSpecService } from '../service/program-spec.service';
 })
 export class ServiceSpecComponent implements OnInit {
   @Input() serviceSpec!: ServiceComponent;
-  @Input() isAdd: boolean = false;
   @Input() isEdit: boolean = false;
-  @Output() onSubmit = new EventEmitter<ServiceComponent>;
 
   isUpload: boolean = false;
-  isSubmitted: boolean = false;
 
   clonedServices: { [s: string]: ServiceTable; } = {};
   clonedDetailService: { [s: string]: DetailServiceTable; } = {};
@@ -49,10 +46,6 @@ export class ServiceSpecComponent implements OnInit {
       },
       () => {  }
     );
-  }
-
-  onSubmitBtn(): void {
-    this.onSubmit.emit(this.serviceSpec);
   }
 
   addServiceRow(service: ServiceTable = new ServiceTable()): void {

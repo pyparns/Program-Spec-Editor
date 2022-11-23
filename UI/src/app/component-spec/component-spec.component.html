@@ -2,7 +2,7 @@
     <div class="col-12" style="height: 600px; overflow-y: scroll;">
         <div class="grid">
             <div class="col-10 col-offset-1">
-                <span class="p-float-label" *ngIf="isEdit || isAdd; else title">
+                <span class="p-float-label" *ngIf="isEdit; else title">
                     <input class="inputForm" type="text" pInputText [(ngModel)]="componentSpec.title">
                     <label for="inputtext">Title</label>
                 </span>
@@ -13,8 +13,8 @@
         </div>
         <div *ngFor="let page of componentSpec.componentPage; index as i">
             <div class="grid">
-                <div class="col-10 col-offset-1 mt-4">
-                    <div class="col-8 col-offset-2" *ngIf="!isEdit && !isAdd; else uploadImage">
+                <div class="col-10 col-offset-1 mt-2">
+                    <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadImage">
                         <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
                     </div>
                     <ng-template #uploadImage>
@@ -26,9 +26,9 @@
                     </ng-template>
                 </div>
             </div>
-            <div class="grid">
+            <div class="grid mt-2">
                 <div class="col-10 col-offset-1">
-                    <p-table [value]="page.componentTable!" dataKey="id" editMode="row" responsiveLayout="scroll">
+                    <p-table [value]="page.componentTable!" dataKey="id" editMode="row" styleClass="p-datatable-gridlines">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th colspan="5" pEditableColumn>
@@ -47,7 +47,7 @@
                                 <th style="width:20%">Attribute</th>
                                 <th style="width:20%">Property</th>
                                 <th style="width:20%">Event</th>
-                                <th style="width:20%"></th>
+                                <th style="width:20%" *ngIf="isEdit"></th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-component let-editing="editing" let-ri="rowIndex">
@@ -92,7 +92,7 @@
                                         </ng-template>
                                     </p-cellEditor>
                                 </td>
-                                <td style="width:20%">
+                                <td style="width:20%" *ngIf="isEdit">
                                     <div class="flex align-items-center justify-content-center gap-2">
                                         <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onComponentRowEditInit(component)" class="p-button-rounded p-button-text"></button>
                                         <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onComponentRowEditSave(component)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
@@ -103,7 +103,7 @@
                         </ng-template>
                         <ng-template pTemplate="footer">
                             <tr>
-                                <td colspan="5">
+                                <td colspan="5" *ngIf="isEdit">
                                     <div class="flex align-items-center justify-content-center gap-2">
                                         <button pButton pRipple type="button" icon="pi pi-plus" (click)="addComponentRow(i)" class="p-button-rounded p-button-text"></button>
                                     </div>
@@ -113,19 +113,19 @@
                     </p-table>
                 </div>
             </div>
-            <div class="grid">
+            <div class="grid mt-2">
                 <div class="col-10 col-offset-1">
-                    <p-table [value]="page.actionTable!" dataKey="id" editMode="row">
+                    <p-table [value]="page.actionTable!" dataKey="id" editMode="row" styleClass="p-datatable-gridlines">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th style="width:25%">Action Name</th>
-                                <th style="width:55%">Description</th>
-                                <th style="width:20%"></th>
+                                <th style="width:17%">Action Name</th>
+                                <th style="width:63%">Description</th>
+                                <th style="width:20%" *ngIf="isEdit"></th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-action let-editing="editing" let-ri="rowIndex">
                             <tr [pEditableRow]="action">
-                                <td style="width:25%">
+                                <td style="width:17%">
                                     <p-cellEditor>
                                         <ng-template pTemplate="input">
                                             <input pInputText type="text" [(ngModel)]="action.action">
@@ -135,7 +135,7 @@
                                         </ng-template>
                                     </p-cellEditor>
                                 </td>
-                                <td style="width:55%">
+                                <td style="width:63%">
                                     <p-cellEditor>
                                         <ng-template pTemplate="input">
                                             <input pInputText type="text" [(ngModel)]="action.description">
@@ -145,7 +145,7 @@
                                         </ng-template>
                                     </p-cellEditor>
                                 </td>
-                                <td style="width:20%">
+                                <td style="width:20%" *ngIf="isEdit">
                                     <div class="flex align-items-center justify-content-center gap-2">
                                         <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onActionRowEditInit(action)" class="p-button-rounded p-button-text"></button>
                                         <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onActionRowEditSave(action)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
@@ -156,7 +156,7 @@
                         </ng-template>
                         <ng-template pTemplate="footer">
                             <tr>
-                                <td colspan="3">
+                                <td colspan="3" *ngIf="isEdit">
                                     <div class="flex align-items-center justify-content-center gap-2">
                                         <button pButton pRipple type="button" icon="pi pi-plus" (click)="addActionRow(i)" class="p-button-rounded p-button-text"></button>
                                     </div>
@@ -166,14 +166,16 @@
                     </p-table>
                 </div>
             </div>
+            <div class="grid mt-5 mb-1" *ngIf="i < componentSpec.componentPage!.length - 1">
+                <div class="col-10 col-offset-1">
+                    <div style="background-color: rgba(230, 230, 230, 0); height: 10px; width: 100%"></div>
+                </div>
+            </div>
         </div>
-        <div class="grid btn mt-3">
+        <div class="grid btn mt-3" *ngIf="isEdit">
             <div class="col-10 col-offset-1">
                 <p-button label="Add Component" (click)="addPage()"></p-button>
             </div>
         </div>
     </div>
-</div>
-<div class="col-10 col-offset-1 py-4" *ngIf="isAdd">
-    <p-button label="NEXT" (click)="onSubmitBtn()"></p-button>
 </div>

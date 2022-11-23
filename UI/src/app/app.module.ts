@@ -31,6 +31,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { AppComponent } from './app.component';
@@ -118,6 +119,7 @@ import { ComponentSpecComponent } from './component-spec/component-spec.componen
     TieredMenuModule,
     SplitButtonModule,
     ScrollPanelModule,
+    RadioButtonModule,
     ConfirmDialogModule,
     ReactiveFormsModule,
     BrowserAnimationsModule

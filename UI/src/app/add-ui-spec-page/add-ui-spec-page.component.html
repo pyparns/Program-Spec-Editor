@@ -1,5 +1,10 @@
 <div class="grid mt-4 px-5">
     <div class="col-8 col-offset-2 pt-5 box">
-        <app-component-spec [componentSpec]="componentSpec" [isAdd]="true" (onSubmit)="goToServiceSpec($event)"></app-component-spec>
+        <app-component-spec [componentSpec]="componentSpec" [isEdit]="true"></app-component-spec>
+    </div>
+</div>
+<div class="grid">
+    <div class="col-10 col-offset-1 py-4">
+        <p-button label="NEXT" (click)="onSubmitBtn()"></p-button>
     </div>
 </div>

@@ -25,7 +25,6 @@ import { ActionTable, ComponentPage, ComponentTable, UiComponent } from '../mode
 })
 export class ProgramSpecPageComponent implements OnInit {
   statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
-  uploadedFiles: File[] = [];
 
   programSpec: ProgramSpec = new ProgramSpec();
   serviceComponent!: ServiceComponent;
@@ -33,6 +32,7 @@ export class ProgramSpecPageComponent implements OnInit {
   projects!: Project[];
   systems!: System[];
   systemAnalysts!: SystemAnalyst[];
+  exportFile: any = {fileSelect: [], type: ''};
   
   programForm = new FormGroup({
     programId: new FormControl(''),
@@ -47,11 +47,15 @@ export class ProgramSpecPageComponent implements OnInit {
     version: new FormControl(0),
   });
 
+  clonedProgram: any = {};
+
   id!: string | null;
   isEdit: boolean = false;
   canEdit: boolean = false;
   isVersion: boolean = true;
   isUpload: boolean = false;
+  isExport: boolean = false;
+  isExportSubmit: boolean = false;
 
   subscribeProgramSpec!: Subscription;
   subscribeProject!: Subscription;
@@ -75,7 +79,6 @@ export class ProgramSpecPageComponent implements OnInit {
     });
     this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
       this.programSpec = response;
-      console.log(response);
     });
     this.subscribeProject = this.projectService.getProjects().subscribe((response: Project[]) => {
       this.projects = response;
@@ -95,6 +98,18 @@ export class ProgramSpecPageComponent implements OnInit {
     this.subscribeSystemAnalyst.unsubscribe();
   }
 
+  receiveComponentSpec(value: UiComponent): void {
+    this.uiComponent = value;
+  }
+  receiveServiceSpec(value: ServiceComponent): void {
+    this.serviceComponent = value;
+  }
+
+  cancleEdit(): void {
+    this.isEdit = false;
+    this.isUpload = false;
+  }
+
   onSave(id: string | null): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to save?',
@@ -104,10 +119,11 @@ export class ProgramSpecPageComponent implements OnInit {
         let program = this.programForm.value as Program;
         program.uiComponent = this.uiComponent;
         program.serviceComponent = this.serviceComponent;
+        console.log(program);
         this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, program).subscribe(
           () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program updated', detail: ''}),
           () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to update', detail: 'please wait and try again'}),
-          () => this.isEdit = false
+          () => this.cancleEdit()
         );
       },
       reject: (type: any) => {
@@ -172,11 +188,7 @@ export class ProgramSpecPageComponent implements OnInit {
     delete systemAnalyst.id;
     this.programForm.patchValue(systemAnalyst);
     Object.assign(result, systemAnalyst);
-
-    console.log(this.uiComponent);
-    console.log(this.serviceComponent);
   }
-
   toVersion(): void {
     this.isVersion = true;
     this.canEdit = false;
@@ -212,5 +224,40 @@ export class ProgramSpecPageComponent implements OnInit {
         systemAnalystName: e.value.systemAnalystName
       });
     }
+  }
+
+  openExportDialog(): void {
+    this.isExport = true;
+  }
+  hideExportDialog(): void {
+    this.isExport = false;
+    this.isExportSubmit = false;
+    this.exportFile = {name: '', type: ''};
+  }
+  onExport(exportFile: any): void {
+    this.isExportSubmit = true;
+
+    if (exportFile.type && exportFile.fileSelect.length > 0) {
+      console.log(exportFile);
+      this.hideExportDialog();
+    }
+  }
+
+  onProgramRowEditInit(program: any): void {
+    this.clonedProgram = {...program};
+  }
+  onProgramRowEditSave(): void {
+    this.clonedProgram = {};
+    this.messageService.add({key: 'tl', severity: 'success', summary: 'Program edited', detail: ''});
+  }
+  onProgramRowEditCancel(): void {
+    console.log(this.clonedProgram);
+    this.programForm.patchValue(this.clonedProgram);
+    this.clonedProgram = {};
+    this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
+  }
+  
+  onBookmark(id: string | null): void {
+
   }
 }

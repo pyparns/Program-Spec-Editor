@@ -88,11 +88,15 @@ export class HomePageComponent implements OnInit {
   }
 
   getSeverity(value: string): string {
-    if (value === "Publish")
-      return 'warning';
-    else if (value === "Coding Success")
+    if (value === "Coding Success")
       return 'success';
-    else
+    else if (value === "Coding")
+      return 'danger';
+    else if (value === "Publish")
+      return 'warning';
+    else if (value === "Create")
       return 'info';
+    else
+      return '';
   }
 }

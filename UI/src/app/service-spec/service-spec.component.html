@@ -2,7 +2,7 @@
     <div class="col-12" style="height: 600px; overflow-y: scroll;">
         <div class="grid">
             <div class="col-10 col-offset-1">
-                <span class="p-float-label" *ngIf="isEdit || isAdd; else title">
+                <span class="p-float-label" *ngIf="isEdit; else title">
                     <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.title">
                     <label for="inputtext">Title</label>
                 </span>
@@ -13,7 +13,7 @@
         </div>
         <div class="grid mt-3">
             <div class="col-10 col-offset-1">
-                <span class="p-float-label" *ngIf="isEdit || isAdd; else host">
+                <span class="p-float-label" *ngIf="isEdit; else host">
                     <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.host">
                     <label for="inputtext">Host</label>
                 </span>
@@ -26,7 +26,7 @@
         </div>
         <div class="grid mt-3">
             <div class="col-10 col-offset-1">
-                <span class="p-float-label" *ngIf="isEdit || isAdd; else port">
+                <span class="p-float-label" *ngIf="isEdit; else port">
                     <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.port">
                     <label for="inputtext">Port</label>
                 </span>
@@ -39,7 +39,7 @@
         </div>
         <div class="grid mt-3">
             <div class="col-10 col-offset-1">
-                <span class="p-float-label" *ngIf="isEdit || isAdd; else contextRoot">
+                <span class="p-float-label" *ngIf="isEdit; else contextRoot">
                     <input class="inputForm" type="text" pInputText [(ngModel)]="serviceSpec.contextRoot">
                     <label for="inputtext">Context Root</label>
                 </span>
@@ -55,8 +55,8 @@
                 <div class="text-left">
                     <h4>Er Diagram</h4>
                 </div>
-                <div class="col-8 col-offset-2" *ngIf="!isEdit && !isAdd; else uploadErImage">
-                    <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
+                <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadErImage">
+                    <p-image src="assets/er_diagram.png" alt="Image" width="100%" [preview]="true"></p-image>
                 </div>
                 <ng-template #uploadErImage>
                     <p-fileUpload name="er[]" [customUpload]="true" (uploadHandler)="onUpload($event, 'er')" [multiple]="false" accept="image/*">
@@ -72,8 +72,8 @@
                 <div class="text-left">
                     <h4>Class Diagram</h4>
                 </div>
-                <div class="col-8 col-offset-2" *ngIf="!isEdit && !isAdd; else uploadClassImage">
-                    <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
+                <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadClassImage">
+                    <p-image src="assets/class_diagram.png" alt="Image" width="100%" [preview]="true"></p-image>
                 </div>
                 <ng-template #uploadClassImage>
                     <p-fileUpload name="class[]" [customUpload]="true" (uploadHandler)="onUpload($event, 'class')" [multiple]="false" accept="image/*">
@@ -86,14 +86,14 @@
         </div>
         <div class="grid mt-2">
             <div class="col-10 col-offset-1">
-                <p-table [value]="serviceSpec.services!" dataKey="id" editMode="row" responsiveLayout="scroll">
+                <p-table [value]="serviceSpec.services!" dataKey="id" editMode="row" styleClass="p-datatable-gridlines">
                     <ng-template pTemplate="header">
                         <tr>
                             <th style="width:8%">No.</th>
                             <th style="width:44%">Service</th>
                             <th style="width:14%">Method</th>
                             <th style="width:14%">Action</th>
-                            <th style="width:20%"></th>
+                            <th style="width:20%" *ngIf="isEdit"></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-service let-editing="editing" let-ri="rowIndex">
@@ -131,7 +131,7 @@
                                     </ng-template>
                                 </p-cellEditor>
                             </td>
-                            <td style="width:20%">
+                            <td style="width:20%" *ngIf="isEdit">
                                 <div class="flex align-items-center justify-content-center gap-2">
                                     <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onServiceRowEditInit(service)" class="p-button-rounded p-button-text"></button>
                                     <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onServiceRowEditSave(service)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
@@ -142,7 +142,7 @@
                     </ng-template>
                     <ng-template pTemplate="footer">
                         <tr>
-                            <td colspan="5">
+                            <td colspan="5" *ngIf="isEdit">
                                 <div class="flex align-items-center justify-content-center gap-2">
                                     <button pButton pRipple type="button" icon="pi pi-plus" (click)="addServiceRow()" class="p-button-rounded p-button-text"></button>
                                 </div>
@@ -155,7 +155,7 @@
         <div *ngFor="let service of serviceSpec.services!; index as i">
             <div class="grid mt-2">
                 <div class="col-10 col-offset-1">
-                    <p-table [value]="[service]" dataKey="id" editMode="row" responsiveLayout="scroll">
+                    <p-table [value]="[service]" dataKey="id" editMode="row" styleClass="p-datatable-gridlines">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th colspan="3">
@@ -178,7 +178,7 @@
                                         </ng-template>
                                     </p-cellEditor>
                                 </td>
-                                <td style="width:20%">
+                                <td rowspan="4" style="width:20%" *ngIf="isEdit">
                                     <div class="flex align-items-center justify-content-center gap-2">
                                         <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onDetailServiceRowEditInit(detail.detail!)" class="p-button-rounded p-button-text"></button>
                                         <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onDetailServiceRowEditSave(detail.detail!)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
@@ -200,8 +200,6 @@
                                         </ng-template>
                                     </p-cellEditor>
                                 </td>
-                                <td style="width:20%">
-                                </td>
                             </tr>
                             <tr [pEditableRow]="detail">
                                 <td style="width:20%">
@@ -216,8 +214,6 @@
                                             {{detail.detail?.exampleResponse || "-"}}
                                         </ng-template>
                                     </p-cellEditor>
-                                </td>
-                                <td style="width:20%">
                                 </td>
                             </tr>
                             <tr [pEditableRow]="detail">
@@ -234,8 +230,6 @@
                                         </ng-template>
                                     </p-cellEditor>
                                 </td>
-                                <td style="width:20%">
-                                </td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -243,7 +237,4 @@
             </div>
         </div>
     </div>
-</div>
-<div class="col-10 col-offset-1 py-4" *ngIf="isAdd">
-    <p-button label="SUBMIT" (click)="onSubmitBtn()"></p-button>
 </div>

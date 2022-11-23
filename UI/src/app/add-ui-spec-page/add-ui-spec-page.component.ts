@@ -52,7 +52,7 @@ export class AddUiSpecPageComponent implements OnInit {
     this.componentSpec.componentPage = pages;
   }
 
-  goToServiceSpec(componentSpec: UiComponent): void {
+  onSubmitBtn(): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to submit?',
       header: 'Confirmation',
@@ -60,7 +60,7 @@ export class AddUiSpecPageComponent implements OnInit {
       accept: () => {
         this.isSubmitted = true;
 
-        this.router.navigate(['../service'], { relativeTo: this.activatedRoute, state: { program: this.program, uiComponent: componentSpec } });
+        this.router.navigate(['../service'], { relativeTo: this.activatedRoute, state: { program: this.program, uiComponent: this.componentSpec } });
       },
       reject: (type: any) => {
         switch(type) {

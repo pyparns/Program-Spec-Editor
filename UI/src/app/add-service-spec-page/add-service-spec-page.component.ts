@@ -42,13 +42,16 @@ export class AddServiceSpecPageComponent implements OnInit {
       .pipe(map(() => window.history.state));
     this.program = window.history.state.program;
     this.componentSpec = window.history.state.uiComponent;
+
+    console.log(this.program);
+    console.log(this.componentSpec);
     
     let sc = new ServiceComponent();
     sc.services = [];
     this.serviceSpec = sc;
   }
 
-  createProgram(serviceSpec: ServiceComponent): void {
+  createProgram(): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to submit?',
       header: 'Confirmation',
@@ -57,7 +60,7 @@ export class AddServiceSpecPageComponent implements OnInit {
         this.isSubmitted = true;
 
         this.program.uiComponent = this.componentSpec;
-        this.program.serviceComponent = serviceSpec;
+        this.program.serviceComponent = this.serviceSpec;
 
         console.log(this.program);
 

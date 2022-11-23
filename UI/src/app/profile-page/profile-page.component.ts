@@ -10,6 +10,8 @@ import { AccountService } from '../service/account.service';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit {
+  isLoading: boolean = false;
+  isSubmitted: boolean = false;
 
   userForm: FormGroup = new FormGroup({
     id: new FormControl(''),
@@ -17,13 +19,9 @@ export class ProfilePageComponent implements OnInit {
     lastName: new FormControl(''),
     username: new FormControl(''),
     password: new FormControl(''),
-    email: new FormControl(''),
-    token: new FormControl('')
+    email: new FormControl('')
   });
-
-  isLoading: boolean = false;
-  isSubmitted: boolean = false;
-  mode: string = "profile";
+  clonedUser: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -35,8 +33,6 @@ export class ProfilePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.userForm.patchValue(this.accountService.userValue.value);
-
-    this.mode = this.route.snapshot.url[0].path;
   }
 
   get f() {
@@ -78,4 +74,20 @@ export class ProfilePageComponent implements OnInit {
     });
   }
 
+  onUserRowEditInit(user: any): void {
+    this.clonedUser = {...user};
+  }
+  onUserRowEditSave(): void {
+    this.onSave();
+    this.clonedUser = {};
+  }
+  onUserRowEditCancel(): void {
+    this.userForm.patchValue(this.clonedUser);
+    this.clonedUser = {};
+    this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
+  }
+
+  changePassword(): void {
+    console.log(this.userForm.value)
+  }
 }
