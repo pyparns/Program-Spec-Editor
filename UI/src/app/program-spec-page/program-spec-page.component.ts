@@ -236,10 +236,23 @@ export class ProgramSpecPageComponent implements OnInit {
   }
   onExport(exportFile: any): void {
     this.isExportSubmit = true;
-
+    
     if (exportFile.type && exportFile.fileSelect.length > 0) {
       console.log(exportFile);
+
+      if (exportFile.type === 'doc') {
+        exportFile.fileSelect.forEach((f: any) => {
+          console.log(f);
+          this.Export2Word(f.element, f.name);
+        })
+      } else if (exportFile.type === 'pdf') {
+        
+      }
+
       this.hideExportDialog();
+
+    } else {
+
     }
   }
 
@@ -259,5 +272,38 @@ export class ProgramSpecPageComponent implements OnInit {
   
   onBookmark(id: string | null): void {
 
+  }
+
+
+
+
+
+
+  // Export
+  Export2Word(element: any, filename: string = '') {
+    var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
+    var postHtml = "</body></html>";
+    var html = preHtml+document.getElementById(element)!.innerHTML+postHtml;
+
+    var blob = new Blob(['\ufeff', html], {
+      type: 'application/msword'
+    });
+
+    var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+
+    filename = filename?filename+'.doc' : 'document.doc';
+    var downloadLink = document.createElement("a");
+    document.body.appendChild(downloadLink);
+
+    // Create a link to the file
+    downloadLink.href = url;
+    
+    // Setting the file name
+    downloadLink.download = filename;
+    
+    //triggering the function
+    downloadLink.click();
+    
+    document.body.removeChild(downloadLink);
   }
 }
