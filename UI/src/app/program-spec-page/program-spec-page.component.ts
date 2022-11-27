@@ -7,6 +7,8 @@ import { ProgramSpecService } from '../service/program-spec.service';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
 import '../../THSarabunNew-normal';
+import { Packer } from 'docx';
+// import { saveAs } from 'file-saver';
 import { ProgramSpec } from '../model/programspec.model';
 import { Program } from '../model/program.model';
 import { SystemAnalystService } from '../service/system-analyst.service';
@@ -246,7 +248,7 @@ export class ProgramSpecPageComponent implements OnInit {
           this.Export2Word(f.element, f.name);
         })
       } else if (exportFile.type === 'pdf') {
-        
+
       }
 
       this.hideExportDialog();
