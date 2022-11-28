@@ -4,11 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ProgramSpecService } from '../service/program-spec.service';
+
+import * as fs from "fs";
+import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TextRun, ImageRun } from "docx";
+import { saveAs } from 'file-saver';
 import { jsPDF } from "jspdf";
-import 'jspdf-autotable';
 import '../../THSarabunNew-normal';
-import { Packer } from 'docx';
-// import { saveAs } from 'file-saver';
+import autoTable from 'jspdf-autotable';
+import html2canvas from 'html2canvas';
+
 import { ProgramSpec } from '../model/programspec.model';
 import { Program } from '../model/program.model';
 import { SystemAnalystService } from '../service/system-analyst.service';
@@ -29,8 +33,8 @@ export class ProgramSpecPageComponent implements OnInit {
   statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
 
   programSpec: ProgramSpec = new ProgramSpec();
-  serviceComponent!: ServiceComponent;
-  uiComponent!: UiComponent;
+  serviceSpec!: ServiceComponent;
+  componentSpec!: UiComponent;
   projects!: Project[];
   systems!: System[];
   systemAnalysts!: SystemAnalyst[];
@@ -101,10 +105,10 @@ export class ProgramSpecPageComponent implements OnInit {
   }
 
   receiveComponentSpec(value: UiComponent): void {
-    this.uiComponent = value;
+    this.componentSpec = value;
   }
   receiveServiceSpec(value: ServiceComponent): void {
-    this.serviceComponent = value;
+    this.serviceSpec = value;
   }
 
   cancleEdit(): void {
@@ -119,8 +123,8 @@ export class ProgramSpecPageComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         let program = this.programForm.value as Program;
-        program.uiComponent = this.uiComponent;
-        program.serviceComponent = this.serviceComponent;
+        program.uiComponent = this.componentSpec;
+        program.serviceComponent = this.serviceSpec;
         console.log(program);
         this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, program).subscribe(
           () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program updated', detail: ''}),
@@ -173,8 +177,8 @@ export class ProgramSpecPageComponent implements OnInit {
     delete result.programs;
 
     this.programForm.patchValue(result);
-    this.uiComponent = result.uiComponent;
-    this.serviceComponent = result.serviceComponent;
+    this.componentSpec = result.uiComponent;
+    this.serviceSpec = result.serviceComponent;
 
     let project: Project = this.projects.find(ele => ele.id === result.projectId)!;
     delete project.id;
@@ -190,16 +194,14 @@ export class ProgramSpecPageComponent implements OnInit {
     delete systemAnalyst.id;
     this.programForm.patchValue(systemAnalyst);
     Object.assign(result, systemAnalyst);
+
+    console.log(this.componentSpec);
   }
   toVersion(): void {
     this.isVersion = true;
     this.canEdit = false;
     this.isEdit = false;
   }
-
-  // lenText(doc: jsPDF, text: string): any {
-  //   return (doc.internal.pageSize.getWidth() - doc.getTextWidth(text))/2
-  // }
 
   onChangeOption(e: any, type: string) {
     console.log("Type, " + type);
@@ -228,36 +230,6 @@ export class ProgramSpecPageComponent implements OnInit {
     }
   }
 
-  openExportDialog(): void {
-    this.isExport = true;
-  }
-  hideExportDialog(): void {
-    this.isExport = false;
-    this.isExportSubmit = false;
-    this.exportFile = {name: '', type: ''};
-  }
-  onExport(exportFile: any): void {
-    this.isExportSubmit = true;
-    
-    if (exportFile.type && exportFile.fileSelect.length > 0) {
-      console.log(exportFile);
-
-      if (exportFile.type === 'doc') {
-        exportFile.fileSelect.forEach((f: any) => {
-          console.log(f);
-          this.Export2Word(f.element, f.name);
-        })
-      } else if (exportFile.type === 'pdf') {
-
-      }
-
-      this.hideExportDialog();
-
-    } else {
-
-    }
-  }
-
   onProgramRowEditInit(program: any): void {
     this.clonedProgram = {...program};
   }
@@ -276,36 +248,243 @@ export class ProgramSpecPageComponent implements OnInit {
 
   }
 
+  openExportDialog(): void {
+    this.isExport = true;
+  }
+  hideExportDialog(): void {
+    this.isExport = false;
+    this.isExportSubmit = false;
+    this.exportFile = {name: '', type: ''};
+  }
+  onExport(exportFile: any): void {
+    this.isExportSubmit = true;
+    
+    if (exportFile.type && exportFile.fileSelect.length > 0) {
+      console.log(exportFile);
 
+      if (exportFile.type === 'doc') {
+        exportFile.fileSelect.forEach((f: any) => {
+          console.log(f);
+          if (f.spec === 'Component')
+            this.ExportComponentSpec2Word(f.name);
+          else if (f.spec === 'Service')
+            this.ExportServiceSpec2Word(f.name);
+        })
+      } else if (exportFile.type === 'pdf') {
+        exportFile.fileSelect.forEach((f: any) => {
+          console.log(f);
+          if (f.spec === 'Component')
+            this.ExportComponentSpec2Pdf(f.name);
+          else if (f.spec === 'Service')
+            this.ExportServiceSpec2Pdf(f.name);
+        })
+      }
 
+      this.hideExportDialog();
 
+    } else {
+
+    }
+  }
 
 
   // Export
-  Export2Word(element: any, filename: string = '') {
-    var preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title></head><body>";
-    var postHtml = "</body></html>";
-    var html = preHtml+document.getElementById(element)!.innerHTML+postHtml;
-
-    var blob = new Blob(['\ufeff', html], {
-      type: 'application/msword'
+  ExportComponentSpec2Word(filename: string = 'document'): void {
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({ text: this.componentSpec.title, bold: true, })
+              ],
+              alignment: AlignmentType.CENTER,
+              heading: HeadingLevel.HEADING_1,
+            }),
+            // new Paragraph({
+            //   children: [
+            //     new ImageRun({ data: fs.readFileSync("assets/er_diagram.png"), transformation: { width: 400, height: 300, } }),
+            //   ],
+            // }),
+          ],
+        },
+      ],
     });
 
-    var url = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(html);
+    // Download
+    Packer.toBlob(doc).then((blob: any) => {
+      saveAs(blob, filename + ".docx");
+    });
+  }
+  ExportServiceSpec2Word(filename: string = 'document'): void {
+    const doc = new Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({ text: this.serviceSpec.title, bold: true, })
+              ],
+              alignment: AlignmentType.CENTER,
+              heading: HeadingLevel.HEADING_1,
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Host : ', bold: true, }),
+                new TextRun({ text: this.serviceSpec.host }),
+              ],
+              spacing: {
+                before: 700,
+              },
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Port : ', bold: true, }),
+                new TextRun({ text: this.serviceSpec.port }),
+              ],
+              spacing: {
+                before: 500,
+              },
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Context Root : ', bold: true, }),
+                new TextRun({ text: this.serviceSpec.contextRoot }),
+              ],
+              spacing: {
+                before: 500,
+              },
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Er Diagram', bold: true, }),
+              ],
+              spacing: {
+                before: 500,
+              },
+            }),
+            // new Paragraph({
+            //   children: [
+            //     new ImageRun({ data: fs.readFileSync("assets/er_diagram.png"), transformation: { width: 400, height: 300, } }),
+            //   ],
+            // }),
+          ],
+        },
+      ],
+    });
 
-    filename = filename?filename+'.doc' : 'document.doc';
-    var downloadLink = document.createElement("a");
-    document.body.appendChild(downloadLink);
+    // Download
+    Packer.toBlob(doc).then((blob: any) => {
+      saveAs(blob, filename + ".docx");
+    });
+  }
+  ExportComponentSpec2Pdf(filename: string = 'document'): void {
+    let doc: jsPDF = new jsPDF('p', 'pt', 'a4');
+    let height: number = 70;
 
-    // Create a link to the file
-    downloadLink.href = url;
+    doc.setFont('THSarabunNew', 'bold');
+    doc.setFontSize(20);
+    doc.text(this.componentSpec.title!, this.lenText(doc, this.serviceSpec.title!), height);
+
     
-    // Setting the file name
-    downloadLink.download = filename;
+    this.componentSpec.componentPage?.forEach((page: any, index: number) => {
+      if (index > 0) {
+        doc.addPage();
+        height = 50;
+      }
+      doc.addImage('assets/image1.png', 'png', 100, height += 40, 400, 250);
+      
+      const componentTable: any[] = [];
+      const actionTable: any[] = [];
+      page.componentTable.forEach((ct: any) => {
+        componentTable.push([ct.label || "", ct.attribute || "", ct.property || "", ct.event || ""]);
+      })
+      page.actionTable.forEach((at: any) => {
+        actionTable.push([at.action || "", at.description || ""]);
+      })
+      autoTable(doc, {
+        theme: 'grid',
+        styles: { font: 'THSarabunNew', fontSize: 14 },
+        headStyles: {fillColor: '#7ff7d9', textColor: '#000', lineWidth: 1},
+        head: [[{ content: page.name!, colSpan: 4, styles: { halign: 'center' } }], ['Label', 'Attribute', 'Property', 'Event']],
+        body: componentTable,
+        startY: height += 280
+      })
+      autoTable(doc, {
+        theme: 'grid',
+        styles: { font: 'THSarabunNew', fontSize: 14 },
+        headStyles: {fillColor: '#7ff7d9', textColor: '#000', lineWidth: 1},
+        head: [['Action Name', 'Description']],
+        body: actionTable,
+        startY: height += 160
+      })
+    })
+
+    doc.save(filename);
+  }
+  ExportServiceSpec2Pdf(filename: string = 'document'): void {
+    let doc: jsPDF = new jsPDF('p', 'pt', 'a4');
+    let height: number = 70;
+
+    doc.setFont('THSarabunNew', 'bold');
+    doc.setFontSize(20);
+    doc.text(this.serviceSpec.title!, this.lenText(doc, this.serviceSpec.title!), height);
+
+    doc.setFont('THSarabunNew', 'bold');
+    doc.setFontSize(13);
+    doc.text('Host : ', 50, height += 60);
+    doc.text('Port : ', 50, height += 40);
+    doc.text('Context Root : ', 50, height += 40);
+    doc.text('Er Diagram', 50, height += 40);
+
+    doc.setFont('THSarabunNew', 'normal');
+    doc.setFontSize(16);
+    doc.text(this.serviceSpec.contextRoot!, 140, height -= 40);
+    doc.text(this.serviceSpec.port!, 90, height -= 40);
+    doc.text(this.serviceSpec.host!, 90, height -= 40);
+
+    doc.addImage('assets/er_diagram.png', 'png', 100, height += 140, 400, 300);
+
+    doc.addPage('a4', 'p');
+    height = 70;
+    doc.addImage('assets/class_diagram.png', 'png', 100, height, 400, 300);
+
+    const services: any[] = [];
+    const details: any[] = [];
+    this.serviceSpec.services?.forEach((service: any, index: number) => {
+      services.push([index + 1, service.service || '', service.method || '', service.action || '']);
+      details.push({
+        name: service.action,
+        action: [['Method Name', service.detail.methodName], ['Input Parameter', service.detail.inputParameter], ['Example Response', service.detail.exampleResponse], ['Description', service.detail.description]]
+      })
+    })
+    autoTable(doc, {
+      theme: 'grid',
+      styles: { font: 'THSarabunNew', fontSize: 14 },
+      headStyles: {fillColor: '#7ff7d9', textColor: '#000', lineWidth: 1},
+      head: [['No.', 'Service', 'Method', 'Action']],
+      body: services,
+      startY: height += 330
+    })
+    details.forEach((detail: any, index: number) => {
+      autoTable(doc, {
+        theme: 'grid',
+        styles: { font: 'THSarabunNew', fontSize: 14 },
+        headStyles: {fillColor: '#7ff7d9', textColor: '#000', lineWidth: 1},
+        head: [[{ content: detail.name, colSpan: 2, styles: { halign: 'center' } }]],
+        body: detail.action,
+        startY: height += index == 0 ? 100 : 300
+      })
+    })
+  
+    // window.open(doc.output('bloburl'));
     
-    //triggering the function
-    downloadLink.click();
-    
-    document.body.removeChild(downloadLink);
+    doc.save(filename);
+  }
+
+  lenText(doc: jsPDF, text: string): any {
+    return (doc.internal.pageSize.getWidth() - doc.getTextWidth(text))/2
   }
 }

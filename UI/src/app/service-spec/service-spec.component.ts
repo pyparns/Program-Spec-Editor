@@ -23,6 +23,11 @@ export class ServiceSpecComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // console.log(this.serviceSpec);
+
+    // this.Export2Pdf();
+
+    // this.Export2Doc();
   }
 
   onUpload(event: any, type: string): void {
