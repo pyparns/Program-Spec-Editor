@@ -2,8 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ActionTable, ComponentPage, ComponentTable, UiComponent } from '../model/uiSpec.model';
 import { ProgramSpecService } from '../service/program-spec.service';
-import { jsPDF } from "jspdf";
-import '../../THSarabunNew-normal';
 
 @Component({
   selector: 'app-component-spec',
@@ -25,14 +23,6 @@ export class ComponentSpecComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // let doc: jsPDF = new jsPDF('p', 'pt', 'a4');
-    // let height: number = 70;
-
-    // doc.setFont('THSarabunNew', 'bold');
-    // doc.setFontSize(20);
-    // doc.text('Service Specification', 70, height);
-
-    // window.open(doc.output('bloburl'));
   }
 
   onUpload(event: any, index: number): void {

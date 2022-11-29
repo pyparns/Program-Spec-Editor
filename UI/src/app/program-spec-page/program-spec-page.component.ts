@@ -5,9 +5,9 @@ import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/a
 import { Subscription } from 'rxjs';
 import { ProgramSpecService } from '../service/program-spec.service';
 
-import * as fs from "fs";
 import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TextRun, ImageRun } from "docx";
 import { saveAs } from 'file-saver';
+import * as FileSaver  from 'file-saver';
 import { jsPDF } from "jspdf";
 import '../../THSarabunNew-normal';
 import autoTable from 'jspdf-autotable';
@@ -302,11 +302,11 @@ export class ProgramSpecPageComponent implements OnInit {
               alignment: AlignmentType.CENTER,
               heading: HeadingLevel.HEADING_1,
             }),
-            // new Paragraph({
-            //   children: [
-            //     new ImageRun({ data: fs.readFileSync("assets/er_diagram.png"), transformation: { width: 400, height: 300, } }),
-            //   ],
-            // }),
+            new Paragraph({
+              children: [
+                new ImageRun({ data: "assets/er_diagram.png", transformation: { width: 400, height: 300, } }),
+              ],
+            }),
           ],
         },
       ],
