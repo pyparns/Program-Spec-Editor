@@ -32,25 +32,28 @@ export class SystemPageComponent implements OnInit {
   }
 
   addSystem(systemName: string): void {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to submit?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.systemService.addSystem({systemName: systemName} as System).subscribe((res: any) => {
-          this.systems = res;
-          this.addSystemName = "";
-          this.messageService.add({key: 'tl', severity: 'success', summary: 'System added', detail: ''});
-        })
-      },
-      reject: (type: any) => {
-        switch(type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
-          break;
+    if (systemName)
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to submit?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.systemService.addSystem({systemName: systemName} as System).subscribe((res: any) => {
+            this.systems = res;
+            this.addSystemName = "";
+            this.messageService.add({key: 'tl', severity: 'success', summary: 'System added', detail: ''});
+          })
+        },
+        reject: (type: any) => {
+          switch(type) {
+            case ConfirmEventType.REJECT:
+              this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+            break;
+          }
         }
-      }
-    });
+      });
+    else
+      this.messageService.add({key: 'tl', severity: 'error', summary: 'Please input system name', detail: ''});
   }
 
   onRowEditInit(system: System) {
@@ -58,10 +61,13 @@ export class SystemPageComponent implements OnInit {
   }
 
   onRowEditSave(system: System) {
-    this.systemService.updateSystem(system).subscribe((res: any) => {
-      delete this.clonedSystems[system.id!];
-      this.messageService.add({key: 'tl', severity: 'success', summary: 'System edited', detail: ''});
-    });
+    if (system.systemName)
+      this.systemService.updateSystem(system).subscribe((res: any) => {
+        delete this.clonedSystems[system.id!];
+        this.messageService.add({key: 'tl', severity: 'success', summary: 'System edited', detail: ''});
+      });
+    else
+      this.messageService.add({key: 'tl', severity: 'error', summary: 'Please input system name', detail: ''});
   }
 
   onRowEditCancel(system: System, index: number) {

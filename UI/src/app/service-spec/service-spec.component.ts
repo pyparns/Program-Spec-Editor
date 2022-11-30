@@ -23,11 +23,6 @@ export class ServiceSpecComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // console.log(this.serviceSpec);
-
-    // this.Export2Pdf();
-
-    // this.Export2Doc();
   }
 
   onUpload(event: any, type: string): void {
@@ -58,8 +53,6 @@ export class ServiceSpecComponent implements OnInit {
     service.detail = new DetailServiceTable();
 
     this.serviceSpec.services!.push(service);
-
-    console.log(this.serviceSpec);
   }
 
   onServiceRowEditInit(service: any): void {

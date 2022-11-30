@@ -33,25 +33,28 @@ export class SystemAnalystPageComponent implements OnInit {
   }
 
   addSystemAnalyst(systemAnalystName: string): void {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to submit?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.systemAnalystService.addSystemAnalyst({systemAnalystName: systemAnalystName} as SystemAnalyst).subscribe((res: any) => {
-          this.systemAnalysts = res;
-          this.addSystemAnalystName = "";
-          this.messageService.add({key: 'tl', severity: 'success', summary: 'System Analyst added', detail: ''});
-        })
-      },
-      reject: (type: any) => {
-        switch(type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
-          break;
+    if (systemAnalystName)
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to submit?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.systemAnalystService.addSystemAnalyst({systemAnalystName: systemAnalystName} as SystemAnalyst).subscribe((res: any) => {
+            this.systemAnalysts = res;
+            this.addSystemAnalystName = "";
+            this.messageService.add({key: 'tl', severity: 'success', summary: 'System Analyst added', detail: ''});
+          })
+        },
+        reject: (type: any) => {
+          switch(type) {
+            case ConfirmEventType.REJECT:
+              this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+            break;
+          }
         }
-      }
-    });
+      });
+    else
+      this.messageService.add({key: 'tl', severity: 'error', summary: 'Please input system analyst name', detail: ''});
   }
 
   onRowEditInit(systemAnalyst: SystemAnalyst) {
@@ -59,10 +62,13 @@ export class SystemAnalystPageComponent implements OnInit {
   }
 
   onRowEditSave(systemAnalyst: SystemAnalyst) {
-    this.systemAnalystService.updateSystemAnalyst(systemAnalyst).subscribe((res: any) => {
-      delete this.clonedSystemAnalysts[systemAnalyst.id!];
-      this.messageService.add({key: 'tl', severity: 'success', summary: 'System Analyst edited', detail: ''});
-    });
+    if (systemAnalyst.systemAnalystName)
+      this.systemAnalystService.updateSystemAnalyst(systemAnalyst).subscribe((res: any) => {
+        delete this.clonedSystemAnalysts[systemAnalyst.id!];
+        this.messageService.add({key: 'tl', severity: 'success', summary: 'System Analyst edited', detail: ''});
+      });
+    else
+      this.messageService.add({key: 'tl', severity: 'error', summary: 'Please input system analyst name', detail: ''});
   }
 
   onRowEditCancel(systemAnalyst: SystemAnalyst, index: number) {

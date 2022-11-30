@@ -3,25 +3,23 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { ProgramSpecService } from '../service/program-spec.service';
 
-import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TextRun, ImageRun } from "docx";
+import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType } from "docx";
 import { saveAs } from 'file-saver';
-import * as FileSaver  from 'file-saver';
 import { jsPDF } from "jspdf";
-import '../../THSarabunNew-normal';
 import autoTable from 'jspdf-autotable';
-import html2canvas from 'html2canvas';
+import '../../THSarabunNew-normal';
 
-import { ProgramSpec } from '../model/programspec.model';
-import { Program } from '../model/program.model';
-import { SystemAnalystService } from '../service/system-analyst.service';
+import { ProgramSpecService } from '../service/program-spec.service';
 import { ProjectService } from '../service/project.service';
 import { SystemService } from '../service/system.service';
+import { SystemAnalystService } from '../service/system-analyst.service';
+import { ProgramSpec } from '../model/programspec.model';
+import { Program } from '../model/program.model';
 import { Project } from '../model/project.model';
 import { System } from '../model/system.model';
 import { SystemAnalyst } from '../model/systemAnalyst.model';
-import { ServiceComponent } from '../model/serviceSpec.model';
+import { DetailServiceTable, ServiceComponent, ServiceTable } from '../model/serviceSpec.model';
 import { ActionTable, ComponentPage, ComponentTable, UiComponent } from '../model/uiSpec.model';
 
 @Component({
@@ -33,8 +31,12 @@ export class ProgramSpecPageComponent implements OnInit {
   statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
 
   programSpec: ProgramSpec = new ProgramSpec();
-  serviceSpec!: ServiceComponent;
   componentSpec!: UiComponent;
+  serviceSpec!: ServiceComponent;
+  clonedProgramSpec!: ProgramSpec;
+  clonedComponentSpec!: UiComponent;
+  clonedServiceSpec!: ServiceComponent;
+  
   projects!: Project[];
   systems!: System[];
   systemAnalysts!: SystemAnalyst[];
@@ -59,7 +61,6 @@ export class ProgramSpecPageComponent implements OnInit {
   isEdit: boolean = false;
   canEdit: boolean = false;
   isVersion: boolean = true;
-  isUpload: boolean = false;
   isExport: boolean = false;
   isExportSubmit: boolean = false;
 
@@ -111,9 +112,33 @@ export class ProgramSpecPageComponent implements OnInit {
     this.serviceSpec = value;
   }
 
+  editMode(programSpec: ProgramSpec, componentSpec: UiComponent, serviceSpec: ServiceComponent): void {
+    // this.clonedProgramSpec = { ...programSpec },
+    // this.clonedComponentSpec = { ...componentSpec },
+    // this.clonedServiceSpec = { ...serviceSpec },
+    
+    // console.log(this.clonedProgramSpec);
+    // console.log(this.clonedComponentSpec);
+    // console.log(this.clonedServiceSpec);
+    this.isEdit = true;
+  }
+
   cancleEdit(): void {
+    // console.log(this.clonedProgramSpec);
+    // console.log(this.clonedComponentSpec);
+    // console.log(this.clonedServiceSpec);
+
+    // this.programSpec = { ...this.clonedProgramSpec };
+    // this.componentSpec = { ...this.clonedComponentSpec };
+    // this.serviceSpec = { ...this.clonedServiceSpec };
+
+    console.log(this.programForm.value.version)
+
+    let v: number = this.programForm.value.version!;
+
+    this.onSelectVersion(v);
+    
     this.isEdit = false;
-    this.isUpload = false;
   }
 
   onSave(id: string | null): void {
@@ -129,7 +154,7 @@ export class ProgramSpecPageComponent implements OnInit {
         this.subscribeProgramSpec = this.programSpecService.updateProgramSpec(id, program).subscribe(
           () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Program updated', detail: ''}),
           () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to update', detail: 'please wait and try again'}),
-          () => this.cancleEdit()
+          () => this.isEdit = false
         );
       },
       reject: (type: any) => {
@@ -194,8 +219,6 @@ export class ProgramSpecPageComponent implements OnInit {
     delete systemAnalyst.id;
     this.programForm.patchValue(systemAnalyst);
     Object.assign(result, systemAnalyst);
-
-    console.log(this.componentSpec);
   }
   toVersion(): void {
     this.isVersion = true;
@@ -203,6 +226,7 @@ export class ProgramSpecPageComponent implements OnInit {
     this.isEdit = false;
   }
 
+  // Bug
   onChangeOption(e: any, type: string) {
     console.log("Type, " + type);
     console.log("ID, " + e.value.id);
@@ -260,126 +284,320 @@ export class ProgramSpecPageComponent implements OnInit {
     this.isExportSubmit = true;
     
     if (exportFile.type && exportFile.fileSelect.length > 0) {
-      console.log(exportFile);
-
       if (exportFile.type === 'doc') {
         exportFile.fileSelect.forEach((f: any) => {
-          console.log(f);
-          if (f.spec === 'Component')
-            this.ExportComponentSpec2Word(f.name);
-          else if (f.spec === 'Service')
-            this.ExportServiceSpec2Word(f.name);
+          if (f.spec === 'Component') this.ExportComponentSpec2Word(f.name);
+          else if (f.spec === 'Service') this.ExportServiceSpec2Word(f.name);
         })
       } else if (exportFile.type === 'pdf') {
         exportFile.fileSelect.forEach((f: any) => {
-          console.log(f);
-          if (f.spec === 'Component')
-            this.ExportComponentSpec2Pdf(f.name);
-          else if (f.spec === 'Service')
-            this.ExportServiceSpec2Pdf(f.name);
+          if (f.spec === 'Component') this.ExportComponentSpec2Pdf(f.name);
+          else if (f.spec === 'Service') this.ExportServiceSpec2Pdf(f.name);
         })
       }
 
       this.hideExportDialog();
-
-    } else {
-
+      this.messageService.add({key: 'tl', severity: 'success', summary: 'File exported', detail: ''});
     }
   }
 
+  // Word
+  componentPage2Word(cp: ComponentPage[]): any[] {
+    const cpw: any[] = [
+      new Paragraph({
+        children: [ new TextRun({ text: this.componentSpec.title, bold: true, }) ],
+        alignment: AlignmentType.CENTER,
+        heading: HeadingLevel.HEADING_1,
+        spacing: { after: 700 }
+      }),
+    ];
 
-  // Export
+    cp.forEach((p: ComponentPage) => {
+      cpw.push( new Paragraph({ text: 'This is image', spacing: { after: 2500, before: 2500 }, alignment: AlignmentType.CENTER }) );
+      cpw.push( new Table({ rows: this.componentTable2Word(p.componentTable!, p.name!), width: { size: 9000, type: WidthType.DXA } }) );
+      cpw.push( new Paragraph({ spacing: { after: 300 } }) );
+      cpw.push( new Table({ rows: this.actionTable2Word(p.actionTable!), width: { size: 9000, type: WidthType.DXA } }) );
+      cpw.push( new Paragraph({ spacing: { after: 300 } }) );
+    })
+
+    return cpw;
+  }
+
+  componentTable2Word(ct: ComponentTable[], cpName: string): any[] {
+    const ctw: any[] = [
+      new TableRow({
+        children: [
+          new TableCell({ 
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: cpName, bold: true, font: 'THSarabunNew', size: 24 }) ] })
+            ],
+            columnSpan: 4,
+          })
+        ],
+        tableHeader: true,
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Label', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 2250, type: WidthType.DXA },
+          }),
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Attribute', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 2250, type: WidthType.DXA },
+          }),
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Property', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 2250, type: WidthType.DXA },
+          }),
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Event', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 2250, type: WidthType.DXA },
+          }),
+        ]
+      })
+    ];
+
+    ct.forEach((c: any) => {
+      ctw.push(
+        new TableRow({
+          children: [
+            new TableCell({ children: [ new Paragraph({ text: c.label }) ] }),
+            new TableCell({ children: [ new Paragraph({ text: c.attribute }) ] }),
+            new TableCell({ children: [ new Paragraph({ text: c.property }) ] }),
+            new TableCell({ children: [ new Paragraph({ text: c.event }) ] }),
+          ]
+        })
+      )
+    });
+
+    return ctw;
+  }
+
+  actionTable2Word(at: ActionTable[]): any[] {
+    const atw: any[] = [
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Action', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 2250, type: WidthType.DXA },
+          }),
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Description', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 6750, type: WidthType.DXA },
+          }),
+        ]
+      })
+    ];
+
+    at.forEach((a) => {
+      atw.push(
+        new TableRow({
+          children: [
+            new TableCell({ children: [ new Paragraph({ text: a.action }) ] }),
+            new TableCell({ children: [ new Paragraph({ text: a.description }) ] }),
+          ]
+        })
+      )
+    })
+
+    return atw;
+  }
+
+  servicePage2Word(sp: ServiceComponent): any[] {
+    const spw: any[] = [
+      new Paragraph({
+        children: [ new TextRun({ text: sp.title, bold: true, font: 'THSarabunNew' }) ],
+        alignment: AlignmentType.CENTER,
+        heading: HeadingLevel.HEADING_1,
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: 'Host : ', bold: true, font: 'THSarabunNew' }),
+          new TextRun({ text: sp.host, font: 'THSarabunNew' }),
+        ],
+        spacing: { before: 700, },
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: 'Port : ', bold: true, font: 'THSarabunNew' }),
+          new TextRun({ text: sp.port, font: 'THSarabunNew' }),
+        ],
+        spacing: { before: 500, },
+      }),
+      new Paragraph({
+        children: [
+          new TextRun({ text: 'Context Root : ', bold: true, font: 'THSarabunNew' }),
+          new TextRun({ text: sp.contextRoot, font: 'THSarabunNew' }),
+        ],
+        spacing: { before: 500, },
+      }),
+      new Paragraph({
+        children: [ new TextRun({ text: 'Er Diagram', bold: true, font: 'THSarabunNew' }) ],
+        spacing: { before: 500, },
+      }),
+      new Paragraph({ text: 'This is Er Diagram image', spacing: { after: 2500, before: 2500 }, alignment: AlignmentType.CENTER }),
+      new Paragraph({ text: 'This is Class Diagram image', spacing: { after: 2500, before: 2500 }, alignment: AlignmentType.CENTER }),
+      new Table({ rows: this.serviceTable2Word(sp.services!), width: { size: 9000, type: WidthType.DXA } }),
+      new Paragraph({ spacing: { after: 300 } }),
+    ];
+
+    sp.services!.forEach((st: ServiceTable) => {
+      spw.push(
+        new Table({ rows: this.detailTable2Word(st.detail!, st.action!), width: { size: 9000, type: WidthType.DXA } }),
+      );
+      spw.push(
+        new Paragraph({ spacing: { after: 300 } }),
+      );
+    })
+
+    return spw;
+  }
+
+  serviceTable2Word(st: ServiceTable[]): any[] {
+    const stw: any[] = [
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'No.', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 500, type: WidthType.DXA },
+          }),
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Service', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 5500, type: WidthType.DXA },
+          }),
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Method', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 1500, type: WidthType.DXA },
+          }),
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Action', bold: true, font: 'THSarabunNew', size: 20 }) ] }),
+            ],
+            width: { size: 1500, type: WidthType.DXA },
+          }),
+        ]
+      })
+    ];
+
+    st.forEach((s: any, i: number) => {
+      stw.push(
+        new TableRow({
+          children: [
+            new TableCell({ children: [ new Paragraph({ text: i.toString() }) ] }),
+            new TableCell({ children: [ new Paragraph({ text: s.service }) ] }),
+            new TableCell({ children: [ new Paragraph({ text: s.method }) ] }),
+            new TableCell({ children: [ new Paragraph({ text: s.action }) ] }),
+          ]
+        })
+      )
+    })
+
+    return stw;
+  }
+
+  detailTable2Word(dt: DetailServiceTable, action: string): any[] {
+    const dtw: any[] = [
+      new TableRow({ 
+        children: [
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: action, bold: true, font: 'THSarabunNew', size: 22 }) ] })
+            ],
+            columnSpan: 2,
+          })
+        ]
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Method Name', bold: true, font: 'THSarabunNew', size: 20 }) ] })
+            ],
+            width: { size: 2000, type: WidthType.DXA },
+          }),
+          new TableCell({ children: [ new Paragraph({ text: dt.methodName }) ] }),
+        ]
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Input Parameter', bold: true, font: 'THSarabunNew', size: 20 }) ] })
+            ],
+            width: { size: 2000, type: WidthType.DXA },
+          }),
+          new TableCell({ children: [ new Paragraph({ text: dt.inputParameter }) ] }),
+        ]
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Example Response', bold: true, font: 'THSarabunNew', size: 20 }) ] })
+            ],
+            width: { size: 2000, type: WidthType.DXA },
+          }),
+          new TableCell({ children: [ new Paragraph({ text: dt.exampleResponse }) ] }),
+        ]
+      }),
+      new TableRow({
+        children: [
+          new TableCell({
+            children: [
+              new Paragraph({ children: [ new TextRun({ text: 'Description', bold: true, font: 'THSarabunNew', size: 20 }) ] })
+            ],
+            width: { size: 2000, type: WidthType.DXA },
+          }),
+          new TableCell({ children: [ new Paragraph({ text: dt.description }) ] }),
+        ]
+      }),
+    ];
+
+    return dtw;
+  }
+
+  // Export to Word
   ExportComponentSpec2Word(filename: string = 'document'): void {
     const doc = new Document({
-      sections: [
-        {
-          properties: {},
-          children: [
-            new Paragraph({
-              children: [
-                new TextRun({ text: this.componentSpec.title, bold: true, })
-              ],
-              alignment: AlignmentType.CENTER,
-              heading: HeadingLevel.HEADING_1,
-            }),
-            new Paragraph({
-              children: [
-                new ImageRun({ data: "assets/er_diagram.png", transformation: { width: 400, height: 300, } }),
-              ],
-            }),
-          ],
-        },
-      ],
+      sections: [ { properties: {}, children: this.componentPage2Word(this.componentSpec.componentPage!) } ],
     });
 
-    // Download
-    Packer.toBlob(doc).then((blob: any) => {
-      saveAs(blob, filename + ".docx");
-    });
+    Packer.toBlob(doc).then((blob: any) => saveAs(blob, filename + ".docx"));
   }
+
   ExportServiceSpec2Word(filename: string = 'document'): void {
     const doc = new Document({
-      sections: [
-        {
-          properties: {},
-          children: [
-            new Paragraph({
-              children: [
-                new TextRun({ text: this.serviceSpec.title, bold: true, })
-              ],
-              alignment: AlignmentType.CENTER,
-              heading: HeadingLevel.HEADING_1,
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: 'Host : ', bold: true, }),
-                new TextRun({ text: this.serviceSpec.host }),
-              ],
-              spacing: {
-                before: 700,
-              },
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: 'Port : ', bold: true, }),
-                new TextRun({ text: this.serviceSpec.port }),
-              ],
-              spacing: {
-                before: 500,
-              },
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: 'Context Root : ', bold: true, }),
-                new TextRun({ text: this.serviceSpec.contextRoot }),
-              ],
-              spacing: {
-                before: 500,
-              },
-            }),
-            new Paragraph({
-              children: [
-                new TextRun({ text: 'Er Diagram', bold: true, }),
-              ],
-              spacing: {
-                before: 500,
-              },
-            }),
-            // new Paragraph({
-            //   children: [
-            //     new ImageRun({ data: fs.readFileSync("assets/er_diagram.png"), transformation: { width: 400, height: 300, } }),
-            //   ],
-            // }),
-          ],
-        },
-      ],
+      sections: [ { properties: {}, children: this.servicePage2Word(this.serviceSpec) } ],
     });
 
-    // Download
-    Packer.toBlob(doc).then((blob: any) => {
-      saveAs(blob, filename + ".docx");
-    });
+    Packer.toBlob(doc).then((blob: any) => saveAs(blob, filename + ".docx"));
   }
+
+  // Pdf
+  lenText(doc: jsPDF, text: string): any {
+    return (doc.internal.pageSize.getWidth() - doc.getTextWidth(text))/2
+  }
+
+  // Export to Pdf
   ExportComponentSpec2Pdf(filename: string = 'document'): void {
     let doc: jsPDF = new jsPDF('p', 'pt', 'a4');
     let height: number = 70;
@@ -388,7 +606,6 @@ export class ProgramSpecPageComponent implements OnInit {
     doc.setFontSize(20);
     doc.text(this.componentSpec.title!, this.lenText(doc, this.serviceSpec.title!), height);
 
-    
     this.componentSpec.componentPage?.forEach((page: any, index: number) => {
       if (index > 0) {
         doc.addPage();
@@ -424,6 +641,7 @@ export class ProgramSpecPageComponent implements OnInit {
 
     doc.save(filename);
   }
+
   ExportServiceSpec2Pdf(filename: string = 'document'): void {
     let doc: jsPDF = new jsPDF('p', 'pt', 'a4');
     let height: number = 70;
@@ -478,13 +696,7 @@ export class ProgramSpecPageComponent implements OnInit {
         startY: height += index == 0 ? 100 : 300
       })
     })
-  
-    // window.open(doc.output('bloburl'));
-    
+        
     doc.save(filename);
-  }
-
-  lenText(doc: jsPDF, text: string): any {
-    return (doc.internal.pageSize.getWidth() - doc.getTextWidth(text))/2
   }
 }

@@ -96,7 +96,7 @@
                                     <div class="flex align-items-center justify-content-center gap-2">
                                         <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onComponentRowEditInit(component)" class="p-button-rounded p-button-text"></button>
                                         <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onComponentRowEditSave(component)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onComponentRowEditCancel(component, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onComponentRowEditCancel(component, ri, i)" class="p-button-rounded p-button-text p-button-danger"></button>
                                     </div>
                                 </td>
                             </tr>
@@ -149,7 +149,7 @@
                                     <div class="flex align-items-center justify-content-center gap-2">
                                         <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onActionRowEditInit(action)" class="p-button-rounded p-button-text"></button>
                                         <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onActionRowEditSave(action)" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onActionRowEditCancel(action, ri)" class="p-button-rounded p-button-text p-button-danger"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onActionRowEditCancel(action, ri, i)" class="p-button-rounded p-button-text p-button-danger"></button>
                                     </div>
                                 </td>
                             </tr>

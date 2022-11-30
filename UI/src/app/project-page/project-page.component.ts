@@ -32,25 +32,28 @@ export class ProjectPageComponent implements OnInit {
   }
 
   addProject(projectName: string): void {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to submit?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.projectService.addProject({projectName: projectName} as Project).subscribe((res: any) => {
-          this.projects = res;
-          this.addProjectName = "";
-          this.messageService.add({key: 'tl', severity: 'success', summary: 'Project added', detail: ''});
-        })
-      },
-      reject: (type: any) => {
-        switch(type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
-          break;
+    if (projectName)
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to submit?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.projectService.addProject({projectName: projectName} as Project).subscribe((res: any) => {
+            this.projects = res;
+            this.addProjectName = "";
+            this.messageService.add({key: 'tl', severity: 'success', summary: 'Project added', detail: ''});
+          })
+        },
+        reject: (type: any) => {
+          switch(type) {
+            case ConfirmEventType.REJECT:
+              this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+            break;
+          }
         }
-      }
-    });
+      });
+    else
+      this.messageService.add({key: 'tl', severity: 'error', summary: 'Please input project name', detail: ''});
   }
 
   onRowEditInit(project: Project) {
@@ -58,10 +61,13 @@ export class ProjectPageComponent implements OnInit {
   }
 
   onRowEditSave(project: Project) {
-    this.projectService.updateProject(project).subscribe((res: any) => {
-      delete this.clonedProjects[project.id!];
-      this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
-    });
+    if (project.projectName)
+      this.projectService.updateProject(project).subscribe((res: any) => {
+        delete this.clonedProjects[project.id!];
+        this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
+      });
+    else
+      this.messageService.add({key: 'tl', severity: 'error', summary: 'Please input project name', detail: ''});
   }
 
   onRowEditCancel(project: Project, index: number) {

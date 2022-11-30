@@ -75,10 +75,10 @@ export class ComponentSpecComponent implements OnInit {
     this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
   }
 
-  onComponentRowEditCancel(component: ComponentTable, index: number): void {
-    this.componentSpec.componentPage![index].componentTable?.splice(index, 1, this.clonedComponents[component.id!]);
+  onComponentRowEditCancel(component: ComponentTable, index: number, page: number): void {
+    this.componentSpec.componentPage![page].componentTable?.splice(index, 1, this.clonedComponents[component.id!]);
     delete this.clonedComponents[component.id!];
-    this.componentSpec.componentPage![index].componentTable = this.componentSpec.componentPage![index].componentTable?.slice();
+    this.componentSpec.componentPage![page].componentTable = this.componentSpec.componentPage![page].componentTable?.slice();
     this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
   }
 
@@ -91,10 +91,10 @@ export class ComponentSpecComponent implements OnInit {
     this.messageService.add({key: 'tl', severity: 'success', summary: 'Project edited', detail: ''});
   }
 
-  onActionRowEditCancel(action: ActionTable, index: number): void {
-    this.componentSpec.componentPage![index].actionTable?.splice(index, 1, this.clonedActions[action.id!]);
+  onActionRowEditCancel(action: ActionTable, index: number, page: number): void {
+    this.componentSpec.componentPage![page].actionTable?.splice(index, 1, this.clonedActions[action.id!]);
     delete this.clonedActions[action.id!];
-    this.componentSpec.componentPage![index].actionTable = this.componentSpec.componentPage![index].actionTable?.slice();
+    this.componentSpec.componentPage![page].actionTable = this.componentSpec.componentPage![page].actionTable?.slice();
     this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
   }
 }
