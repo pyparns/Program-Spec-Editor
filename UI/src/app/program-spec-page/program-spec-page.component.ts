@@ -81,6 +81,24 @@ export class ProgramSpecPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.onLoadData();
+  }
+
+  ngOnDestroy(): void {
+    this.subscribeProgramSpec.unsubscribe();
+    this.subscribeProject.unsubscribe();
+    this.subscribeSystem.unsubscribe();
+    this.subscribeSystemAnalyst.unsubscribe();
+  }
+
+  receiveComponentSpec(value: UiComponent): void {
+    this.componentSpec = value;
+  }
+  receiveServiceSpec(value: ServiceComponent): void {
+    this.serviceSpec = value;
+  }
+
+  onLoadData(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.id = params.get('id');
     });
@@ -98,45 +116,22 @@ export class ProgramSpecPageComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscribeProgramSpec.unsubscribe();
-    this.subscribeProject.unsubscribe();
-    this.subscribeSystem.unsubscribe();
-    this.subscribeSystemAnalyst.unsubscribe();
-  }
-
-  receiveComponentSpec(value: UiComponent): void {
-    this.componentSpec = value;
-  }
-  receiveServiceSpec(value: ServiceComponent): void {
-    this.serviceSpec = value;
-  }
-
   editMode(programSpec: ProgramSpec, componentSpec: UiComponent, serviceSpec: ServiceComponent): void {
-    // this.clonedProgramSpec = { ...programSpec },
-    // this.clonedComponentSpec = { ...componentSpec },
-    // this.clonedServiceSpec = { ...serviceSpec },
+    this.clonedProgramSpec = { ...programSpec },
+    this.clonedComponentSpec = { ...componentSpec },
+    this.clonedServiceSpec = { ...serviceSpec },
     
-    // console.log(this.clonedProgramSpec);
-    // console.log(this.clonedComponentSpec);
-    // console.log(this.clonedServiceSpec);
     this.isEdit = true;
   }
 
   cancleEdit(): void {
-    // console.log(this.clonedProgramSpec);
-    // console.log(this.clonedComponentSpec);
-    // console.log(this.clonedServiceSpec);
+    this.programSpec = { ...this.clonedProgramSpec };
+    this.componentSpec = { ...this.clonedComponentSpec };
+    this.serviceSpec = { ...this.clonedServiceSpec };
 
-    // this.programSpec = { ...this.clonedProgramSpec };
-    // this.componentSpec = { ...this.clonedComponentSpec };
-    // this.serviceSpec = { ...this.clonedServiceSpec };
+    // let v: number = this.programForm.value.version!;
 
-    console.log(this.programForm.value.version)
-
-    let v: number = this.programForm.value.version!;
-
-    this.onSelectVersion(v);
+    // this.onSelectVersion(v);
     
     this.isEdit = false;
   }
