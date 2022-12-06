@@ -16,6 +16,8 @@ export class RegisterPageComponent implements OnInit {
   isLoading: boolean = false;
   isSubmitted: boolean = false;
   blockSpace: RegExp = /[^\s]/;
+  hiddenPassword: boolean = true;
+  showTerms: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,12 +39,24 @@ export class RegisterPageComponent implements OnInit {
       username: new FormControl(''),
       password: new FormControl(''),
       email: new FormControl(''),
-      token: new FormControl('')
+      token: new FormControl(''),
+      isAgree: new FormControl(false)
     })
   }
   
   get f() {
     return this.userForm.controls;
+  }
+
+  underline(e: any): void {
+    e.style.textDecorationLine = "underline";
+  }
+  noneUnderline(e: any): void {
+    e.style.textDecorationLine = "none";
+  }
+  okTerms(): void {
+    this.showTerms = false;
+    this.userForm.patchValue({isAgree: true});
   }
   
   onRegis(): void {

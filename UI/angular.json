@@ -24,7 +24,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
+              "src/favicon.svg",
               "src/assets"
             ],
             "styles": [
@@ -39,19 +39,20 @@
               "node_modules/quill/dist/quill.js"
             ],
             "allowedCommonJsDependencies": [
-              "jspdf",
-              "jspdf-autotable",
-              "rgbcolor",
-              "core-js",
               "raf",
-              "xlsx",
+              "docx",
+              "jspdf",
+              "quill",
+              "core-js",
+              "rgbcolor",
               "bcryptjs",
-              "@babel/runtime-corejs3",
-              "pdfjs-dist/build/pdf",
-              "pdfjs-dist/web/pdf_viewer",
               "dompurify",
+              "file-saver",
               "html2canvas",
-              "quill"
+              "jspdf-autotable",
+              "pdfjs-dist/build/pdf",
+              "@babel/runtime-corejs3",
+              "pdfjs-dist/web/pdf_viewer"
             ]
           },
           "configurations": {

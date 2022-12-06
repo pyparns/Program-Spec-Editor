@@ -21,6 +21,7 @@ import { System } from '../model/system.model';
 import { SystemAnalyst } from '../model/systemAnalyst.model';
 import { DetailServiceTable, ServiceComponent, ServiceTable } from '../model/serviceSpec.model';
 import { ActionTable, ComponentPage, ComponentTable, UiComponent } from '../model/uiSpec.model';
+import { AccountService } from '../service/account.service';
 
 @Component({
   selector: 'app-program-spec-page',
@@ -57,7 +58,7 @@ export class ProgramSpecPageComponent implements OnInit {
 
   clonedProgram: any = {};
 
-  id!: string | null;
+  id!: string;
   isEdit: boolean = false;
   canEdit: boolean = false;
   isVersion: boolean = true;
@@ -75,6 +76,7 @@ export class ProgramSpecPageComponent implements OnInit {
     private projectService: ProjectService,
     private activatedRoute: ActivatedRoute,
     private messageService: MessageService,
+    private accountService: AccountService,
     private programSpecService: ProgramSpecService,
     private confirmationService: ConfirmationService,
     private systemAnalystService: SystemAnalystService,
@@ -100,7 +102,7 @@ export class ProgramSpecPageComponent implements OnInit {
 
   onLoadData(): void {
     this.activatedRoute.paramMap.subscribe(params => {
-      this.id = params.get('id');
+      this.id = params.get('id')!;
     });
     this.subscribeProgramSpec = this.programSpecService.getProgramSpec(this.id).subscribe(response => {
       this.programSpec = response;
@@ -263,8 +265,27 @@ export class ProgramSpecPageComponent implements OnInit {
     this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
   }
   
-  onBookmark(id: string | null): void {
-
+  onBookmark(id: string): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to bookmark?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.accountService.bookmark(id).subscribe(
+          () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Bookmarked', detail: ''}),
+          () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to bookmark', detail: 'please wait and try again'}),
+          () => this.isEdit = false
+        );
+      },
+      reject: (type: any) => {
+        switch(type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+          break;
+        }
+      }
+    });
+    
   }
 
   openExportDialog(): void {

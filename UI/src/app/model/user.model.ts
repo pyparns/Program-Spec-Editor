@@ -6,4 +6,5 @@ export class User {
     password?: string;
     token?: string;
     email?: string;
+    bookmark?: string[];
 }

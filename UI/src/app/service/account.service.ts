@@ -50,12 +50,29 @@ export class AccountService {
     var hash = bcrypt.hashSync(user.password!, salt);
 
     user.password = hash;
+    user.bookmark = [];
     return this.http.post('/api/user/register', user);
   }
 
   editProfile(user: User): any {
     return this.http.put('/api/user/' + user.id, user)
       .pipe(map(user => {
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userSubject.next(user);
+        return user;
+      }
+    ));
+  }
+
+  getNameById(id: string): any {
+    return this.http.get('/api/user/name/' + id);
+  }
+
+  bookmark(pid: string): any {
+    return this.http.put('/api/user/bookmark/' + this.userValue.value.id, pid, { headers: {'Content-Type': 'application/json'} })
+      .pipe(map(user => {
+        console.log(user);
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
