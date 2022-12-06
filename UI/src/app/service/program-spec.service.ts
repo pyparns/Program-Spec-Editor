@@ -20,6 +20,9 @@ export class ProgramSpecService {
   getProgramSpecs() {
     return this.http.get<ProgramSpec[]>("/api/programspec");
   }
+  getMyProgramSpecs(accId: string) {
+    return this.http.get<ProgramSpec[]>("/api/programspec/account/" + accId);
+  }
   createProgramSpec(program: Program) {
     var programSpec: ProgramSpec = new ProgramSpec;
     program.date = new Date();
@@ -44,5 +47,17 @@ export class ProgramSpecService {
   }
   uploadFile(formData: FormData) {
     return this.http.post("/api/programspec/upload", formData);
+  }
+  getSeverity(value: string): string {
+    if (value === "Coding Success")
+      return 'success';
+    else if (value === "Coding")
+      return 'danger';
+    else if (value === "Publish")
+      return 'warning';
+    else if (value === "Create")
+      return 'info';
+    else
+      return '';
   }
 }

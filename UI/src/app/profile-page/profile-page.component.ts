@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
+import { ProgramSpec } from '../model/programspec.model';
 import { AccountService } from '../service/account.service';
+import { ProgramSpecService } from '../service/program-spec.service';
+import { ProjectService } from '../service/project.service';
+import { SystemAnalystService } from '../service/system-analyst.service';
+import { SystemService } from '../service/system.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -10,7 +15,8 @@ import { AccountService } from '../service/account.service';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit {
-  isLoading: boolean = false;
+  isEditLoading: boolean = false;
+  isProgramSpecLoading: boolean = false;
   isSubmitted: boolean = false;
 
   userForm: FormGroup = new FormGroup({
@@ -22,21 +28,59 @@ export class ProfilePageComponent implements OnInit {
     email: new FormControl('')
   });
   clonedUser: any = {};
+  myProgramSpec!: ProgramSpec[];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private systemService: SystemService,
+    private projectService: ProjectService,
     private accountService: AccountService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private programSpecService: ProgramSpecService,
+    private confirmationService: ConfirmationService,
+    private systemAnalystService: SystemAnalystService,
   ) { }
 
   ngOnInit(): void {
     this.userForm.patchValue(this.accountService.userValue.value);
+
+    this.isProgramSpecLoading = true;
+
+    this.programSpecService.getMyProgramSpecs(this.userForm.value.id).subscribe(response => {
+      let result: any[] = [];
+      response.forEach((item: any) => {
+        let program = [item.programs?.filter((spec: any) => Number(spec.version) === item.latest)[0]!][0];
+        Object.assign(item, program)
+        delete item.programs;
+
+        this.projectService.getProject(item.projectId!).subscribe((res: any) => {
+          delete res.id;
+          Object.assign(item, res)
+        });
+        this.systemService.getSystem(item.systemId!).subscribe((res: any) => {
+          delete res.id;
+          Object.assign(item, res)
+        });
+        this.systemAnalystService.getSystemAnalyst(item.systemAnalystId!).subscribe((res: any) => {
+          delete res.id;
+          Object.assign(item, res)
+        });
+        
+        result.push(item);
+      });
+
+      this.myProgramSpec = result;
+      this.isProgramSpecLoading = false
+    });
   }
 
   get f() {
     return this.userForm.controls;
+  }
+
+  getSeverity(status: string): string {
+    return this.programSpecService.getSeverity(status);
   }
 
   onSave(): any {
@@ -47,7 +91,7 @@ export class ProfilePageComponent implements OnInit {
       return;
     }
 
-    this.isLoading = true;
+    this.isEditLoading = true;
 
     this.confirmationService.confirm({
       message: 'Are you sure that you want to save?',
@@ -60,7 +104,7 @@ export class ProfilePageComponent implements OnInit {
             this.router.navigate(['../profile'], { relativeTo: this.route });
           }, () => {
             this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to edit', detail: 'please try again'})
-            this.isLoading = false;
+            this.isEditLoading = false;
           }
         );
       },
@@ -89,5 +133,13 @@ export class ProfilePageComponent implements OnInit {
 
   changePassword(): void {
     console.log(this.userForm.value)
+  }
+
+  detailSpec(id: string): void {
+    this.router.navigate(['programspec/' + id ]);
+  }
+
+  addProgramSpec(): void {
+    this.router.navigate(["/create/spec/program"]);
   }
 }
