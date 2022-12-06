@@ -48,6 +48,12 @@ public class ProgramSpecResource {
     public ProgramSpec getByid(String id) {
     	return programSpecRepository.findById(new ObjectId(id));
     }
+
+    @GET
+    @Path("/account/{accId}")
+    public List<ProgramSpec> getByAccId(String accId) {
+        return programSpecRepository.list("accId", accId);
+    }
     
     @POST
     public Response create(ProgramSpec programSpec) {
