@@ -3,6 +3,11 @@ package th.co.cdgs.programspec;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -23,6 +28,7 @@ import org.jboss.resteasy.reactive.MultipartForm;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import th.co.cdgs.program.Program;
+import th.co.cdgs.user.FullNameResponse;
 
 
 @Path("/programspec")
@@ -54,10 +60,6 @@ public class ProgramSpecResource {
     public List<ProgramSpec> getByAccId(String accId) {
         return programSpecRepository.list("accId", accId);
     }
-    
-    @GET
-    @Path("/{accId}")
-    
     
     @POST
     public Response create(ProgramSpec programSpec) {
@@ -118,64 +120,63 @@ public class ProgramSpecResource {
 			System.out.println(reader);
 			return Response.ok().status(200).build();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return Response.ok(e).status(200).build();
 		}
     	
     }
     
-//    @GET
-//    @Path("/file/{fileName}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public File getFile(String fileName) throws IOException, URISyntaxException {
-//    	ProgramSpecResource app = new ProgramSpecResource();
-//    	String fileName1 = fileName.toLowerCase();
-//    	
-//    	InputStream is = app.getFileFromResourceAsStream(fileName);
-//        printInputStream(is);
-//    	
-//    	File file = app.getFileFromResource(fileName1);
-//        printFile(file);
-//        
-//        return file;
-//    }
-//    private InputStream getFileFromResourceAsStream(String fileName) {
-//        ClassLoader classLoader = getClass().getClassLoader();
-//        InputStream inputStream = classLoader.getResourceAsStream(fileName);
-//
-//        if (inputStream == null)
-//            throw new IllegalArgumentException("file not found! " + fileName);
-//        else
-//            return inputStream;
-//    }
-//    private File getFileFromResource(String fileName) throws URISyntaxException{
-//        ClassLoader classLoader = getClass().getClassLoader();
-//        URL resource = classLoader.getResource(fileName);
-//        if (resource == null) {
-//            throw new IllegalArgumentException("file not found! " + fileName);
-//        } else {
-//            return new File(resource.toURI());
-//        }
-//    }
-//    private static void printInputStream(InputStream is) {
-//        try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8); BufferedReader reader = new BufferedReader(streamReader)) {
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                System.out.println(line);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    // print a file
-//    private static void printFile(File file) {
-//        List<String> lines;
-//        try {
-//            lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
-//            lines.forEach(System.out::println);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @GET
+    @Path("/test/file/{fileName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public File testGetFile(String fileName) throws IOException, URISyntaxException {
+    	ProgramSpecResource app = new ProgramSpecResource();
+    	String fileName1 = fileName.toLowerCase();
+    	
+    	InputStream is = app.getFileFromResourceAsStream(fileName1);
+        printInputStream(is);
+    	
+    	File file = app.getFileFromResource(fileName1);
+        printFile(file);
+        
+        return file;
+    }
+    private InputStream getFileFromResourceAsStream(String fileName) {
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+
+        if (inputStream == null)
+            throw new IllegalArgumentException("S file not found! " + fileName);
+        else
+            return inputStream;
+    }
+    private File getFileFromResource(String fileName) throws URISyntaxException{
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("file not found! " + fileName);
+        } else {
+            return new File(resource.toURI());
+        }
+    }
+    private static void printInputStream(InputStream is) {
+        try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8); BufferedReader reader = new BufferedReader(streamReader)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // print a file
+    private static void printFile(File file) {
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+            lines.forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

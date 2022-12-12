@@ -9,7 +9,7 @@
                         <th class="text-center" pSortableColumn="programName">Program Name <p-sortIcon field="programName"></p-sortIcon></th>
                         <th class="text-center" pSortableColumn="projectName">Creator <p-sortIcon field="projectName"></p-sortIcon></th>
                         <th class="text-center" pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-                        <th class="text-center" style="width:8rem"></th>
+                        <th class="text-center" style="width:13%"></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-spec>
@@ -20,6 +20,7 @@
                         <td class="text-center"><span class="p-column-title"></span><p-tag styleClass="mr-2" [severity]="getSeverity(spec.status)" [value]="spec.status"></p-tag></td>
                         <td class="text-center">
                             <button pButton pRipple type="button" icon="pi pi-eye" (click)="detailSpec(spec.id)" class="p-button-rounded p-button-text mr-2"></button>
+                            <button pButton pRipple type="button" icon="pi pi-trash" (click)="unBookmark(spec.id)" class="p-button-rounded p-button-text mr-2 p-button-danger"></button>
                         </td>
                     </tr>
                 </ng-template>

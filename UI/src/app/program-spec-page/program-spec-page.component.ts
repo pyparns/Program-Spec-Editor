@@ -194,10 +194,9 @@ export class ProgramSpecPageComponent implements OnInit {
   onSelectVersion(version: number): void {
     this.isVersion = false;
 
-    let result: any = {};
+    if (version === this.programSpec.latest && this.programSpec.accId === this.accountService.userValue.value.id) this.canEdit = true;
 
-    if (version == this.programSpec.latest) this.canEdit = true;
-    result = this.programSpec.programs?.filter(spec => spec.version === version)[0]!;
+    let result: any = this.programSpec.programs?.filter(spec => spec.version === version)[0]!;
 
     let program = [result.programs?.filter((spec: any) => Number(spec.version) === result.latest)[0]!][0];
     Object.assign(result, program)
@@ -298,7 +297,6 @@ export class ProgramSpecPageComponent implements OnInit {
         }
       }
     });
-    
   }
 
   openExportDialog(): void {

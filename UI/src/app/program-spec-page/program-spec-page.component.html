@@ -112,21 +112,23 @@
                 </p-tabView>
             </div>
         </div>
-        <div class="grid" *ngIf="canEdit">
+        <div class="grid">
             <div class="col-12 lg:col-8 lg:col-offset-2">
                 <div class="grid px-2">
                     <div class="col-6 text-left">
-                        <div *ngIf="!isEdit; else saveBtn">
-                            <button pButton label="Edit" icon="pi pi-pencil" (click)="editMode(programSpec, componentSpec, serviceSpec)" class="p-button-warning p-button-sm"></button>
-                            <button pButton label="Delete" icon="pi pi-trash" (click)="onDelete(id)" class="p-button-danger p-button-sm ml-3"></button>
+                        <div *ngIf="canEdit">
+                            <div *ngIf="!isEdit; else saveBtn">
+                                <button pButton label="Edit" icon="pi pi-pencil" (click)="editMode(programSpec, componentSpec, serviceSpec)" class="p-button-warning p-button-sm"></button>
+                                <button pButton label="Delete" icon="pi pi-trash" (click)="onDelete(id)" class="p-button-danger p-button-sm ml-3"></button>
+                            </div>
+                            <ng-template #saveBtn>
+                                <button pButton label="Save" icon="pi pi-save" (click)="onSave(id)" class="p-button-success p-button-sm"></button>
+                                <button pButton label="Cancle" icon="pi pi-times" (click)="cancleEdit()" class="p-button-danger p-button-sm ml-3"></button>
+                            </ng-template>
                         </div>
-                        <ng-template #saveBtn>
-                            <button pButton label="Save" icon="pi pi-save" (click)="onSave(id)" class="p-button-success p-button-sm"></button>
-                            <button pButton label="Cancle" icon="pi pi-times" (click)="cancleEdit()" class="p-button-danger p-button-sm ml-3"></button>
-                        </ng-template>
                     </div>
                     <div class="col-6 text-right">
-                        <div *ngIf="!isEdit">
+                        <div *ngIf="!isEdit || !canEdit">
                             <button *ngIf="bookmarked; else Bookmark" pButton label="Bookmarked" icon="pi pi-bookmark-fill" (click)="onBookmark(id, bookmarked)" class="p-button-success p-button-sm"></button>
                             <ng-template #Bookmark><button pButton label="Bookmark" icon="pi pi-bookmark" (click)="onBookmark(id, bookmarked)" class="p-button-info p-button-sm"></button></ng-template>
                             <button pButton label="Export" icon="pi pi-upload" (click)="openExportDialog()" class="p-button-help p-button-sm ml-3"></button>
