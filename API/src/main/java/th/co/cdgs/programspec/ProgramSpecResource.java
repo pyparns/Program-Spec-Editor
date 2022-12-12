@@ -37,7 +37,7 @@ public class ProgramSpecResource {
         Files.write(path, bytes);
         return "success";
     }
-    
+     
     @GET
     public List<ProgramSpec> list() {
         return programSpecRepository.listAll();
@@ -48,6 +48,10 @@ public class ProgramSpecResource {
     public ProgramSpec getByid(String id) {
     	return programSpecRepository.findById(new ObjectId(id));
     }
+    
+    @GET
+    @Path("/{accId}")
+    
     
     @POST
     public Response create(ProgramSpec programSpec) {
