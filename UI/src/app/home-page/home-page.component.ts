@@ -87,16 +87,7 @@ export class HomePageComponent implements OnInit {
     this.router.navigate(['programspec/' + id ]);
   }
 
-  getSeverity(value: string): string {
-    if (value === "Coding Success")
-      return 'success';
-    else if (value === "Coding")
-      return 'danger';
-    else if (value === "Publish")
-      return 'warning';
-    else if (value === "Create")
-      return 'info';
-    else
-      return '';
+  getSeverity(status: string): string {
+    return this.programSpecService.getSeverity(status);
   }
 }

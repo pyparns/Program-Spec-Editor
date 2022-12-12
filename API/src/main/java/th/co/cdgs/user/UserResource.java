@@ -1,5 +1,6 @@
 package th.co.cdgs.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,6 +11,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.auth0.jwt.JWT;
@@ -46,9 +48,12 @@ public class UserResource {
 	}
 	
 	@GET
-	@Path("/{id}")
-	public User getUserById(String id) {
-		return userRepository.findById(new ObjectId(id));
+	@Path("/name/{id}")
+	public Response getUserById(String id) {
+		User user = userRepository.findById(new ObjectId(id));
+		FullNameResponse fullNameResponse = new FullNameResponse();
+		fullNameResponse.setFullName(user.getFirstName() + " " + user.getLastName());
+		return Response.ok().entity(fullNameResponse).build();
 	}
 	
 	@GET
@@ -80,6 +85,36 @@ public class UserResource {
         userRepository.update(user);
         return user;
     }
+
+	@PUT
+	@Path("/bookmark/{id}")
+	public User bookmark(String id, String programId) {
+		User user = userRepository.findById(new ObjectId(id));
+		List<String> bookmark = user.getBookmark();
+		bookmark.add(programId);
+		user.setBookmark(bookmark);
+		userRepository.update(user);
+		return user;
+	}
+
+	@PUT
+	@Path("/unbookmark/{id}")
+	public User unbookmark(String id, String programId) {
+		User user = userRepository.findById(new ObjectId(id));
+		List<String> bookmark = user.getBookmark();
+		List<String> newBookmark = new ArrayList<String>();
+		System.out.println(programId);
+		for (int i=0; i<bookmark.size(); i++) {
+			System.out.println(bookmark.get(i));
+			System.out.println(!bookmark.get(i).equals(programId));
+			if (!bookmark.get(i).equals(programId)) newBookmark.add(bookmark.get(i));
+		}
+		System.out.println(newBookmark);
+		
+		user.setBookmark(newBookmark);
+		userRepository.update(user);
+		return user;
+	}
 	
 	@DELETE
     @Path("/{id}")

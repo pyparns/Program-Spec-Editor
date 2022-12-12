@@ -127,7 +127,8 @@
                     </div>
                     <div class="col-6 text-right">
                         <div *ngIf="!isEdit">
-                            <button pButton label="Bookmark" icon="pi pi-bookmark" (click)="onBookmark(id)" class="p-button-info p-button-sm"></button>
+                            <button *ngIf="bookmarked; else Bookmark" pButton label="Bookmarked" icon="pi pi-bookmark-fill" (click)="onBookmark(id, bookmarked)" class="p-button-success p-button-sm"></button>
+                            <ng-template #Bookmark><button pButton label="Bookmark" icon="pi pi-bookmark" (click)="onBookmark(id, bookmarked)" class="p-button-info p-button-sm"></button></ng-template>
                             <button pButton label="Export" icon="pi pi-upload" (click)="openExportDialog()" class="p-button-help p-button-sm ml-3"></button>
                         </div>
                     </div>

@@ -1,5 +1,7 @@
 package th.co.cdgs.user;
 
+import java.util.List;
+
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
@@ -22,6 +24,8 @@ public class User {
 	private String password;
 	
 	private String token;
+
+	private List<String> bookmark;
 
 	public ObjectId getId() {
 		return id;
@@ -78,4 +82,13 @@ public class User {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+	public List<String> getBookmark() {
+		return bookmark;
+	}
+
+	public void setBookmark(List<String> bookmark) {
+		this.bookmark = bookmark;
+	}
+	
 }

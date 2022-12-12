@@ -48,6 +48,12 @@ public class ProgramSpecResource {
     public ProgramSpec getByid(String id) {
     	return programSpecRepository.findById(new ObjectId(id));
     }
+
+    @GET
+    @Path("/account/{accId}")
+    public List<ProgramSpec> getByAccId(String accId) {
+        return programSpecRepository.list("accId", accId);
+    }
     
     @GET
     @Path("/{accId}")
@@ -93,7 +99,7 @@ public class ProgramSpecResource {
             String statusSave = saveFile(Files.readAllBytes(formData.getFile().uploadedFile()), path);
             if (count > 0) fileName = fileName.substring(0, fileName.length()-4) + " (" + count + ")" + type;
             System.out.println(statusSave);
-            return Response.ok(fileName).status(201).build();
+            return Response.ok(fileName).status(200).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.ok(e).status(500).build();

@@ -1,69 +1,115 @@
 <app-header [pageTitle]="'My Profile'"></app-header>
 <div class="container py-5">
     <div class="grid">
-        <div class="col-8 col-offset-2">
-            <p-table [value]="[userForm.value]" editMode="row" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '100%'}" [resizableColumns]="true">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:18%" pResizableColumn>Username</th>
-                        <th style="width:18%" pResizableColumn>Firstname</th>
-                        <th style="width:18%" pResizableColumn>Lastname</th>
-                        <th style="width:30%" pResizableColumn>Email</th>
-                        <th style="width:16%" pResizableColumn></th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-user let-editing="editing">
-                    <tr [pEditableRow]="user">
-                        <td style="width:18%">
-                            {{user.username || "-"}}
-                        </td>
-                        <td style="width:18%">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="user.firstName">
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{user.firstName || "-"}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td style="width:18%">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="user.lastName">
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{user.lastName || "-"}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td style="width:30%">
-                            <p-cellEditor>
-                                <ng-template pTemplate="input">
-                                    <input pInputText type="text" [(ngModel)]="user.email">
-                                </ng-template>
-                                <ng-template pTemplate="output">
-                                    {{user.email || "-"}}
-                                </ng-template>
-                            </p-cellEditor>
-                        </td>
-                        <td style="width:16%" class="text-right">
-                            <div class="flex align-items-center justify-content-center gap-2">
-                                <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onUserRowEditInit(user)" class="p-button-rounded p-button-text"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onUserRowEditSave()" class="p-button-rounded p-button-text p-button-success mr-2"></button>
-                                <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onUserRowEditCancel()" class="p-button-rounded p-button-text p-button-danger"></button>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="footer">
-                    <tr>
-                        <td colspan="5" class="text-right">
-                            <p-button label="Change Password" styleClass="p-button-link" (click)="changePassword()"></p-button>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+        <div class="col-12 lg:col-8 lg:col-offset-2 my-5">
+            <p-tabView>
+                <p-tabPanel header="My Info">
+                    <p-table [value]="[userForm.value]" editMode="row" [tableStyle]="{'min-width': '100%'}" [resizableColumns]="true">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width:18%" pResizableColumn>Username</th>
+                                <th style="width:18%" pResizableColumn>Firstname</th>
+                                <th style="width:18%" pResizableColumn>Lastname</th>
+                                <th style="width:32%" pResizableColumn>Email</th>
+                                <th style="width:14%" pResizableColumn></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-user let-editing="editing">
+                            <tr [pEditableRow]="user">
+                                <td style="width:18%">
+                                    {{user.username || "-"}}
+                                </td>
+                                <td style="width:18%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="user.firstName">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{user.firstName || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:18%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="user.lastName">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{user.lastName || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:32%">
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <input pInputText type="text" [(ngModel)]="user.email">
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{user.email || "-"}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td style="width:14%" class="text-right">
+                                    <div class="flex align-items-center justify-content-center gap-2">
+                                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil" (click)="onUserRowEditInit(user)" class="p-button-rounded p-button-text"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check" (click)="onUserRowEditSave()" class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times" (click)="onUserRowEditCancel()" class="p-button-rounded p-button-text p-button-danger"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="footer">
+                            <tr>
+                                <td colspan="5" class="text-right">
+                                    <p-button label="Change Password" styleClass="p-button-link" (click)="changePassword()"></p-button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-tabPanel>
+                <p-tabPanel header="My Program Spec">
+                    <p-table #table [value]="myProgramSpec" dataKey="id" [paginator]="true" [rows]="5" [loading]="isProgramSpecLoading">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="text-center" pSortableColumn="programId">Program ID <p-sortIcon field="programId"></p-sortIcon></th>
+                                <th class="text-center" pSortableColumn="programName">Program Name <p-sortIcon field="programName"></p-sortIcon></th>
+                                <th class="text-center" pSortableColumn="projectName">Project <p-sortIcon field="projectName"></p-sortIcon></th>
+                                <th class="text-center" pSortableColumn="systemName">System <p-sortIcon field="systemName"></p-sortIcon></th>
+                                <th class="text-center" pSortableColumn="systemAnalystName">System Analyst <p-sortIcon field="systemAnalystName"></p-sortIcon></th>
+                                <th class="text-center" pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                                <th class="text-center" style="width:8rem"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-spec>
+                            <tr>
+                                <td class="text-center"><span class="p-column-title"></span>{{ spec.programId }}</td>
+                                <td class="text-center"><span class="p-column-title"></span>{{ spec.programName }}</td>
+                                <td class="text-center"><span class="p-column-title"></span>{{ spec.projectName }}</td>
+                                <td class="text-center"><span class="p-column-title"></span>{{ spec.systemName }}</td>
+                                <td class="text-center"><span class="p-column-title"></span>{{ spec.systemAnalystName }}</td>
+                                <td class="text-center"><span class="p-column-title"></span><p-tag styleClass="mr-2" [severity]="getSeverity(spec.status)" [value]="spec.status"></p-tag></td>
+                                <td class="text-center">
+                                    <button pButton pRipple type="button" icon="pi pi-eye" (click)="detailSpec(spec.id)" class="p-button-rounded p-button-text mr-2"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage" let-spec>
+                            <tr>
+                                <td colspan="7">No programs found.</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="footer">
+                            <tr>
+                                <td colspan="7">
+                                    <div class="flex align-items-center justify-content-center gap-2">
+                                        <button pButton pRipple type="button" icon="pi pi-plus" (click)="addProgramSpec()" class="p-button-rounded p-button-text"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-tabPanel>
+            </p-tabView>
         </div>
     </div>
 </div>

@@ -1,1 +1,34 @@
-<p>bookmark-page works!</p>
+<app-header [pageTitle]="'Bookmark'"></app-header>
+<div class="container py-5">
+    <div class="grid">
+        <div class="col-12 lg:col-8 lg:col-offset-2 my-5">
+            <p-table #table [value]="myProgramSpec" dataKey="id" [paginator]="true" [rows]="5" [loading]="isLoading">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="text-center" pSortableColumn="programId">Program ID <p-sortIcon field="programId"></p-sortIcon></th>
+                        <th class="text-center" pSortableColumn="programName">Program Name <p-sortIcon field="programName"></p-sortIcon></th>
+                        <th class="text-center" pSortableColumn="projectName">Creator <p-sortIcon field="projectName"></p-sortIcon></th>
+                        <th class="text-center" pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                        <th class="text-center" style="width:8rem"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-spec>
+                    <tr>
+                        <td class="text-center"><span class="p-column-title"></span>{{ spec.programId }}</td>
+                        <td class="text-center"><span class="p-column-title"></span>{{ spec.programName }}</td>
+                        <td class="text-center"><span class="p-column-title"></span>{{ spec.creator }}</td>
+                        <td class="text-center"><span class="p-column-title"></span><p-tag styleClass="mr-2" [severity]="getSeverity(spec.status)" [value]="spec.status"></p-tag></td>
+                        <td class="text-center">
+                            <button pButton pRipple type="button" icon="pi pi-eye" (click)="detailSpec(spec.id)" class="p-button-rounded p-button-text mr-2"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage" let-spec>
+                    <tr>
+                        <td colspan="7">No programs found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

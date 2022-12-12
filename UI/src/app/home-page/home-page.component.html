@@ -19,25 +19,25 @@
                             <th class="text-center" style="width:8rem"></th>
                         </tr>
                         <tr>
-                            <th>
+                            <th class="text-center">
                                 <input pInputText type="text" (input)="table.filter(getTarget($event).value, 'programId', 'contains')" placeholder="Search by ID" class="p-column-filter text-center">
                             </th>
-                            <th>
+                            <th class="text-center">
                                 <input pInputText type="text" (input)="table.filter(getTarget($event).value, 'programName', 'contains')" placeholder="Search by Name" class="p-column-filter text-center">
                             </th>
-                            <th>
+                            <th class="text-center">
                                 <input pInputText type="text" (input)="table.filter(getTarget($event).value, 'projectName', 'contains')" placeholder="Search by Project" class="p-column-filter text-center">
                             </th>
-                            <th>
+                            <th class="text-center">
                                 <input pInputText type="text" (input)="table.filter(getTarget($event).value, 'systemName', 'contains')" placeholder="Search by System" class="p-column-filter text-center">
                             </th>
-                            <th>
+                            <th class="text-center">
                                 <input pInputText type="text" (input)="table.filter(getTarget($event).value, 'systemAnalystName', 'contains')" placeholder="Search by System Analyst" class="p-column-filter text-center">
                             </th>
-                            <th>
+                            <th class="text-center">
                                 <input pInputText type="text" (input)="table.filter(getTarget($event).value, 'status', 'contains')" placeholder="Search by Status" class="p-column-filter text-center">
                             </th>
-                            <th style="width:8rem"></th>
+                            <th class="text-center" style="width:8rem"></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-spec>
