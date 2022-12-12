@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType, MenuItem } from 'primeng/api';
 import { Program } from '../model/program.model';
@@ -20,12 +20,12 @@ export class AddProgramPageComponent implements OnInit {
   statuses: string[] = ['Create', 'Publish', 'Coding', 'Coding Success'];
 
   programForm = new FormGroup({
-    programId: new FormControl(''),
-    programName: new FormControl(''),
-    projectId: new FormControl(null),
-    systemId: new FormControl(null),
-    systemAnalystId: new FormControl(null),
-    status: new FormControl(null)
+    programId: new FormControl('', Validators.required),
+    programName: new FormControl('', Validators.required),
+    projectId: new FormControl(null, Validators.required),
+    systemId: new FormControl(null, Validators.required),
+    systemAnalystId: new FormControl(null, Validators.required),
+    status: new FormControl(null, Validators.required)
   });
   
   isLoading: boolean = true;
@@ -59,29 +59,33 @@ export class AddProgramPageComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to submit?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.isSubmitted = true;
+    if (this.programForm.invalid) {
+      alert('กรุณากรอกข้อมูลให้ครบถ้วน')
+    } else {
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to submit?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.isSubmitted = true;
 
-        // Check program form is valid.
-        if (this.programForm.invalid) {
-          return;
-        }
+          // Check program form is valid.
+          if (this.programForm.invalid) {
+            return;
+          }
 
-        const program: Program = this.programForm.value as Program;
-        
-        this.router.navigate(['../component'], { relativeTo: this.activatedRoute, state: { program: program } });
-      },
-      reject: (type: any) => {
-        switch(type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
-          break;
+          const program: Program = this.programForm.value as Program;
+          
+          this.router.navigate(['../component'], { relativeTo: this.activatedRoute, state: { program: program } });
+        },
+        reject: (type: any) => {
+          switch(type) {
+            case ConfirmEventType.REJECT:
+              this.messageService.add({key: 'tl', severity:'error', summary:'Rejected', detail:'You have rejected'});
+            break;
+          }
         }
-      }
-    });
+      });
+    }
   }
 }

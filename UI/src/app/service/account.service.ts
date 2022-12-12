@@ -80,4 +80,16 @@ export class AccountService {
       }
     ));
   }
+
+  unbookmark(pid: string): any {
+    return this.http.put('/api/user/unbookmark/' + this.userValue.value.id, pid, { headers: {'Content-Type': 'application/json'} })
+      .pipe(map(user => {
+        console.log(user);
+        // store user details and jwt token in local storage to keep user logged in between page refreshes
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userSubject.next(user);
+        return user;
+      }
+    ));
+  }
 }

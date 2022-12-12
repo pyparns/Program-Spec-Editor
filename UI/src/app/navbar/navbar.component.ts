@@ -86,7 +86,7 @@ export class NavbarComponent implements OnInit {
         
         this.accItems = [
             {label: 'My Profile', routerLink: "/account/profile"},
-            {label: 'Bookmark', routerLink: "/account/bookmark"},
+            {label: 'Bookmarks', routerLink: "/account/bookmark"},
             {separator: true},
             {label: 'Logout', command: () => {
                 this.accountService.logout();

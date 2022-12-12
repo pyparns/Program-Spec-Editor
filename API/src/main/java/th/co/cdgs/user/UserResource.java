@@ -1,5 +1,6 @@
 package th.co.cdgs.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -92,6 +93,25 @@ public class UserResource {
 		List<String> bookmark = user.getBookmark();
 		bookmark.add(programId);
 		user.setBookmark(bookmark);
+		userRepository.update(user);
+		return user;
+	}
+
+	@PUT
+	@Path("/unbookmark/{id}")
+	public User unbookmark(String id, String programId) {
+		User user = userRepository.findById(new ObjectId(id));
+		List<String> bookmark = user.getBookmark();
+		List<String> newBookmark = new ArrayList<String>();
+		System.out.println(programId);
+		for (int i=0; i<bookmark.size(); i++) {
+			System.out.println(bookmark.get(i));
+			System.out.println(!bookmark.get(i).equals(programId));
+			if (!bookmark.get(i).equals(programId)) newBookmark.add(bookmark.get(i));
+		}
+		System.out.println(newBookmark);
+		
+		user.setBookmark(newBookmark);
 		userRepository.update(user);
 		return user;
 	}

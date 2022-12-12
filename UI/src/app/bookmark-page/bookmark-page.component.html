@@ -1,8 +1,8 @@
-<app-header [pageTitle]="'My Profile'"></app-header>
+<app-header [pageTitle]="'Bookmark'"></app-header>
 <div class="container py-5">
     <div class="grid">
         <div class="col-12 lg:col-8 lg:col-offset-2 my-5">
-            <p-table #table [value]="myProgramSpec" dataKey="id" [paginator]="true" [rows]="2" [loading]="isLoading">
+            <p-table #table [value]="myProgramSpec" dataKey="id" [paginator]="true" [rows]="5" [loading]="isLoading">
                 <ng-template pTemplate="header">
                     <tr>
                         <th class="text-center" pSortableColumn="programId">Program ID <p-sortIcon field="programId"></p-sortIcon></th>

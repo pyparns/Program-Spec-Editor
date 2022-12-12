@@ -4,24 +4,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { Subscription } from 'rxjs';
 
-import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType } from "docx";
-import { saveAs } from 'file-saver';
 import { jsPDF } from "jspdf";
-import autoTable from 'jspdf-autotable';
 import '../../THSarabunNew-normal';
+import { saveAs } from 'file-saver';
+import autoTable from 'jspdf-autotable';
+import { AlignmentType, Document, HeadingLevel, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, WidthType } from "docx";
 
-import { ProgramSpecService } from '../service/program-spec.service';
-import { ProjectService } from '../service/project.service';
 import { SystemService } from '../service/system.service';
+import { AccountService } from '../service/account.service';
+import { ProjectService } from '../service/project.service';
+import { ProgramSpecService } from '../service/program-spec.service';
 import { SystemAnalystService } from '../service/system-analyst.service';
-import { ProgramSpec } from '../model/programspec.model';
+
+import { System } from '../model/system.model';
 import { Program } from '../model/program.model';
 import { Project } from '../model/project.model';
-import { System } from '../model/system.model';
+import { ProgramSpec } from '../model/programspec.model';
 import { SystemAnalyst } from '../model/systemAnalyst.model';
 import { DetailServiceTable, ServiceComponent, ServiceTable } from '../model/serviceSpec.model';
 import { ActionTable, ComponentPage, ComponentTable, UiComponent } from '../model/uiSpec.model';
-import { AccountService } from '../service/account.service';
 
 @Component({
   selector: 'app-program-spec-page',
@@ -62,6 +63,7 @@ export class ProgramSpecPageComponent implements OnInit {
   isEdit: boolean = false;
   canEdit: boolean = false;
   isVersion: boolean = true;
+  bookmarked: boolean = false;
   isExport: boolean = false;
   isExportSubmit: boolean = false;
 
@@ -116,6 +118,9 @@ export class ProgramSpecPageComponent implements OnInit {
     this.subscribeSystemAnalyst = this.systemAnalystService.getSystemAnalysts().subscribe((response: SystemAnalyst[]) => {
       this.systemAnalysts = response;
     });
+    if (this.accountService.userValue.value.bookmark.indexOf(this.id) >= 0) {
+      this.bookmarked = true;
+    }
   }
 
   editMode(programSpec: ProgramSpec, componentSpec: UiComponent, serviceSpec: ServiceComponent): void {
@@ -265,17 +270,25 @@ export class ProgramSpecPageComponent implements OnInit {
     this.messageService.add({key: 'tl', severity: 'error', summary: 'Edit canceled', detail: ''});
   }
   
-  onBookmark(id: string): void {
+  onBookmark(id: string, bookmarked: boolean): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to bookmark?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.accountService.bookmark(id).subscribe(
-          () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Bookmarked', detail: ''}),
-          () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to bookmark', detail: 'please wait and try again'}),
-          () => this.isEdit = false
-        );
+        if (bookmarked) {
+          this.accountService.unbookmark(id).subscribe(
+            () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Unbookmarked', detail: ''}),
+            () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to unbookmark', detail: 'please wait and try again'}),
+            () => this.bookmarked = false
+          );
+        } else {
+          this.accountService.bookmark(id).subscribe(
+            () => this.messageService.add({key: 'tl', severity: 'success', summary: 'Bookmarked', detail: ''}),
+            () => this.messageService.add({key: 'tl', severity: 'error', summary: 'Failed to bookmark', detail: 'please wait and try again'}),
+            () => this.bookmarked = true
+          );
+        }
       },
       reject: (type: any) => {
         switch(type) {

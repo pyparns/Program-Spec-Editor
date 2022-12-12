@@ -4,14 +4,14 @@
             <div class="grid">
                 <div class="col-5 col-offset-1">
                     <span class="p-float-label">
-                        <input class="inputForm" type="text" pInputText formControlName="programId">
-                        <label for="inputtext">Program ID</label>
+                        <input class="inputForm" type="text" pInputText formControlName="programId" required>
+                        <label for="inputtext" [style]="programForm.controls['programId'].invalid && programForm.controls['programId'].dirty ? 'color: red' : ''">Program ID</label>
                     </span>
                 </div>
                 <div class="col-5">
                     <span class="p-float-label">
-                        <input class="inputForm" type="text" pInputText formControlName="programName">
-                        <label for="inputtext">Program Name</label>
+                        <input class="inputForm" type="text" pInputText formControlName="programName" required>
+                        <label for="inputtext" [style]="programForm.controls['programName'].invalid && programForm.controls['programName'].dirty ? 'color: red' : ''">Program Name</label>
                     </span>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                 <div class="col-10 col-offset-1 mt-5">
                     <span class="p-float-label">
                         <p-dropdown [options]="projects" formControlName="projectId" [autoDisplayFirst]="false" optionLabel="projectName" optionValue="id" [filter]="true" filterBy="projectName, id" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
-                        <label for="dropdown">Project</label>
+                        <label for="dropdown" [style]="programForm.controls['projectId'].invalid && programForm.controls['projectId'].dirty ? 'color: red' : ''">Project</label>
                     </span>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="col-10 col-offset-1 mt-5">
                     <span class="p-float-label">
                         <p-dropdown [options]="systems" formControlName="systemId" [autoDisplayFirst]="false" optionLabel="systemName" optionValue="id" [filter]="true" filterBy="systemName" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
-                        <label for="dropdown">System</label>
+                        <label for="dropdown" [style]="programForm.controls['systemId'].invalid && programForm.controls['systemId'].dirty ? 'color: red' : ''">System</label>
                     </span>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                 <div class="col-10 col-offset-1 mt-5">
                     <span class="p-float-label">
                         <p-dropdown [options]="systemAnalysts" formControlName="systemAnalystId" [autoDisplayFirst]="false" optionLabel="systemAnalystName" optionValue="id" [filter]="true" filterBy="systemAnalystName" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
-                        <label for="dropdown">System Analyst</label>
+                        <label for="dropdown" [style]="programForm.controls['systemAnalystId'].invalid && programForm.controls['systemAnalystId'].dirty ? 'color: red' : ''">System Analyst</label>
                     </span>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                 <div class="col-10 col-offset-1 mt-5">
                     <span class="p-float-label">
                         <p-dropdown [options]="statuses" formControlName="status" [autoDisplayFirst]="false" [showClear]="true" [style]="{'minWidth':'100%'}"></p-dropdown>
-                        <label for="dropdown">Status</label>
+                        <label for="dropdown" [style]="programForm.controls['status'].invalid && programForm.controls['status'].dirty ? 'color: red' : ''">Status</label>
                     </span>
                 </div>
             </div>
