@@ -1,8 +1,12 @@
 <app-header [pageTitle]="'Add Program'"></app-header>
 
 <div class="container">
-    <div class="card">
-        <p-steps [model]="items"></p-steps>
+    <div class="grid">
+        <div class="md:col-8 md:col-offset-2 sm:col-12 mt-3">
+            <div class="card">
+                <p-steps [model]="items"></p-steps>
+            </div>
+        </div>
     </div>
     <router-outlet></router-outlet>
 </div>

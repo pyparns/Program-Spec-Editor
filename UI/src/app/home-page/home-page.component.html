@@ -1,13 +1,10 @@
 <app-header [pageTitle]="'Home'"></app-header>
 <div class="container">
     <div class="grid">
-        <div class="col-12">
-            <div class="card">
-                <p-table #table [value]="programSpecs" [lazy]="true" (onLazyLoad)="loadProgramSpecs($event)"
-                    [paginator]="true" [rows]="5" [loading]="isLoading" [totalRecords]="totalRecords" responsiveLayout="scroll">
-                    <ng-template pTemplate="caption">
-                        Program
-                    </ng-template>
+        <div class="col-10 col-offset-1">
+            <div class="card my-2 p-3">
+                <p-table #table [value]="programSpecs" styleClass="dark-panel"
+                    [paginator]="true" [rows]="5" [loading]="isLoading" responsiveLayout="scroll">
                     <ng-template pTemplate="header">
                         <tr>
                             <th class="text-center" pSortableColumn="programId">Program ID <p-sortIcon field="programId"></p-sortIcon></th>
@@ -42,14 +39,14 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-spec>
                         <tr>
-                            <td class="text-center"><span class="p-column-title"></span>{{ spec.programId }}</td>
-                            <td class="text-center"><span class="p-column-title"></span>{{ spec.programName }}</td>
-                            <td class="text-center"><span class="p-column-title"></span>{{ spec.projectName }}</td>
-                            <td class="text-center"><span class="p-column-title"></span>{{ spec.systemName }}</td>
-                            <td class="text-center"><span class="p-column-title"></span>{{ spec.systemAnalystName }}</td>
-                            <td class="text-center"><span class="p-column-title"></span><p-tag styleClass="mr-2" [severity]="getSeverity(spec.status)" [value]="spec.status"></p-tag></td>
+                            <td class="text-center">{{ spec.programId }}</td>
+                            <td class="text-center">{{ spec.programName }}</td>
+                            <td class="text-center">{{ spec.projectName }}</td>
+                            <td class="text-center">{{ spec.systemName }}</td>
+                            <td class="text-center">{{ spec.systemAnalystName }}</td>
+                            <td class="text-center"><p-tag styleClass="mr-2" [severity]="getSeverity(spec.status)" [value]="spec.status"></p-tag></td>
                             <td class="text-center">
-                                <button pButton pRipple type="button" icon="pi pi-eye" (click)="detailSpec(spec.id)" class="p-button-rounded p-button-text mr-2"></button>
+                                <button pButton pRipple type="button" icon="pi pi-eye" (click)="detailSpec(spec.id)" class="p-button-text mr-2"></button>
                             </td>
                         </tr>
                     </ng-template>

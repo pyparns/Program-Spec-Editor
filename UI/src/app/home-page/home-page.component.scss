@@ -1,8 +1,8 @@
 .container {
-    background-color: #e5e5e5;
+    background-color: #EFF3F8;
     text-align: center;
     justify-content: center;
-    height: 840px;
+    height: 720px;
 }
 .filter-hbox {
     background-color: #AAA;
@@ -29,6 +29,13 @@
 }
 
 :host ::ng-deep {
+    .p-tag {
+        width: 70%;
+    }
+    .p-table .ui-state-highlight {
+        background-color: #AAA;
+    }
+
     .p-dropdown {
         width: 14rem;
         font-weight: normal;
@@ -116,13 +123,17 @@
             font-weight: 600;
         }
     }
+
+    // .p-datatable.dark-panel th {
+    //     background-color: #dddddd;
+    //     border-width: 2px;
+    // }
 }
 
 .card {
-    padding: 2rem;
+    background-color: #fff;
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-    margin-bottom: 2rem;
+    border-radius: 10px;
 }
 
 @media screen and (max-width: 576px) {

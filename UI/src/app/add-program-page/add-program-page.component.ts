@@ -60,7 +60,7 @@ export class AddProgramPageComponent implements OnInit {
 
   onSubmit(): void {
     if (this.programForm.invalid) {
-      alert('กรุณากรอกข้อมูลให้ครบถ้วน')
+      this.messageService.add({key: 'tl', severity:'error', summary:'กรุณากรอกข้อมูลให้ครบถ้วน', detail:''});
     } else {
       this.confirmationService.confirm({
         message: 'Are you sure that you want to submit?',

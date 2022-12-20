@@ -1,7 +1,7 @@
 <app-header [pageTitle]="'System Analyst'"></app-header>
 <div class="container">
     <div class="grid">
-        <div class="col-8 col-offset-2 mt-5">
+        <div class="lg:col-6 lg:col-offset-3 md:col-10 md:col-offset-1 sm:col-12 mt-5">
             <div class="card">
                 <p-table #dt [value]="systemAnalysts" dataKey="id" styleClass="p-datatable-customers" editMode="row" responsiveLayout="scroll"
                     [rows]="5" [paginator]="true" stateStorage="session" stateKey="statedemo-session">
@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="grid">
-        <div class="col-8 col-offset-2 mt-5">
+        <div class="lg:col-6 lg:col-offset-3 md:col-10 md:col-offset-1 sm:col-12 mt-5">
             <div class="p-inputgroup">
                 <input type="text" [(ngModel)]="addSystemAnalystName" pInputText placeholder="System Name" required>
                 <button type="button" pButton pRipple label="Add" styleClass="p-button-warn" (click)="addSystemAnalyst(addSystemAnalystName)"></button>      

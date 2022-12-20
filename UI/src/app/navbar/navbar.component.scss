@@ -3,3 +3,13 @@
     font-style: italic;
     font-weight: bolder;
 }
+
+:host ::ng-deep {
+    .p-menubar {
+        background-color: #ffd634;
+    }
+
+    .p-splitbutton {
+        background-color: #f2f2ff;
+    }
+}

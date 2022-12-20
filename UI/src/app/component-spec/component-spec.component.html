@@ -15,7 +15,7 @@
             <div class="grid">
                 <div class="col-10 col-offset-1 mt-2">
                     <div class="col-8 col-offset-2" *ngIf="!isEdit; else uploadImage">
-                        <p-image src="assets/image1.png" alt="Image" width="100%" [preview]="true"></p-image>
+                        <p-image [src]="'/api/programspec/file/' + 'image1.png'" alt="Image" width="100%" [preview]="true"></p-image>
                     </div>
                     <ng-template #uploadImage>
                         <p-fileUpload name="demo[]" [customUpload]="true" (uploadHandler)="onUpload($event, i)" [multiple]="false" accept="image/*">

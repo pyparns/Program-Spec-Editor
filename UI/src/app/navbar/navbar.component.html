@@ -1,6 +1,7 @@
 <p-menubar [model]="items">
     <ng-template pTemplate="start">
-        <h2 class="title ml-4 mr-3">Spec Editor</h2>
+        <!-- <h2 class="title ml-4 mr-3">Spec Editor</h2> -->
+        <img src="https://www.cdgs.co.th/wp-content/uploads/2019/05/cropped-logo.png" alt="logo" width="60px" class="ml-5 mr-3">
     </ng-template>
     <ng-template pTemplate="end" *ngIf="username">
         <p-splitButton icon="pi pi-user" styleClass="p-button-raised p-button-secondary p-button-text mr-4" [label]="username" (onClick)="toProfile()" [model]="accItems"></p-splitButton>

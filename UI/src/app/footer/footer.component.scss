@@ -1,11 +1,21 @@
 .footerbg {
-    background-color: #F1F1F1;
+    background-color: #0A1535;
     text-align: center;
     padding: 30px;
-    height: 120px;
+    height: 280px;
 }
 .foottext {
-    font-size: 20px;
+    color: white;
+    font-size: 14px;
     font-family: cursive;
-    margin-inline: 120px;
+    margin-inline: 20px;
+}
+.head {
+    font-size: 18px;
+}
+.fbox {
+    padding-inline: 15%;
+}
+a {
+    text-decoration: none;
 }

@@ -1,7 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { Image } from 'primeng/image';
 import { ActionTable, ComponentPage, ComponentTable, UiComponent } from '../model/uiSpec.model';
 import { ProgramSpecService } from '../service/program-spec.service';
+
 
 @Component({
   selector: 'app-component-spec',
@@ -17,12 +20,18 @@ export class ComponentSpecComponent implements OnInit {
   clonedComponents: { [s: string]: ComponentTable; } = {};
   clonedActions: { [s: string]: ActionTable; } = {};
 
+  image: any;
+
   constructor(
+    private http: HttpClient,
     private messageService: MessageService,
     private programSpecService: ProgramSpecService,
   ) { }
 
   ngOnInit(): void {
+    this.http.get('/api/programspec/file/' + 'image1.png', { responseType: 'text' }).subscribe(
+      (res) => { console.log(res); this.image = res }
+    );
   }
 
   onUpload(event: any, index: number): void {

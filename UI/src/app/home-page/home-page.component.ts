@@ -56,8 +56,10 @@ export class HomePageComponent implements OnInit {
         
         result.push(item);
       });
-      this.datasource = result;
-      this.totalRecords = result.length;
+      // this.datasource = result;
+      // this.totalRecords = result.length;
+      this.programSpecs = result;
+      setTimeout(() => this.isLoading = false, 2000);
     });
   }
 
